@@ -7,7 +7,7 @@ from database import get_db
 from email_utils import send_verification_email
 from models import PendingSignup, User
 from schemas import LoginRequest, SignUpRequest, VerifySignupRequest
-from security import generate_verification_code, hash_password, verify_password
+from security import create_access_token, generate_verification_code, hash_password, verify_password
 
 router = APIRouter()
 
@@ -74,7 +74,13 @@ def verify_signup(request: VerifySignupRequest, db: Session = Depends(get_db)):
     db.delete(pending)
     db.commit()
     db.refresh(user)
-    return {"message": "アカウントを作成しました。ログインできます。", "email": user.email}
+    return {
+        "message": "アカウントを作成しました。ログインできます。",
+        "email": user.email,
+        "name": user.name,
+        "access_token": create_access_token(str(user.id)),
+        "token_type": "bearer",
+    }
 
 
 @router.post("/login")
@@ -89,4 +95,10 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     if not verify_password(request.password, user.password_hash, user.password_salt):
         raise HTTPException(status_code=401, detail='パスワードが正しくありません。')
 
-    return {"message": "ログイン成功", "email": user.email}
+    return {
+        "message": "ログイン成功",
+        "email": user.email,
+        "name": user.name,
+        "access_token": create_access_token(str(user.id)),
+        "token_type": "bearer",
+    }

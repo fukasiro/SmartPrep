@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
+import './VerifyCodeForm.css';
 
 export default function VerifyCodeForm({ email, name, onVerifySuccess }) {
   const [code, setCode] = useState('');
@@ -10,27 +11,42 @@ export default function VerifyCodeForm({ email, name, onVerifySuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!code || !email) return;
-    const result = await verifyEmailCode({ email, name, code });
+    const result = await verifyEmailCode({ email, code });
     if (result && onVerifySuccess) {
-      onVerifySuccess();
+      onVerifySuccess(result);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="login-form">
-      <div className="status-message">{email} に送信されたコードを入力してください。</div>
-      <Input
-        type="text"
-        placeholder="認証コード"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        required
-      />
-      <Button type="submit" variant="primary">
-        {loading ? '処理中...' : '認証してアカウントを作成'}
-      </Button>
+    <form onSubmit={handleSubmit} className="verify-form">
+      <div className="verify-header">
+        <p className="verify-subtitle">
+          {email} に送信された6桁の認証コードを入力してください。
+        </p>
+      </div>
 
-      {message && <p className="status-message">{message}</p>}
+      <div className="verify-alert">
+        <p>コードは30分以内に有効です。届かない場合は迷惑メールフォルダを確認してください。</p>
+      </div>
+
+      <div className="form-input-group">
+        <Input
+          type="text"
+          placeholder="認証コードを入力"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          required
+          className="verify-input"
+        />
+      </div>
+
+      <div className="form-button-group">
+        <Button type="submit" variant="primary">
+          {loading ? '確認中...' : '認証してアカウントを作成'}
+        </Button>
+      </div>
+
+      {message && <p className="verify-message">{message}</p>}
     </form>
   );
 }

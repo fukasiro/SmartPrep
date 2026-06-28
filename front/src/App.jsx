@@ -1,5 +1,5 @@
 // front/src/App.jsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import LoginForm from './features/auth/components/LoginForm';
 import SignUpForm from './features/auth/components/SignUpForm';
@@ -15,6 +15,19 @@ function App() {
 
   // サイドバーを表示する画面の条件
   const showSidebar = mode === 'landing' || mode === 'chat' || mode === 'grammar' || mode === 'vocab' || mode === 'analysis';
+
+  useEffect(() => {
+    const token = localStorage.getItem('eng_learning_access_token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleAuthSuccess = () => {
+    setIsLoggedIn(true);
+    setMode('chat');
+    setActiveMenu('chat');
+  };
 
   // 💡 メニューのナビゲーション処理を最適化
   const handleMenuNavigate = (target) => {
@@ -38,6 +51,8 @@ function App() {
           onNavigate={handleMenuNavigate}
           isLoggedIn={isLoggedIn} // 💡 ログイン状態をPropsとして渡す
           onLogout={() => {
+            localStorage.removeItem('eng_learning_access_token');
+            localStorage.removeItem('eng_learning_user');
             setIsLoggedIn(false); // ログアウト処理
             setMode('landing');
             setActiveMenu('dashboard');
@@ -53,11 +68,7 @@ function App() {
           <LandingPage 
             onNavigateToLogin={() => setMode('login')} 
             onNavigateToSignUp={() => setMode('signup')}
-            onStartLearning={() => {
-              setIsLoggedIn(true); // 体験開始時もログイン状態にする場合はここをtrueに
-              setMode('chat');
-              setActiveMenu('chat');
-            }}
+            onStartLearning={handleAuthSuccess}
           />
         )}
 
@@ -69,11 +80,7 @@ function App() {
               setActiveMenu('dashboard');
             }}
             onNavigateToSignUp={() => setMode('signup')}
-            onNavigateToChat={() => {
-              setIsLoggedIn(true); // 💡 「ログインせずに始める」やログイン成功時にtrueにする
-              setMode('chat');
-              setActiveMenu('chat');
-            }}
+            onNavigateToChat={handleAuthSuccess}
           />
         )}
 
@@ -85,6 +92,7 @@ function App() {
               setActiveMenu('dashboard');
             }}
             onNavigateToLogin={() => setMode('login')}
+            onAuthSuccess={handleAuthSuccess}
           />
         )}
 

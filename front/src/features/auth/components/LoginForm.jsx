@@ -10,10 +10,13 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
   const [password, setPassword] = useState('');
   const { loginWithEmail, loading, message } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) return;
-    loginWithEmail(email, password);
+    const result = await loginWithEmail(email, password);
+    if (result && onNavigateToChat) {
+      onNavigateToChat();
+    }
   };
 
   return (
