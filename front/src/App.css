@@ -18,6 +18,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  min-height: 100vh; /* 💡 縦にコンテンツが伸びても背景が途切れないように保証 */
 }
 
 /* サイドバーがないときのメイン領域（ログイン・新規登録用） */
@@ -28,20 +29,25 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  /* 💡 ログイン・新規登録フォームを画面の「真ん中」に綺麗に配置するための魔法 */
+  justify-content: center;
+  align-items: center; 
 }
 
-/* チャット用暫定 */
+/* チャット・開発中画面用暫定 */
 .chat-placeholder-container {
   display: flex;
+  flex-direction: column; /* 💡 文字が複数行になっても崩れないように追加 */
   align-items: center;
   justify-content: center;
   flex: 1;
+  padding: 20px;
 }
 
 @media (max-width: 768px) {
   .app-main-content-area-with-sidebar {
     padding-left: 0;
-    padding-bottom: 116px;
+    padding-bottom: 116px; /* スマホ用下部メニューの高さ分の余白 */
     width: 100%;
   }
 }

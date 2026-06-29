@@ -1,0 +1,122 @@
+/* front/src/features/LandingPage/components/Reading.css */
+
+.reading-container {
+  padding: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ヘッダー周りの装飾 */
+.reading-header {
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.reading-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.reading-main-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1f2937;
+  margin: 0 0 10px 0;
+}
+
+.reading-subtitle {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 💡 3つのカードを綺麗に並べるグリッド構造 */
+.reading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  width: 100%;
+}
+
+/* 各独立カードの共通デザイン */
+.reading-card {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* マウスホバーでカードがふわっと浮き上がり、枠線がシアンブルーに */
+.reading-card:hover {
+  transform: translateY(-6px);
+  border-color: #22d3ee;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* 絵文字アイコンの背景円 */
+.card-icon-wrapper {
+  font-size: 28px;
+  background-color: #f3f4f6;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.reading-card:hover .card-icon-wrapper {
+  background-color: #ecfeff; /* ホバー時にアイコン背景もシンクロ */
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+  flex-grow: 1; /* テキスト量に差があってもボタンの位置を最下部で揃える */
+}
+
+/* カード内のスタートボタン */
+.card-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1f2937;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.card-btn:hover {
+  background-color: #22d3ee; /* toeichackerテーマカラー */
+  color: #111827;
+}

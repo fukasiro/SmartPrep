@@ -1,0 +1,11 @@
+/* front/src/features/auth/components/DashBoard.css */
+/* LandingPage.css から、中身のコンテンツ用スタイルをここにペーストしてください */
+.landing-content {
+  padding: 20px;
+}
+.hero-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px;
+  /* ...お手元のデザインCSSをそのままここに... */
+}

@@ -1,54 +1,78 @@
 // front/src/features/LandingPage/LandingPage.jsx
 import React from 'react';
 import './LandingPage.css';
+import DashBoard from './components/DashBoard';
+import Reading from './components/Reading'; // 💡 リーディングをインポート
+import LoginForm from '../auth/components/LoginForm';
+import SignUpForm from '../auth/components/SignUpForm';
 
-export default function LandingPage({ onStartLearning }) {
+export default function LandingPage({ 
+  mode, 
+  setMode, 
+  setActiveMenu, 
+  handleAuthSuccess 
+}) {
   return (
     <div className="landing-container">
       <div className="landing-main">
-        {/* 💡 もともとここにあった <aside className="landing-sidebar">... </aside> を削除しました */}
+        
+        {/* 1. ダッシュボード（ホーム画面） */}
+        {mode === 'landing' && (
+          <DashBoard 
+            onStartLearning={() => handleAuthSuccess(null, 'ゲストユーザー')} 
+          />
+        )}
 
-        {/* 右側：コンテンツ表示エリア */}
-        <main className="landing-content">
-          {/* ヒーローセクションカード */}
-          <div className="hero-card">
-            <div className="badge">Beta Version v1.0</div>
-            <h1 className="hero-title">AIで、TOEICの壁をハックする。</h1>
-            <p className="hero-subtitle">
-              最先端のAIコーチが、あなたのスコアアップに必要な弱点を瞬時に分析。今日から始めるスマートな英語学習。
-            </p>
-            <div className="hero-actions">
-              <button className="btn-start" onClick={onStartLearning}>
-                今すぐ無料で体験する 🚀
-              </button>
-              <button className="btn-flow" disabled>
-                学習の流れを見る
-              </button>
-            </div>
-          </div>
+        {/* 2. ログイン画面 */}
+        {mode === 'login' && (
+          <LoginForm 
+            onNavigateToLanding={() => {
+              setMode('landing');
+              setActiveMenu('dashboard');
+            }}
+            onNavigateToSignUp={() => setMode('signup')}
+            onLoginSuccess={(token, name) => handleAuthSuccess(token, name)}
+          />
+        )}
 
-          {/* 機能解説グリッド（2カラム） */}
-          <div className="info-grid">
-            <div className="info-card">
-              <h3>🎯 toeichackerの特徴</h3>
-              <ul>
-                <li>24時間いつでも即レス対応のAI会話コーチング</li>
-                <li>あなたの解答の「なぜ間違えたか」をピンポイントで言語化</li>
-                <li>現在のレベルに最適化されたスマート英単語サプリメント</li>
-              </ul>
-            </div>
-            <div className="info-card">
-              <h3>⚡ ロードマップ</h3>
-              <ul>
-                <li>AIによる発音・スピーキングのリアルタイム評価機能</li>
-                <li>新形式問題に対応した高精度シミュレーション模試</li>
-                <li>モチベーションを維持する学習進捗ダッシュボード</li>
-              </ul>
-            </div>
+        {/* 3. 新規登録画面 */}
+        {mode === 'signup' && (
+          <SignUpForm 
+            onNavigateToLanding={() => {
+              setMode('landing');
+              setActiveMenu('dashboard');
+            }}
+            onNavigateToLogin={() => setMode('login')}
+          />
+        )}
+
+        {/* 4. 📚 リーディング（単語帳・読解・文法カード内包） */}
+        {mode === 'chat' && (
+          <Reading />
+        )}
+
+        {/* 5. 🎧 リスニング */}
+        {mode === 'vocab' && (
+          <div className="chat-placeholder-container">
+            <h2>🎧 リスニング画面（開発中）</h2>
           </div>
-        </main>
+        )}
+
+        {/* 6. ✍️ ライティング */}
+        {mode === 'analysis' && (
+          <div className="chat-placeholder-container">
+            <h2>✍️ ライティング画面（開発中）</h2>
+          </div>
+        )}
+
+        {/* 7. 📝 総合テスト */}
+        {(mode === 'test' || mode === 'chat' && mode === 'test') && (
+          <div className="chat-placeholder-container">
+            <h2>📝 総合テスト画面（開発中）</h2>
+          </div>
+        )}
+
       </div>
-
     </div>
   );
 }
