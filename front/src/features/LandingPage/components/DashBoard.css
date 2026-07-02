@@ -1,11 +1,223 @@
 /* front/src/features/auth/components/DashBoard.css */
-/* LandingPage.css から、中身のコンテンツ用スタイルをここにペーストしてください */
-.landing-content {
-  padding: 20px;
+
+.dashboard-content {
+  width: 100%;
+  padding: 30px;
+  box-sizing: border-box;
 }
-.hero-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 40px;
-  /* ...お手元のデザインCSSをそのままここに... */
+
+.dashboard-hero-card {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 28px;
+  padding: 36px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  margin-bottom: 28px;
+}
+
+.dashboard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.dashboard-eyebrow {
+  display: inline-block;
+  color: #0f172a;
+  background: #e0f2fe;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #111827;
+  margin: 16px 0 12px;
+}
+
+.dashboard-description {
+  color: #4b5563;
+  font-size: 16px;
+  line-height: 1.75;
+  max-width: 720px;
+}
+
+.dashboard-summary-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background: #f8fafc;
+  border: 1px solid #dbeafe;
+  border-radius: 24px;
+  padding: 18px 22px;
+  min-width: 200px;
+  gap: 8px;
+}
+
+.dashboard-summary-pill span {
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dashboard-summary-pill strong {
+  font-size: 30px;
+  color: #0f172a;
+}
+
+.dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.metric-card {
+  background: #f8fafc;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: inset 0 0 0 1px rgba(14, 165, 233, 0.12);
+}
+
+.metric-label {
+  color: #475569;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 14px;
+}
+
+.metric-progress {
+  width: 100%;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22d3ee, #2563eb);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+}
+
+.dashboard-card {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+
+.dashboard-card h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 14px;
+}
+
+.dashboard-card p {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.75;
+  margin-bottom: 18px;
+}
+
+.dashboard-card ul {
+  list-style: disc;
+  padding-left: 20px;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dashboard-action-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.dashboard-action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.action-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+
+.action-item h3 {
+  font-size: 16px;
+  margin: 0 0 6px;
+  color: #0f172a;
+}
+
+.action-item p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+}
+
+.action-btn {
+  background-color: #22d3ee;
+  color: #0f172a;
+  border: none;
+  border-radius: 14px;
+  padding: 10px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: #38bdf8;
+}
+
+@media screen and (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .dashboard-content {
+    padding: 20px;
+  }
+
+  .dashboard-hero-card {
+    padding: 24px;
+  }
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import './LandingPage.css';
 import DashBoard from './components/DashBoard';
 import Reading from './components/Reading'; 
+import Listening from './components/Listening';
+import Writing from './components/Writing';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
 
@@ -53,16 +55,12 @@ export default function LandingPage({
 
         {/* 5. 🎧 リスニング */}
         {mode === 'vocab' && (
-          <div className="chat-placeholder-container">
-            <h2>🎧 リスニング画面（開発中）</h2>
-          </div>
+          <Listening />
         )}
 
         {/* 6. ✍️ ライティング */}
         {mode === 'analysis' && (
-          <div className="chat-placeholder-container">
-            <h2>✍️ ライティング画面（開発中）</h2>
-          </div>
+          <Writing />
         )}
 
         {/* 7. 📝 総合テスト */}
