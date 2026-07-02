@@ -8,7 +8,7 @@ export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigat
     <aside className="app-sidebar">
       {/* 1. 最上部：サービスロゴ */}
       <div className="sidebar-logo" onClick={() => onNavigate('landing')}>
-        toeichacker
+        SmartPrep
       </div>
 
       {/* 2. 中央：学習用メインメニュー */}

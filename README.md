@@ -1,6 +1,6 @@
-# EnglishLearningApp
+# SmartPrep
 
-EnglishLearningApp is designed for Japanese TOEIC learners who want to achieve high scores by using AI efficiently. It removes unnecessary features to lower the learning barrier and provides instant, appropriate answers that analog study methods cannot deliver.
+SmartPrep is designed for Japanese TOEIC learners who want to achieve high scores by using AI efficiently. It removes unnecessary features to lower the learning barrier and provides instant, appropriate answers that analog study methods cannot deliver.
 
 ## Purpose
 
@@ -104,14 +104,10 @@ docker compose up --build
 - TOEIC-specific AI content is still a future expansion area.
 
 ### Estimated remaining effort
-- Basic app polish and bug fixes: **1–2 days**
-- AI problem generation and TOEIC content integration: **3–5 days**
-- UI/UX improvements and responsive polishing: **1–2 days**
-- Production hardening, secrets, SMTP, and security improvements: **1–2 days**
+- AI problem generation and TOEIC content integration: 
+- UI/UX improvements and responsive polishing: 
+- Production hardening, secrets, SMTP, and security improvements:
 
-### Total rough estimate
-- Minimum for a working MVP: **2–3 days**
-- With AI-driven TOEIC content and production readiness: **1–2 weeks**
 
 ## Why this app is different
 

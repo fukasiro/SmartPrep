@@ -25,7 +25,7 @@ export default function DashBoard({ onStartLearning }) {
       {/* 機能解説グリッド（2カラム） */}
       <div className="info-grid">
         <div className="info-card">
-          <h3>🎯 toeichackerの特徴</h3>
+          <h3>🎯 SmartPrepの特徴</h3>
           <ul>
             <li>24時間いつでも即レス対応のAI会話コーチング</li>
             <li>あなたの解答の「なぜ間違えたか」をピンポイントで言語化</li>
