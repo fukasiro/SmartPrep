@@ -66,7 +66,7 @@ export default function LandingPage({
         )}
 
         {/* 7. 📝 総合テスト */}
-        {(mode === 'test' || mode === 'chat' && mode === 'test') && (
+        {mode === 'test' && (
           <div className="chat-placeholder-container">
             <h2>📝 総合テスト画面（開発中）</h2>
           </div>

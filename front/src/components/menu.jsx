@@ -69,7 +69,7 @@ export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigat
         <button 
           className={`sidebar-item ${activeMenu === 'test' ? 'active' : ''}`}
           onClick={() => {
-            onNavigate('chat');
+            onNavigate('test');
             setActiveMenu('test');
           }}
           title="総合テスト"
