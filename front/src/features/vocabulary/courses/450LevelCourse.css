@@ -349,6 +349,29 @@
   color: #4a5568;
 }
 
+
+/* ==========================================================================
+   追加：進行中（クイズ挑戦済み・不合格）のステージボタンスタイル
+   ========================================================================== */
+.day-btn.progressing {
+  background: #fffaf0; /* 優しいオレンジ・イエロー系 */
+  border-color: #dd6b20; /* 進行中を表すオレンジの線 */
+}
+
+.day-btn.progressing:hover {
+  background: #feebc8;
+  border-color: #c05621;
+}
+
+.day-btn.progressing .day-num {
+  color: #7b341e; /* 文字色も合わせて調整 */
+}
+
+.day-btn.progressing .day-status {
+  color: #dd6b20;
+  font-weight: bold;
+}
+
 /* スマホ向けレスポンシブ対応 */
 @media (max-width: 500px) {
   .day-grid {

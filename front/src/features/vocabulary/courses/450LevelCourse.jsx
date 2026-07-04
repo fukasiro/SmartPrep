@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import './450LevelCourse.css';
 import WORDS from './450_wordlist';
 
-const STORAGE_KEY = 'vocab_450_cleared_stages';
+const STORAGE_KEY = 'vocab_450_stage_scores'; // 新しいキーでスコアを保存
 
 // ==========================================
 // 設定の調整
@@ -28,8 +28,8 @@ export default function Level450Course({ onBack }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
 
-  // クリア済みのステージを保存する配列
-  const [clearedStages, setClearedStages] = useState([]);
+  // 各ステージの最高スコアを記録するオブジェクト (例: { 0: 8, 1: 5 })
+  const [stageScores, setStageScores] = useState({});
 
   // 総ステージ数（300語 ÷ 10語 = 30ステージ）
   const totalStages = Math.ceil(WORDS.length / PER_STAGE);
@@ -38,7 +38,7 @@ export default function Level450Course({ onBack }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setClearedStages(JSON.parse(raw));
+      if (raw) setStageScores(JSON.parse(raw));
     } catch (e) {
       console.error(e);
     }
@@ -130,15 +130,21 @@ export default function Level450Course({ onBack }) {
       // 今回の最終スコアを計算
       const finalScore = score + (selectedAnswer === quizQuestions[currentQuizIdx].correct ? 1 : 0);
       
-      // 合格点（7点）以上の場合のみクリア実績を保存
-      if (finalScore >= PASS_SCORE) {
-        if (!clearedStages.includes(selectedStage)) {
-          const nextCleared = [...clearedStages, selectedStage];
-          setClearedStages(nextCleared);
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(nextCleared));
-          } catch (e) {}
-        }
+      // 今回受けたステージの過去最高スコアと比較して更新
+      const previousScore = stageScores[selectedStage] !== undefined ? stageScores[selectedStage] : -1;
+      if (finalScore > previousScore) {
+        const nextScores = { ...stageScores, [selectedStage]: finalScore };
+        setStageScores(nextScores);
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextScores));
+        } catch (e) {}
+      } else if (previousScore === -1) {
+        // 過去に一度も受けていない（一回目の挑戦）で、最高点ではないが履歴を残すため保存
+        const nextScores = { ...stageScores, [selectedStage]: finalScore };
+        setStageScores(nextScores);
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextScores));
+        } catch (e) {}
       }
     }
   };
@@ -159,15 +165,29 @@ export default function Level450Course({ onBack }) {
           
           <div className="day-grid">
             {Array.from({ length: totalStages }).map((_, index) => {
-              const isCleared = clearedStages.includes(index);
+              const savedScore = stageScores[index];
+              
+              let statusText = '未挑戦';
+              let btnClass = 'day-btn';
+              
+              if (savedScore !== undefined) {
+                if (savedScore >= PASS_SCORE) {
+                  statusText = '✓ クリア';
+                  btnClass += ' cleared';
+                } else {
+                  statusText = '⏳ 挑戦中';
+                  btnClass += ' progressing'; // 進行中（不合格）用のクラス
+                }
+              }
+
               return (
                 <button 
                   key={index} 
-                  className={`day-btn ${isCleared ? 'cleared' : ''}`}
+                  className={btnClass}
                   onClick={() => startStage(index)}
                 >
                   <span className="day-num">{getStageName(index)}</span>
-                  <span className="day-status">{isCleared ? '✓ クリア' : '未クリア'}</span>
+                  <span className="day-status">{statusText}</span>
                 </button>
               );
             })}
@@ -179,7 +199,7 @@ export default function Level450Course({ onBack }) {
         </div>
       )}
 
-      {/* 2. 1語ずつ表示する単語カード画面（★ここに「今すぐクイズ」ボタンを配置しました） */}
+      {/* 2. 1語ずつ表示する単語カード画面 */}
       {screen === 'learning' && todaysWords.length > 0 && (
         <div className="vocab-list-card text-center">
           <div className="screen-header">
@@ -278,7 +298,7 @@ export default function Level450Course({ onBack }) {
           <p className="result-comment">
             {score >= PASS_SCORE 
               ? '素晴らしい集中力です！この調子で次のステージにも挑戦してみましょう！' 
-              : 'もう一度単語カードを見直して、再チャレンジしてみましょう！'}
+              : '履歴に「挑戦中」として記録されました！諦めずに再チャレンジしましょう！'}
           </p>
 
           <button className="vocabulary-menu-primary-button w-100" onClick={handleGoToMenu}>
