@@ -1,68 +1,360 @@
+/* ==========================================================================
+   450LevelCourse.css - 450点レベル単語コース専用スタイル（完成版）
+   ========================================================================== */
+
+/* 全体コンテナ（画面中央配置） */
 .vocab-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f4f8;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+}
+
+/* メインカード枠 */
+.vocab-list-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   width: 100%;
+  max-width: 600px;
   padding: 32px;
   box-sizing: border-box;
 }
 
-.vocab-list-card {
-  max-width: 960px;
-  margin: 0 auto;
-  background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 28px;
-  padding: 28px;
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+/* テキスト中央寄せ用（カード、結果画面など） */
+.text-center {
+  text-align: center;
 }
 
+/* タイトル・サブタイトル */
 .vocab-list-title {
-  font-size: 28px;
-  font-weight: 800;
-  color: #111827;
-  margin: 0 0 8px;
+  font-size: 22px;
+  color: #1e293b;
+  margin: 0 0 6px 0;
 }
 
 .vocab-list-sub {
-  color: #475569;
-  font-size: 15px;
-  line-height: 1.6;
-  margin: 0 0 20px;
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 24px 0;
 }
 
-.vocab-course-detail {
+/* ==========================================================================
+   1. ステージ選択画面（グリッド表示）
+   ========================================================================== */
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+/* 通常（未クリア）のステージボタン */
+.day-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 12px;
   background: #f8fafc;
-  border-radius: 16px;
-  padding: 18px;
-  border: 1px solid #e5e7eb;
-}
-
-.vocab-course-detail p {
-  color: #475569;
-  margin: 0 0 12px;
-}
-
-.vocab-course-features {
-  list-style: disc;
-  margin: 0 0 0 18px;
-  padding: 0;
-  color: #475569;
-}
-
-.vocab-course-features li {
-  margin-bottom: 8px;
-}
-
-.vocabulary-menu-secondary-button {
-  background: #f8fafc;
-  color: #0f172a;
-  border-radius: 18px;
-  padding: 12px 20px;
-  border: 1px solid #e5e7eb;
-  font-weight: 700;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
-@media screen and (max-width: 960px) {
+.day-btn:hover {
+  border-color: #3182ce;
+  background: #ebf8ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(49, 130, 206, 0.1);
+}
+
+/* 合格・クリア済みのステージボタン */
+.day-btn.cleared {
+  background: #e6fffa;
+  border-color: #319795;
+}
+
+.day-btn.cleared:hover {
+  background: #b2f5ea;
+  border-color: #234e52;
+}
+
+.day-num {
+  font-weight: bold;
+  font-size: 15px;
+  color: #2d3748;
+}
+
+.day-btn.cleared .day-num {
+  color: #234e52;
+}
+
+.day-status {
+  font-size: 11px;
+  color: #a0aec0;
+  margin-top: 4px;
+}
+
+.day-btn.cleared .day-status {
+  color: #319795;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   2. 各画面共通ヘッダー
+   ========================================================================== */
+.screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #718096;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+/* 中断・戻るテキストリンク型ボタン */
+.exit-btn {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.exit-btn:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   3. 単語フラッシュカード画面
+   ========================================================================== */
+.word-flashcard {
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 40px 20px;
+  margin-bottom: 24px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-pos {
+  font-size: 14px;
+  color: #4a5568;
+  font-weight: bold;
+}
+
+.card-word {
+  font-size: 36px;
+  color: #2b6cb0;
+  margin: 12px 0;
+  letter-spacing: 0.5px;
+}
+
+.card-divider {
+  width: 40px;
+  height: 3px;
+  background: #cbd5e0;
+  border-radius: 2px;
+  margin: 12px 0;
+}
+
+.card-meaning {
+  font-size: 18px;
+  color: #2d3748;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* 単語学習画面専用：今すぐクイズボタン */
+.learning-quiz-skip-btn {
+  background-color: #ebf8ff;
+  border: 1px solid #bee3f8;
+  color: #2b6cb0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.learning-quiz-skip-btn:hover {
+  background-color: #3182ce;
+  border-color: #3182ce;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   4. クイズ画面
+   ========================================================================== */
+.quiz-question-label {
+  font-size: 14px;
+  color: #718096;
+  margin-bottom: 4px;
+}
+
+.quiz-word {
+  font-size: 28px;
+  color: #2d3748;
+  margin: 0 0 24px 0;
+}
+
+.quiz-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* 選択肢ボタンの基本 */
+.choice-btn {
+  width: 100%;
+  padding: 14px;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #4a5568;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.choice-btn:hover:not(:disabled) {
+  background: #f7fafc;
+  border-color: #4299e1;
+  color: #2b6cb0;
+}
+
+/* クイズ解答後の正誤判定カラー */
+.correct-choice {
+  background: #c6f6d5 !important;
+  border-color: #38a169 !important;
+  color: #22543d !important;
+  font-weight: bold;
+}
+
+.wrong-choice {
+  background: #fed7d7 !important;
+  border-color: #e53e3e !important;
+  color: #742a2a !important;
+}
+
+.disabled-choice {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 解答後のフィードバック領域 */
+.quiz-feedback {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #edf2f7;
+}
+
+.feedback-text {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.feedback-text.correct { color: #38a169; }
+.feedback-text.wrong { color: #e53e3e; }
+
+/* ==========================================================================
+   5. 結果表示画面
+   ========================================================================== */
+.result-score-box {
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.result-score-num {
+  font-size: 42px;
+  font-weight: bold;
+}
+
+.result-comment {
+  color: #4a5568;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ==========================================================================
+   6. 共通ボタン＆アクション、レスポンシブ
+   ========================================================================== */
+/* メインの青い次へボタン */
+.vocabulary-menu-primary-button {
+  background: #3182ce;
+  color: #ffffff;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s;
+}
+
+.vocabulary-menu-primary-button:hover {
+  background: #2b6cb0;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+/* フッター・アクションエリア */
+.vocab-menu-actions {
+  display: flex;
+  justify-content: flex-start;
+  border-top: 1px solid #edf2f7;
+  padding-top: 24px;
+}
+
+/* 戻るボタン（枠線のみ） */
+.vocabulary-menu-secondary-button {
+  background: transparent;
+  border: 1px solid #cbd5e0;
+  color: #718096;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.vocabulary-menu-secondary-button:hover {
+  background: #f7fafc;
+  color: #4a5568;
+}
+
+/* スマホ向けレスポンシブ対応 */
+@media (max-width: 500px) {
+  .day-grid {
+    grid-template-columns: repeat(2, 1fr); /* スマホでは2列にする */
+  }
   .vocab-list-card {
-    padding: 20px;
+    padding: 24px 16px;
   }
 }
