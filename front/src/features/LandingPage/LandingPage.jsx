@@ -6,6 +6,10 @@ import Listening from './components/Listening';
 import AIConsultant from './components/AIConsultant';
 import VocabularyMenu from '../vocabulary/VocabularyMenu';
 import VocabularyCourseList from '../vocabulary/VocabularyCourseList';
+import Level450Course from '../vocabulary/courses/450LevelCourse';
+import Level600Course from '../vocabulary/courses/600LevelCourse';
+import Level730Course from '../vocabulary/courses/730LevelCourse';
+import Level860Course from '../vocabulary/courses/860LevelCourse';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
 
@@ -81,10 +85,64 @@ export default function LandingPage({
         )}
 
         {mode === 'vocabCourseList' && (
-          <VocabularyCourseList onBack={() => {
-            setMode('vocabMenu');
-            setActiveMenu('chat');
-          }} />
+          <VocabularyCourseList
+            onBack={() => {
+              setMode('vocabMenu');
+              setActiveMenu('chat');
+            }}
+            onStart450={() => {
+              setMode('course450');
+              setActiveMenu('chat');
+            }}
+            onStart600={() => {
+              setMode('course600');
+              setActiveMenu('chat');
+            }}
+            onStart730={() => {
+              setMode('course730');
+              setActiveMenu('chat');
+            }}
+            onStart860={() => {
+              setMode('course860');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'course450' && (
+          <Level450Course
+            onBack={() => {
+              setMode('vocabCourseList');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'course600' && (
+          <Level600Course
+            onBack={() => {
+              setMode('vocabCourseList');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'course730' && (
+          <Level730Course
+            onBack={() => {
+              setMode('vocabCourseList');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'course860' && (
+          <Level860Course
+            onBack={() => {
+              setMode('vocabCourseList');
+              setActiveMenu('chat');
+            }}
+          />
         )}
 
         {/* 6. 🎧 リスニング */}
