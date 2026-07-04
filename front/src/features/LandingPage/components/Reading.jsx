@@ -14,7 +14,7 @@ export default function Reading({ onStartVocabulary, onStartReading }) {
       {/* 上部ヘッダーセクション */}
       <div className="reading-header">
         <div className="reading-badge">Part 5 / 6 / 7</div>
-        <h2 className="reading-main-title">📚 リーディング学習ハブ</h2>
+        <h2 className="reading-main-title">📚 リーディング学習</h2>
         <p className="reading-subtitle">
           TOEICスコアの勝負所。語彙力、文法知識、そして長文読解力をバランスよく鍛え上げましょう。
         </p>
@@ -31,7 +31,7 @@ export default function Reading({ onStartVocabulary, onStartReading }) {
                 TOEIC頻出単語を厳選収録。AIがあなたの記憶の定着度に合わせて、間違えやすい単語を優先的に出題します。
               </p>
               <button className="card-btn" onClick={onStartVocabulary}>
-                単語学習を始める 🚀
+                単語学習を始める
               </button>
             </div>
 
@@ -42,7 +42,7 @@ export default function Reading({ onStartVocabulary, onStartReading }) {
                 Part 6・7に対応した長文読解トレーニング。タイムマネジメントを意識しながら、素早く正確に情報を読み取る力を養います。
               </p>
               <button className="card-btn" onClick={onStartReading}>
-                読解演習に挑む ⚡
+                読解演習に挑む
               </button>
             </div>
 
