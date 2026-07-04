@@ -25,7 +25,7 @@ export default function LandingPage({
     <div className="landing-container">
       <div className="landing-main">
         
-        {/* 1. ダッシュボード（ホーム画面） */}
+        {/* 1. ダッシュボード */}
         {mode === 'landing' && (
           <DashBoard 
             onStartLearning={() => handleAuthSuccess(null, 'ゲストユーザー')} 
