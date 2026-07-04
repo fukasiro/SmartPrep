@@ -53,3 +53,61 @@
   background: #f8fafc;
   color: #0f172a;
 }
+
+.vocabulary-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.vocab-card {
+  background: #f8fafc;
+  border-radius: 24px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 300px;
+}
+
+.vocab-card-icon {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  background: #ffffff;
+  border-radius: 18px;
+}
+
+.vocab-card-title {
+  margin: 0;
+  font-size: 22px;
+  color: #111827;
+}
+
+.vocab-card-description {
+  margin: 0;
+  color: #475569;
+  line-height: 1.75;
+  flex: 1;
+}
+
+.vocab-card-button {
+  background: #ffffff;
+  color: #0f172a;
+  border: 2px solid #dbeafe;
+  border-radius: 18px;
+  padding: 14px 22px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 960px) {
+  .vocabulary-menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
