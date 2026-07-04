@@ -1,0 +1,68 @@
+.vocab-list-container {
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+.vocab-list-card {
+  max-width: 960px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+
+.vocab-list-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 8px;
+}
+
+.vocab-list-sub {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.vocab-course-detail {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+}
+
+.vocab-course-detail p {
+  color: #475569;
+  margin: 0 0 12px;
+}
+
+.vocab-course-features {
+  list-style: disc;
+  margin: 0 0 0 18px;
+  padding: 0;
+  color: #475569;
+}
+
+.vocab-course-features li {
+  margin-bottom: 8px;
+}
+
+.vocabulary-menu-secondary-button {
+  background: #f8fafc;
+  color: #0f172a;
+  border-radius: 18px;
+  padding: 12px 20px;
+  border: 1px solid #e5e7eb;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 960px) {
+  .vocab-list-card {
+    padding: 20px;
+  }
+}

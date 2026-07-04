@@ -1,5 +1,5 @@
 import React from 'react';
-import '../VocabularyCourseList.css';
+import './860LevelCourse.css';
 
 export default function Level860Course({ onBack }) {
   return (
