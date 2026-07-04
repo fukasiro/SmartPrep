@@ -5,6 +5,7 @@ import Reading from './components/Reading';
 import Listening from './components/Listening';
 import AIConsultant from './components/AIConsultant';
 import VocabularyMenu from '../vocabulary/VocabularyMenu';
+import VocabularyCourseList from '../vocabulary/VocabularyCourseList';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
 
@@ -65,8 +66,21 @@ export default function LandingPage({
 
         {/* 5. 📘 単語学習 */}
         {mode === 'vocabMenu' && (
-          <VocabularyMenu onBack={() => {
-            setMode('chat');
+          <VocabularyMenu
+            onBack={() => {
+              setMode('chat');
+              setActiveMenu('chat');
+            }}
+            onStartCourse={() => {
+              setMode('vocabCourseList');
+              setActiveMenu('vocab');
+            }}
+          />
+        )}
+
+        {mode === 'vocabCourseList' && (
+          <VocabularyCourseList onBack={() => {
+            setMode('vocabMenu');
             setActiveMenu('chat');
           }} />
         )}

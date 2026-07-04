@@ -26,7 +26,7 @@ export default function Reading({ onStartVocabulary }) {
           <div className="reading-grid">
             <div className="reading-card vocab-card">
               <div className="card-icon-wrapper">📕</div>
-              <h3 className="card-title">単語帳機能</h3>
+              <h3 className="card-title">単語</h3>
               <p className="card-description">
                 TOEIC頻出単語を厳選収録。AIがあなたの記憶の定着度に合わせて、間違えやすい単語を優先的に出題します。
               </p>

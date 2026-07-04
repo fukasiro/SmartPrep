@@ -1,7 +1,7 @@
 import React from 'react';
 import './VocabularyMenu.css';
 
-export default function VocabularyMenu({ onBack }) {
+export default function VocabularyMenu({ onBack, onStartCourse }) {
   return (
     <div className="vocabulary-menu-container">
       <div className="vocabulary-menu-card">
@@ -17,7 +17,7 @@ export default function VocabularyMenu({ onBack }) {
             <p className="vocab-card-description">
               TOEIC頻出語彙を効率よく学べるコースです。出題形式を切り替えて苦手語彙を重点的に強化します。
             </p>
-            <button className="vocab-card-button">コースを開始する</button>
+            <button className="vocab-card-button" onClick={onStartCourse}>コースを開始する</button>
           </div>
 
           <div className="vocab-card my-vocab-card">

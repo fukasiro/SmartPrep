@@ -1,0 +1,77 @@
+.vocab-list-container {
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+.vocab-list-card {
+  max-width: 960px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+
+.vocab-list-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 8px;
+}
+
+.vocab-list-sub {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.vocab-courses {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vocab-course-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 16px 18px;
+  border: 1px solid #e5e7eb;
+}
+
+.vocab-course-desc {
+  color: #475569;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.vocab-card-button {
+  background: #ffffff;
+  color: #0f172a;
+  border: 2px solid #dbeafe;
+  border-radius: 18px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 960px) {
+  .vocab-list-card {
+    padding: 20px;
+  }
+
+  .vocab-course-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
