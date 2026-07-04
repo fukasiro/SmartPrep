@@ -11,8 +11,29 @@ export default function VocabularyCourseList({ onBack }) {
         <ul className="vocab-courses">
           <li className="vocab-course-item">
             <div>
-              <strong>TOEIC頻出語彙コース</strong>
-              <div className="vocab-course-desc">出題形式を切り替えて苦手語彙を強化します。</div>
+              <strong>450点レベル単語習得コース</strong>
+              <div className="vocab-course-desc">基礎語彙を固め、TOEIC 450点レベルの語彙力を習得します。</div>
+            </div>
+            <button className="vocab-card-button">開始</button>
+          </li>
+          <li className="vocab-course-item">
+            <div>
+              <strong>600点レベル単語習得コース</strong>
+              <div className="vocab-course-desc">600点突破に必要な語彙を中心に、実用的な例文とともに学習します。</div>
+            </div>
+            <button className="vocab-card-button">開始</button>
+          </li>
+          <li className="vocab-course-item">
+            <div>
+              <strong>730点レベル獲得コース</strong>
+              <div className="vocab-course-desc">中級語彙を強化し、リーディング・リスニングの得点アップに直結する表現を習得します。</div>
+            </div>
+            <button className="vocab-card-button">開始</button>
+          </li>
+          <li className="vocab-course-item">
+            <div>
+              <strong>860点以上獲得コース</strong>
+              <div className="vocab-course-desc">上級語彙を徹底演習し、860点以上を目指す語彙力を仕上げます。</div>
             </div>
             <button className="vocab-card-button">開始</button>
           </li>
