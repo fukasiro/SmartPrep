@@ -52,17 +52,17 @@ export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigat
           <span className="sidebar-label">リスニング</span>
         </button>
 
-        {/* ✍️ ライティング */}
+        {/* 🤖 AIコンサルタント */}
         <button 
-          className={`sidebar-item ${activeMenu === 'analysis' ? 'active' : ''}`}
+          className={`sidebar-item ${activeMenu === 'consultant' ? 'active' : ''}`}
           onClick={() => {
-            onNavigate('analysis');
-            setActiveMenu('analysis');
+            onNavigate('consultant');
+            setActiveMenu('consultant');
           }}
-          title="ライティング"
+          title="AIコンサルタント"
         >
-          <span className="icon">✍️</span>
-          <span className="sidebar-label">ライティング</span>
+          <span className="icon">🤖</span>
+          <span className="sidebar-label">AIコンサルタント</span>
         </button>
 
         {/* 📝 総合テスト */}

@@ -1,9 +1,9 @@
 import React from 'react';
 import './LandingPage.css';
 import DashBoard from './components/DashBoard';
-import Reading from './components/Reading'; 
+import Reading from './components/Reading';
 import Listening from './components/Listening';
-import Writing from './components/Writing';
+import AIConsultant from './components/AIConsultant';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
 
@@ -21,6 +21,10 @@ export default function LandingPage({
         {mode === 'landing' && (
           <DashBoard 
             onStartLearning={() => handleAuthSuccess(null, 'ゲストユーザー')} 
+            onConsultantNavigate={() => {
+              setMode('consultant');
+              setActiveMenu('consultant');
+            }}
           />
         )}
 
@@ -58,9 +62,9 @@ export default function LandingPage({
           <Listening />
         )}
 
-        {/* 6. ✍️ ライティング */}
-        {mode === 'analysis' && (
-          <Writing />
+        {/* 6. 🤖 AIコンサルタント */}
+        {mode === 'consultant' && (
+          <AIConsultant />
         )}
 
         {/* 7. 📝 総合テスト */}
