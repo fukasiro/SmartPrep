@@ -1,0 +1,55 @@
+.vocabulary-menu-container {
+  width: 100%;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.vocabulary-menu-card {
+  max-width: 960px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 28px;
+  padding: 36px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.vocabulary-menu-header h2 {
+  margin: 0 0 12px;
+  font-size: 32px;
+  color: #111827;
+}
+
+.vocabulary-menu-header p {
+  margin: 0;
+  color: #475569;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.vocabulary-menu-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.vocabulary-menu-button,
+.vocabulary-menu-secondary-button {
+  border: none;
+  border-radius: 18px;
+  padding: 16px 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.vocabulary-menu-button {
+  background: linear-gradient(90deg, #22d3ee, #2563eb);
+  color: #ffffff;
+}
+
+.vocabulary-menu-secondary-button {
+  background: #f8fafc;
+  color: #0f172a;
+}

@@ -4,6 +4,7 @@ import DashBoard from './components/DashBoard';
 import Reading from './components/Reading';
 import Listening from './components/Listening';
 import AIConsultant from './components/AIConsultant';
+import VocabularyMenu from '../vocabulary/VocabularyMenu';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
 
@@ -54,15 +55,28 @@ export default function LandingPage({
 
         {/* 4. 📚 リーディング */}
         {mode === 'chat' && (
-          <Reading />
+          <Reading
+            onStartVocabulary={() => {
+              setMode('vocabMenu');
+              setActiveMenu('chat');
+            }}
+          />
         )}
 
-        {/* 5. 🎧 リスニング */}
+        {/* 5. 📘 単語学習 */}
+        {mode === 'vocabMenu' && (
+          <VocabularyMenu onBack={() => {
+            setMode('chat');
+            setActiveMenu('chat');
+          }} />
+        )}
+
+        {/* 6. 🎧 リスニング */}
         {mode === 'vocab' && (
           <Listening />
         )}
 
-        {/* 6. 🤖 AIコンサルタント */}
+        {/* 7. 🤖 AIコンサルタント */}
         {mode === 'consultant' && (
           <AIConsultant />
         )}

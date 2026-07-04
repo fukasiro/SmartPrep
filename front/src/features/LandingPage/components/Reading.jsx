@@ -2,7 +2,7 @@
 import React from 'react';
 import './Reading.css';
 
-export default function Reading() {
+export default function Reading({ onStartVocabulary }) {
   // 今後、各カードをクリックしたときに個別のアクションを起こせるようにハンドラを想定
   const handleStartSection = (sectionName) => {
     console.log(`${sectionName} セクションを開始します`);
@@ -30,7 +30,7 @@ export default function Reading() {
               <p className="card-description">
                 TOEIC頻出単語を厳選収録。AIがあなたの記憶の定着度に合わせて、間違えやすい単語を優先的に出題します。
               </p>
-              <button className="card-btn" onClick={() => handleStartSection('vocab')}>
+              <button className="card-btn" onClick={onStartVocabulary}>
                 単語学習を始める 🚀
               </button>
             </div>
