@@ -6,7 +6,7 @@ export default function VocabularyMenu({ onBack, onStartCourse }) {
     <div className="vocabulary-menu-container">
       <div className="vocabulary-menu-card">
         <div className="vocabulary-menu-header">
-          <h2>🧠 RT学習メニュー</h2>
+          <h2>🧠 単語</h2>
           <p>単語学習を続けて、より速く正確な語彙定着を目指しましょう。</p>
         </div>
 

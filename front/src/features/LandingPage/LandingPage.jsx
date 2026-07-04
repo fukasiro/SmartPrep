@@ -73,7 +73,9 @@ export default function LandingPage({
             }}
             onStartCourse={() => {
               setMode('vocabCourseList');
-              setActiveMenu('vocab');
+              // Vocabulary screens are conceptually under Reading (chat),
+              // keep the sidebar active as 'chat' so the Reading menu stays highlighted.
+              setActiveMenu('chat');
             }}
           />
         )}
