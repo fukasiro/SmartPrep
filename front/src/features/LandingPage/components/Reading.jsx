@@ -2,7 +2,7 @@
 import React from 'react';
 import './Reading.css';
 
-export default function Reading({ onStartVocabulary }) {
+export default function Reading({ onStartVocabulary, onStartReading }) {
   // 今後、各カードをクリックしたときに個別のアクションを起こせるようにハンドラを想定
   const handleStartSection = (sectionName) => {
     console.log(`${sectionName} セクションを開始します`);
@@ -41,7 +41,7 @@ export default function Reading({ onStartVocabulary }) {
               <p className="card-description">
                 Part 6・7に対応した長文読解トレーニング。タイムマネジメントを意識しながら、素早く正確に情報を読み取る力を養います。
               </p>
-              <button className="card-btn" onClick={() => handleStartSection('comprehension')}>
+              <button className="card-btn" onClick={onStartReading}>
                 読解演習に挑む ⚡
               </button>
             </div>

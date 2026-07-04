@@ -4,6 +4,8 @@ import DashBoard from './components/DashBoard';
 import Reading from './components/Reading';
 import Listening from './components/Listening';
 import AIConsultant from './components/AIConsultant';
+import ReadingMenu from '../Reading/ReadingMenu';
+import ReadingCourseList from '../Reading/ReadingCourseList';
 import VocabularyMenu from '../vocabulary/VocabularyMenu';
 import VocabularyCourseList from '../vocabulary/VocabularyCourseList';
 import Level450Course from '../vocabulary/courses/450LevelCourse';
@@ -63,6 +65,39 @@ export default function LandingPage({
           <Reading
             onStartVocabulary={() => {
               setMode('vocabMenu');
+              setActiveMenu('chat');
+            }}
+            onStartReading={() => {
+              setMode('readingMenu');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {/* 4.5 読解メニュー */}
+        {mode === 'readingMenu' && (
+          <ReadingMenu
+            onBack={() => {
+              setMode('chat');
+              setActiveMenu('chat');
+            }}
+            onStartCourse={() => {
+              setMode('readingCourseList');
+              setActiveMenu('chat');
+            }}
+            onStartAiCoach={() => {
+              // 今後、AIコーチ画面へのナビゲーションを追加
+              setMode('chat');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {/* 4.6 読解コース一覧 */}
+        {mode === 'readingCourseList' && (
+          <ReadingCourseList
+            onBack={() => {
+              setMode('readingMenu');
               setActiveMenu('chat');
             }}
           />
