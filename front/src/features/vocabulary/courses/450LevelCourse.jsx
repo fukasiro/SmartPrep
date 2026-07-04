@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import './450LevelCourse.css';
 import WORDS from './450_wordlist';
 
-const STORAGE_KEY = 'vocab_450_stage_scores'; // 新しいキーでスコアを保存
+const STORAGE_KEY = 'vocab_450_stage_scores';
 
 // ==========================================
 // 設定の調整
@@ -13,13 +13,8 @@ const PASS_SCORE = 7;
 // ==========================================
 
 export default function Level450Course({ onBack }) {
-  // 画面モード: 'stage_select' | 'learning' | 'quiz' | 'result'
   const [screen, setScreen] = useState('stage_select');
-  
-  // 選択中のステージ番号（0スタート）
   const [selectedStage, setSelectedStage] = useState(0);
-  
-  // 学習中の単語インデックス（0 〜 9）
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
   
   // クイズ関連
@@ -28,10 +23,13 @@ export default function Level450Course({ onBack }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
 
-  // 各ステージの最高スコアを記録するオブジェクト (例: { 0: 8, 1: 5 })
+  // スコア記録 { 0: 8, 1: 5 }
   const [stageScores, setStageScores] = useState({});
+  
+  // 証明書モーダルの表示フラグ
+  const [showCertificate, setShowCertificate] = useState(false);
 
-  // 総ステージ数（300語 ÷ 10語 = 30ステージ）
+  // 総ステージ数
   const totalStages = Math.ceil(WORDS.length / PER_STAGE);
 
   // 進捗ロード
@@ -44,6 +42,22 @@ export default function Level450Course({ onBack }) {
     }
   }, []);
 
+  // クリア（合格）したステージの総数を計算
+  const clearedCount = useMemo(() => {
+    return Object.values(stageScores).filter(score => score >= PASS_SCORE).length;
+  }, [stageScores]);
+
+  // 進捗パーセンテージ（整数）
+  const progressPercent = useMemo(() => {
+    if (totalStages === 0) return 0;
+    return Math.floor((clearedCount / totalStages) * 100);
+  }, [clearedCount, totalStages]);
+
+  // 全ステージクリアしているか判定
+  const isAllCleared = useMemo(() => {
+    return totalStages > 0 && clearedCount === totalStages;
+  }, [clearedCount, totalStages]);
+
   // 今回の10語を抽出
   const todaysWords = useMemo(() => {
     const start = selectedStage * PER_STAGE;
@@ -53,16 +67,13 @@ export default function Level450Course({ onBack }) {
   // クイズの4択を自動生成
   const quizQuestions = useMemo(() => {
     if (todaysWords.length === 0) return [];
-    
     return todaysWords.map((wordObj) => {
       const incorrects = WORDS
         .filter((w) => w.meaning !== wordObj.meaning)
         .sort(() => 0.5 - Math.random())
         .slice(0, 3)
         .map((w) => w.meaning);
-      
       const choices = [wordObj.meaning, ...incorrects].sort(() => 0.5 - Math.random());
-      
       return {
         word: wordObj.word,
         pos: wordObj.pos,
@@ -72,7 +83,6 @@ export default function Level450Course({ onBack }) {
     });
   }, [todaysWords]);
 
-  // メニューに戻る
   const handleGoToMenu = () => {
     setScreen('stage_select');
     setCurrentWordIdx(0);
@@ -82,14 +92,12 @@ export default function Level450Course({ onBack }) {
     setIsAnswered(false);
   };
 
-  // ステージ開始（単語学習画面へ）
   const startStage = (stageIndex) => {
     setSelectedStage(stageIndex);
     setCurrentWordIdx(0);
     setScreen('learning');
   };
 
-  // 単語学習の途中から、または最初からクイズ画面へ直接ジャンプする
   const skipToQuiz = () => {
     setCurrentQuizIdx(0);
     setScore(0);
@@ -98,7 +106,6 @@ export default function Level450Course({ onBack }) {
     setScreen('quiz');
   };
 
-  // 次の単語へ
   const nextWord = () => {
     if (currentWordIdx < todaysWords.length - 1) {
       setCurrentWordIdx((prev) => prev + 1);
@@ -107,18 +114,15 @@ export default function Level450Course({ onBack }) {
     }
   };
 
-  // クイズ解答選択
   const handleSelectAnswer = (choice) => {
     if (isAnswered) return;
     setSelectedAnswer(choice);
     setIsAnswered(true);
-    
     if (choice === quizQuestions[currentQuizIdx].correct) {
       setScore((prev) => prev + 1);
     }
   };
 
-  // 次のクイズへ（または結果画面へ）
   const nextQuiz = () => {
     if (currentQuizIdx < quizQuestions.length - 1) {
       setCurrentQuizIdx((prev) => prev + 1);
@@ -127,32 +131,30 @@ export default function Level450Course({ onBack }) {
     } else {
       setScreen('result');
       
-      // 今回の最終スコアを計算
       const finalScore = score + (selectedAnswer === quizQuestions[currentQuizIdx].correct ? 1 : 0);
-      
-      // 今回受けたステージの過去最高スコアと比較して更新
       const previousScore = stageScores[selectedStage] !== undefined ? stageScores[selectedStage] : -1;
+      
+      let nextScores = { ...stageScores };
       if (finalScore > previousScore) {
-        const nextScores = { ...stageScores, [selectedStage]: finalScore };
-        setStageScores(nextScores);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextScores));
-        } catch (e) {}
+        nextScores[selectedStage] = finalScore;
       } else if (previousScore === -1) {
-        // 過去に一度も受けていない（一回目の挑戦）で、最高点ではないが履歴を残すため保存
-        const nextScores = { ...stageScores, [selectedStage]: finalScore };
-        setStageScores(nextScores);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextScores));
-        } catch (e) {}
+        nextScores[selectedStage] = finalScore;
+      }
+      
+      setStageScores(nextScores);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextScores));
+      } catch (e) {}
+
+      // もしこの合格で「全クリア」を達成したら、お祝いのために証明書フラグを立てる
+      const updatedClearedCount = Object.values(nextScores).filter(s => s >= PASS_SCORE).length;
+      if (updatedClearedCount === totalStages && finalScore >= PASS_SCORE) {
+        setShowCertificate(true);
       }
     }
   };
 
-  // ステージ名表示用のヘルパー関数
-  const getStageName = (index) => {
-    return `${STAGE_LABEL} ${index + 1}`;
-  };
+  const getStageName = (index) => `${STAGE_LABEL} ${index + 1}`;
 
   return (
     <div className="vocab-list-container">
@@ -163,10 +165,27 @@ export default function Level450Course({ onBack }) {
           <h2 className="vocab-list-title">450点レベル単語習得コース</h2>
           <p className="vocab-list-sub">1回につき{PER_STAGE}語ずつサクッと学習。{PASS_SCORE}問以上正解でクリア！</p>
           
+          {/* 📊 ステータスバー（プログレスバー） */}
+          <div className="progress-container">
+            <div className="progress-bar-label">
+              <span>全体の進捗度</span>
+              <strong>{progressPercent}% ({clearedCount} / {totalStages} クリア)</strong>
+            </div>
+            <div className="progress-bar-bg">
+              <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }}></div>
+            </div>
+          </div>
+
+          {/* 全クリア時にいつでも証明書を見られる特設ボタン */}
+          {isAllCleared && (
+            <button className="view-cert-badge-btn" onClick={() => setShowCertificate(true)}>
+              🏅 合格証明書を表示する
+            </button>
+          )}
+          
           <div className="day-grid">
             {Array.from({ length: totalStages }).map((_, index) => {
               const savedScore = stageScores[index];
-              
               let statusText = '未挑戦';
               let btnClass = 'day-btn';
               
@@ -176,16 +195,12 @@ export default function Level450Course({ onBack }) {
                   btnClass += ' cleared';
                 } else {
                   statusText = '⏳ 挑戦中';
-                  btnClass += ' progressing'; // 進行中（不合格）用のクラス
+                  btnClass += ' progressing';
                 }
               }
 
               return (
-                <button 
-                  key={index} 
-                  className={btnClass}
-                  onClick={() => startStage(index)}
-                >
+                <button key={index} className={btnClass} onClick={() => startStage(index)}>
                   <span className="day-num">{getStageName(index)}</span>
                   <span className="day-status">{statusText}</span>
                 </button>
@@ -199,7 +214,7 @@ export default function Level450Course({ onBack }) {
         </div>
       )}
 
-      {/* 2. 1語ずつ表示する単語カード画面 */}
+      {/* 2. 単語カード画面 */}
       {screen === 'learning' && todaysWords.length > 0 && (
         <div className="vocab-list-card text-center">
           <div className="screen-header">
@@ -223,7 +238,7 @@ export default function Level450Course({ onBack }) {
         </div>
       )}
 
-      {/* 3. 確認クイズ画面 */}
+      {/* 3. クイズ画面 */}
       {screen === 'quiz' && quizQuestions.length > 0 && (
         <div className="vocab-list-card">
           <div className="screen-header">
@@ -248,12 +263,7 @@ export default function Level450Course({ onBack }) {
                   }
                 }
                 return (
-                  <button 
-                    key={i} 
-                    className={btnClass}
-                    onClick={() => handleSelectAnswer(choice)}
-                    disabled={isAnswered}
-                  >
+                  <button key={i} className={btnClass} onClick={() => handleSelectAnswer(choice)} disabled={isAnswered}>
                     {choice}
                   </button>
                 );
@@ -302,8 +312,35 @@ export default function Level450Course({ onBack }) {
           </p>
 
           <button className="vocabulary-menu-primary-button w-100" onClick={handleGoToMenu}>
-            {score >= PASS_SCORE ? 'ステージ一覧に戻る' : 'もう一度挑戦する'}
+            {isAllCleared && score >= PASS_SCORE ? '全ステージクリア！証明書を見る 🏅' : 'ステージ一覧に戻る'}
           </button>
+        </div>
+      )}
+
+      {/* 🏅 全ステージクリア祝い：合格証明書モーダルポップアップ */}
+      {showCertificate && (
+        <div className="cert-overlay">
+          <div className="cert-modal animate-pop">
+            <div className="cert-border">
+              <div className="cert-ribbon">🏅</div>
+              <h1 className="cert-main-title">合格証明書</h1>
+              <p className="cert-sub-title">CERTIFICATE OF COMPLETION</p>
+              
+              <div className="cert-divider-gold"></div>
+              
+              <p className="cert-user-text">あなた（学習者殿）</p>
+              
+              <p className="cert-body-text">
+                あなたは、TOEIC 450点レベルに必須とされる基礎語彙のトレーニングおよび確認クイズをすべて優秀な成績で修め、全ステージを完全攻略したことをここに証明します。
+              </p>
+              
+              <div className="cert-footer">
+                <p>TOEIC単語マスターアプリ開発チーム</p>
+                <p className="cert-date">達成日: {new Date().toLocaleDateString()}</p>
+              </div>
+            </div>
+            <button className="cert-close-btn" onClick={() => setShowCertificate(false)}>閉じる</button>
+          </div>
         </div>
       )}
 
