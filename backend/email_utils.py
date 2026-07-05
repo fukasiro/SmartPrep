@@ -32,3 +32,23 @@ def send_verification_email(to_email: str, code: str) -> None:
         smtp.starttls(context=context)
         smtp.login(SMTP_USER, SMTP_PASSWORD)
         smtp.send_message(message)
+
+
+def send_password_reset_email(to_email: str, code: str) -> None:
+    if not SMTP_HOST or not SMTP_PORT or not SMTP_USER or not SMTP_PASSWORD:
+        print(f"[email] Password reset code for {to_email}: {code} - email_utils.py:35")
+        return
+
+    message = EmailMessage()
+    message["Subject"] = "【パスワード再設定コード】"
+    message["From"] = FROM_EMAIL
+    message["To"] = to_email
+    message.set_content(
+        f"以下のコードを入力してパスワードを再設定してください:\n\n{code}\n\nこのコードは30分間有効です。"
+    )
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as smtp:
+        smtp.starttls(context=context)
+        smtp.login(SMTP_USER, SMTP_PASSWORD)
+        smtp.send_message(message)

@@ -110,5 +110,59 @@ export function useAuth() {
     }
   };
 
-  return { loginWithEmail, signUpWithEmail, verifyEmailCode, loading, message, user };
+  const requestPasswordReset = async (email) => {
+    setLoading(true);
+    setMessage('');
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/password-reset/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setMessage(data.detail || data.message || 'リセットコードの送信に失敗しました。');
+        return null;
+      }
+
+      setMessage(data.message || 'リセットコードを送信しました。');
+      return data;
+    } catch (error) {
+      setMessage('サーバー接続に失敗しました。');
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetPassword = async ({ email, code, new_password }) => {
+    setLoading(true);
+    setMessage('');
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/password-reset/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code, new_password }),
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setMessage(data.detail || data.message || 'パスワードの再設定に失敗しました。');
+        return null;
+      }
+
+      setMessage(data.message || 'パスワードを再設定しました。');
+      return data;
+    } catch (error) {
+      setMessage('サーバー接続に失敗しました。');
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loginWithEmail, signUpWithEmail, verifyEmailCode, requestPasswordReset, resetPassword, loading, message, user };
 }

@@ -16,3 +16,13 @@ class SignUpRequest(BaseModel):
 class VerifySignupRequest(BaseModel):
     email: EmailStr
     code: str
+
+
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+
+
+class PasswordResetConfirmRequest(BaseModel):
+    email: EmailStr
+    code: str
+    new_password: str

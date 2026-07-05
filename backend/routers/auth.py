@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
-from email_utils import send_verification_email
-from models import PendingSignup, User
-from schemas import LoginRequest, SignUpRequest, VerifySignupRequest
+from email_utils import send_verification_email, send_password_reset_email
+from models import PendingSignup, PasswordReset, User
+from schemas import LoginRequest, SignUpRequest, VerifySignupRequest, PasswordResetRequest, PasswordResetConfirmRequest
 from security import create_access_token, generate_verification_code, hash_password, verify_password
 
 router = APIRouter()
@@ -102,3 +102,58 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
         "access_token": create_access_token(str(user.id)),
         "token_type": "bearer",
     }
+
+
+@router.post("/password-reset/request")
+def request_password_reset(request: PasswordResetRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == request.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail='ユーザーが存在しません。')
+
+    reset_code = generate_verification_code()
+    expires_at = datetime.utcnow() + timedelta(minutes=30)
+
+    existing = db.query(PasswordReset).filter(PasswordReset.email == request.email).first()
+    if existing:
+        db.delete(existing)
+        db.commit()
+
+    reset = PasswordReset(
+        email=request.email,
+        reset_code=reset_code,
+        expires_at=expires_at,
+    )
+    db.add(reset)
+    db.commit()
+    db.refresh(reset)
+
+    send_password_reset_email(request.email, reset_code)
+
+    return {"message": "パスワードリセット用のコードを送信しました。"}
+
+
+@router.post("/password-reset/confirm")
+def confirm_password_reset(request: PasswordResetConfirmRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == request.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail='ユーザーが存在しません。')
+
+    reset = db.query(PasswordReset).filter(PasswordReset.email == request.email).first()
+    if not reset:
+        raise HTTPException(status_code=404, detail='リセットコードが見つかりません。')
+
+    if reset.reset_code != request.code:
+        raise HTTPException(status_code=401, detail='コードが正しくありません。')
+
+    if reset.expires_at and reset.expires_at < datetime.utcnow():
+        db.delete(reset)
+        db.commit()
+        raise HTTPException(status_code=410, detail='コードの有効期限が切れました。')
+
+    password_hash, password_salt = hash_password(request.new_password)
+    user.password_hash = password_hash
+    user.password_salt = password_salt
+    db.delete(reset)
+    db.commit()
+
+    return {"message": "パスワードを再設定しました。"}

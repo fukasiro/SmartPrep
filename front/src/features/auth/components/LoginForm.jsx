@@ -5,7 +5,7 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import './LoginForm.css'; 
 
-export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onLoginSuccess }) {
+export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onNavigateToForgotPassword, onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { loginWithEmail, loading, message } = useAuth();
@@ -65,6 +65,11 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onL
             アカウントをお持ちでないですか？{' '}
             <span className="signup-link" onClick={onNavigateToSignUp}>
               登録する
+            </span>
+          </p>
+          <p className="forgot-password-text">
+            <span className="forgot-password-link" onClick={onNavigateToForgotPassword}>
+              パスワードを忘れた場合
             </span>
           </p>
 

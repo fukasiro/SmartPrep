@@ -14,6 +14,7 @@ import Level730Course from '../vocabulary/courses/730LevelCourse';
 import Level860Course from '../vocabulary/courses/860LevelCourse';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
+import ForgotPasswordForm from '../auth/components/ForgotPasswordForm';
 import Mypage from '../MyPage/Mypage';
 
 export default function LandingPage({ 
@@ -47,7 +48,18 @@ export default function LandingPage({
               setActiveMenu('dashboard');
             }}
             onNavigateToSignUp={() => setMode('signup')}
+            onNavigateToForgotPassword={() => setMode('forgotPassword')}
             onLoginSuccess={(token, name) => handleAuthSuccess(token, name)}
+          />
+        )}
+
+        {mode === 'forgotPassword' && (
+          <ForgotPasswordForm
+            onBackToLogin={() => setMode('login')}
+            onNavigateToLanding={() => {
+              setMode('landing');
+              setActiveMenu('dashboard');
+            }}
           />
         )}
 

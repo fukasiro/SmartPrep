@@ -24,3 +24,12 @@ class PendingSignup(Base):
     password_salt = Column(String, nullable=True)
     verification_code = Column(String, nullable=False)
     expires_at = Column(DateTime, nullable=True)
+
+
+class PasswordReset(Base):
+    __tablename__ = "password_resets"
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, index=True, nullable=False)
+    reset_code = Column(String, nullable=False)
+    expires_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
