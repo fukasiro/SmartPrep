@@ -66,6 +66,32 @@
   font-size: 20px;
 }
 
+.sidebar-item .icon svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.dashboard-item .icon {
+  color: #0284c7;
+}
+
+.reading-item .icon {
+  color: #7c3aed;
+}
+
+.vocab-item .icon {
+  color: #16a34a;
+}
+
+.consultant-item .icon {
+  color: #0ea5e9;
+}
+
+.test-item .icon {
+  color: #f97316;
+}
+
 .sidebar-label {
   white-space: nowrap;
 }

@@ -14,7 +14,17 @@ export default function Reading({ onStartVocabulary, onStartReading }) {
       {/* 上部ヘッダーセクション */}
       <div className="reading-header">
         <div className="reading-badge">Part 5 / 6 / 7</div>
-        <h2 className="reading-main-title">📚 リーディング学習</h2>
+        <h2 className="reading-main-title">
+          <span className="reading-main-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6.5C4 5.12 5.12 4 6.5 4h11c1.38 0 2.5 1.12 2.5 2.5v11c0 1.38-1.12 2.5-2.5 2.5h-11C5.12 20 4 18.88 4 17.5v-11Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M6 6.5v11c0 .83.67 1.5 1.5 1.5h9c.83 0 1.5-.67 1.5-1.5v-11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8.5 7.5h7M8.5 10.5h7M8.5 13.5h5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              <path d="M12 4.5v15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+          </span>
+          リーディング学習
+        </h2>
         <p className="reading-subtitle">
           TOEICスコアの勝負所。語彙力、文法知識、そして長文読解力をバランスよく鍛え上げましょう。
         </p>

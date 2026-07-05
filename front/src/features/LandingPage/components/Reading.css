@@ -187,10 +187,33 @@
 }
 
 .reading-main-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 28px;
   font-weight: 800;
   color: #1f2937;
   margin: 0 0 10px 0;
+}
+
+.reading-main-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.reading-main-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.reading-main-icon {
+  color: #7c3aed;
 }
 
 .reading-subtitle {

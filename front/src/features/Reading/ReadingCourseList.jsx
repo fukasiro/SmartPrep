@@ -11,28 +11,28 @@ export default function ReadingCourseList({ onBack, onStart450, onStart600, onSt
         <ul className="vocab-courses">
           <li className="vocab-course-item">
             <div>
-              <strong>初級長文読解コース</strong>
+              <strong>TOEIC450レベル読解コース</strong>
               <div className="vocab-course-desc">基礎的な長文読解スキルを習得し、Part 6・7の基本パターンを学びます。</div>
             </div>
             <button className="vocab-card-button" onClick={onStart450}>開始</button>
           </li>
           <li className="vocab-course-item">
             <div>
-              <strong>中級長文読解コース</strong>
+              <strong>TOEIC600レベル読解コース</strong>
               <div className="vocab-course-desc">ビジネス文書やメールなど、実践的な長文問題に挑戦します。</div>
             </div>
             <button className="vocab-card-button" onClick={onStart600}>開始</button>
           </li>
           <li className="vocab-course-item">
             <div>
-              <strong>上級長文読解コース</strong>
+              <strong>TOEIC730レベル読解コース</strong>
               <div className="vocab-course-desc">複雑な文構造や表現に対応した高度な読解訓練を行います。</div>
             </div>
             <button className="vocab-card-button" onClick={onStart730}>開始</button>
           </li>
           <li className="vocab-course-item">
             <div>
-              <strong>最上級長文読解コース</strong>
+              <strong>TOEIC860レベル読解コース</strong>
               <div className="vocab-course-desc">高速読解と深い理解を両立させ、満点を目指す訓練を行います。</div>
             </div>
             <button className="vocab-card-button" onClick={onStart860}>開始</button>
