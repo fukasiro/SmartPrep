@@ -11,7 +11,7 @@ function App() {
   const [userName, setUserName] = useState('');
 
   // サイドバーを表示する画面の条件
-  const showSidebar = mode === 'landing' || mode === 'chat' || mode === 'vocab' || mode === 'vocabMenu' || mode === 'vocabCourseList' || mode === 'readingMenu' || mode === 'readingCourseList' || mode === 'course450' || mode === 'course600' || mode === 'course730' || mode === 'course860' || mode === 'consultant' || mode === 'test';
+  const showSidebar = mode === 'landing' || mode === 'chat' || mode === 'vocab' || mode === 'vocabMenu' || mode === 'vocabCourseList' || mode === 'readingMenu' || mode === 'readingCourseList' || mode === 'course450' || mode === 'course600' || mode === 'course730' || mode === 'course860' || mode === 'consultant' || mode === 'test' || mode === 'mypage';
 
   useEffect(() => {
     const token = localStorage.getItem('eng_learning_access_token');
@@ -44,6 +44,18 @@ function App() {
     setActiveMenu('chat');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('eng_learning_access_token');
+    localStorage.removeItem('eng_learning_user');
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('vocab-progress-storage-updated'));
+    }
+    setIsLoggedIn(false);
+    setUserName('');
+    setMode('landing');
+    setActiveMenu('dashboard');
+  };
+
   const handleMenuNavigate = (target) => {
     if (target === 'dashboard' || target === 'landing') {
       setMode('landing');
@@ -52,6 +64,11 @@ function App() {
       setMode(target);
       setActiveMenu(target);
     }
+  };
+
+  const handleMyPage = () => {
+    setMode('mypage');
+    setActiveMenu('dashboard');
   };
 
   return (
@@ -63,19 +80,9 @@ function App() {
           activeMenu={activeMenu}
           setActiveMenu={setActiveMenu}
           onNavigate={handleMenuNavigate}
+          onMyPage={handleMyPage}
           isLoggedIn={isLoggedIn}
           userName={userName}
-          onLogout={() => {
-            localStorage.removeItem('eng_learning_access_token');
-            localStorage.removeItem('eng_learning_user');
-            if (typeof window !== 'undefined') {
-              window.dispatchEvent(new Event('vocab-progress-storage-updated'));
-            }
-            setIsLoggedIn(false);
-            setUserName('');
-            setMode('landing');
-            setActiveMenu('dashboard');
-          }}
         />
       )}
 
@@ -86,6 +93,8 @@ function App() {
           setMode={setMode}
           setActiveMenu={setActiveMenu}
           handleAuthSuccess={handleAuthSuccess}
+          userName={userName}
+          handleLogout={handleLogout}
         />
       </div>
     </div>

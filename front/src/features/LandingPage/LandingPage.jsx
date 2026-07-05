@@ -14,12 +14,15 @@ import Level730Course from '../vocabulary/courses/730LevelCourse';
 import Level860Course from '../vocabulary/courses/860LevelCourse';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
+import Mypage from '../MyPage/Mypage';
 
 export default function LandingPage({ 
   mode, 
   setMode, 
   setActiveMenu, 
-  handleAuthSuccess 
+  handleAuthSuccess,
+  userName,
+  handleLogout,
 }) {
   return (
     <div className="landing-container">
@@ -195,6 +198,25 @@ export default function LandingPage({
           <div className="chat-placeholder-container">
             <h2>📝 総合テスト画面（開発中）</h2>
           </div>
+        )}
+
+        {mode === 'mypage' && (
+          <Mypage
+            userName={userName}
+            onLogout={() => {
+              setMode('landing');
+              setActiveMenu('dashboard');
+              localStorage.removeItem('eng_learning_access_token');
+              localStorage.removeItem('eng_learning_user');
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(new Event('vocab-progress-storage-updated'));
+              }
+            }}
+            onBack={() => {
+              setMode('chat');
+              setActiveMenu('chat');
+            }}
+          />
         )}
 
       </div>

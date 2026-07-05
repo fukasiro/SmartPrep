@@ -2,7 +2,7 @@
 import React from 'react';
 import './menu.css';
 
-export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigate, onLogout, isLoggedIn, userName }) {
+export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigate, onMyPage, isLoggedIn, userName }) {
   
   return (
     <aside className="app-sidebar">
@@ -118,18 +118,11 @@ export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigat
                   <span className="profile-name">{userName || 'ゲストユーザー'}</span>
                 </div>
               </div>
-              <button className="sidebar-logout-btn" onClick={onLogout}>
-                ログアウト
+              <button className="sidebar-mypage-btn" onClick={onMyPage} title="マイページへ" aria-label="マイページへ">
+                マイページ
               </button>
             </div>
-
-            {/* スマホ用：ログイン済みのアイコン（未ログインと全く同じグレーデザインで統一） */}
-            <button 
-              className="mobile-avatar-btn" 
-              onClick={onLogout}
-              title="ログアウトする"
-              aria-label="ログアウトする"
-            >
+            <button className="mobile-avatar-btn" onClick={onMyPage} title="マイページへ" aria-label="マイページへ">
               <svg viewBox="0 0 24 24" className="profile-icon">
                 <circle cx="12" cy="8" r="3.5" />
                 <path d="M5.5 18.5a6.5 6.5 0 0 1 13 0" />

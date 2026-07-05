@@ -179,20 +179,21 @@
   color: #0891b2;
 }
 
-.sidebar-logout-btn {
-  background: none;
-  border: 1px solid #fca5a5;
-  color: #ef4444;
-  padding: 6px;
+.sidebar-mypage-btn {
+  background: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  padding: 8px 14px;
   font-size: 13px;
   font-weight: 700;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.sidebar-logout-btn:hover {
-  background-color: #fef2f2;
+.sidebar-mypage-btn:hover {
+  background-color: #cbd5e1;
+  transform: translateY(-1px);
 }
 
 /* 初期状態ではスマホ用丸ボタンを完全非表示 */

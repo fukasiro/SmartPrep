@@ -1,0 +1,176 @@
+.mypage-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 24px;
+  background-color: #f8fafc;
+  box-sizing: border-box;
+}
+
+.mypage-card {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+}
+
+.mypage-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.mypage-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.mypage-profile {
+  min-width: 0;
+}
+
+.mypage-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mypage-header p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.mypage-info {
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+  padding: 8px 0;
+}
+
+.mypage-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.mypage-info-row .label {
+  color: #64748b;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.mypage-info-row .value {
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mypage-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* ボタンの共通スタイル */
+.mypage-button {
+  flex: 1; /* 横並びにするため均等に幅を広げる */
+  padding: 14px 20px; /* テキストが収まるよう上下左右に十分な余白を設定 */
+  border-radius: 12px; /* カードに合わせた角丸 */
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap; /* テキストの折り返しを防ぐ */
+}
+
+/* ログアウトボタン（主要） */
+.mypage-button.primary {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.mypage-button.primary:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.mypage-button.primary:active {
+  transform: translateY(0);
+}
+
+/* 戻るボタン（補助） */
+.mypage-button.secondary {
+  background: #ffffff;
+  color: #475569;
+  border-color: #cbd5e1; /* 枠線を設定 */
+}
+
+.mypage-button.secondary:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.mypage-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%; /* コンテナ自体を横いっぱいに広げる */
+  box-sizing: border-box;
+}
+
+.mypage-button {
+  flex: 1; /* これで2つのボタンが50%ずつ均等な幅になります */
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center; /* テキストを確実に中央寄せにする */
+}
+
+.mypage-button.primary {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.mypage-button.primary:hover {
+  background: #1e293b;
+}
+
+.mypage-button.secondary {
+  background: #ffffff;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+.mypage-button.secondary:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
