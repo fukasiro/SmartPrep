@@ -204,13 +204,7 @@ export default function LandingPage({
           <Mypage
             userName={userName}
             onLogout={() => {
-              setMode('landing');
-              setActiveMenu('dashboard');
-              localStorage.removeItem('eng_learning_access_token');
-              localStorage.removeItem('eng_learning_user');
-              if (typeof window !== 'undefined') {
-                window.dispatchEvent(new Event('vocab-progress-storage-updated'));
-              }
+              handleLogout();
             }}
             onBack={() => {
               setMode('chat');
