@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import './450LevelCourse.css';
 import WORDS from './450_wordlist';
+import { loadCourseProgress, saveCourseProgress } from '../progressStorage';
 
 const STORAGE_KEY = 'vocab_450_stage_scores';
 
@@ -34,12 +35,16 @@ export default function Level450Course({ onBack }) {
 
   // 進捗ロード
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setStageScores(JSON.parse(raw));
-    } catch (e) {
-      console.error(e);
-    }
+    const syncStageScores = () => {
+      setStageScores(loadCourseProgress(STORAGE_KEY));
+    };
+
+    syncStageScores();
+    window.addEventListener('vocab-progress-storage-updated', syncStageScores);
+
+    return () => {
+      window.removeEventListener('vocab-progress-storage-updated', syncStageScores);
+    };
   }, []);
 
   // クリア（合格）したステージの総数を計算
@@ -142,9 +147,7 @@ export default function Level450Course({ onBack }) {
       }
       
       setStageScores(nextScores);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextScores));
-      } catch (e) {}
+      saveCourseProgress(STORAGE_KEY, nextScores);
 
       // もしこの合格で「全クリア」を達成したら、お祝いのために証明書フラグを立てる
       const updatedClearedCount = Object.values(nextScores).filter(s => s >= PASS_SCORE).length;

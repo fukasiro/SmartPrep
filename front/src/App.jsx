@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import LandingPage from './features/LandingPage/LandingPage.jsx'; 
-import Menu from './components/menu.jsx'; 
+import Menu from './components/menu.jsx';
 
 function App() {
   const [mode, setMode] = useState('landing'); 
@@ -29,11 +29,15 @@ function App() {
     }
   }, []);
 
-  const handleAuthSuccess = (token, name) => {
+  const handleAuthSuccess = (token, name, email = null) => {
     if (token) localStorage.setItem('eng_learning_access_token', token);
-    if (name) {
-      localStorage.setItem('eng_learning_user', JSON.stringify({ name }));
-      setUserName(name);
+    if (name || email) {
+      const userPayload = { name: name || null, email: email || null };
+      localStorage.setItem('eng_learning_user', JSON.stringify(userPayload));
+      setUserName(name || '');
+    }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('vocab-progress-storage-updated'));
     }
     setIsLoggedIn(true);
     setMode('chat'); 
@@ -64,6 +68,9 @@ function App() {
           onLogout={() => {
             localStorage.removeItem('eng_learning_access_token');
             localStorage.removeItem('eng_learning_user');
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new Event('vocab-progress-storage-updated'));
+            }
             setIsLoggedIn(false);
             setUserName('');
             setMode('landing');

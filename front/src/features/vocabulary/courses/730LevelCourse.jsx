@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import './730LevelCourse.css';
 import WORDS from './730_wordlist';
+import { loadCourseProgress, saveCourseProgress } from '../progressStorage';
 
 const STORAGE_KEY = 'vocab_730_stage_scores';
 
@@ -36,12 +37,16 @@ export default function Level730Course({ onBack }) {
   const totalStages = Math.ceil(WORDS.length / PER_STAGE);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setStageScores(JSON.parse(raw));
-    } catch (e) {
-      console.error(e);
-    }
+    const syncStageScores = () => {
+      setStageScores(loadCourseProgress(STORAGE_KEY));
+    };
+
+    syncStageScores();
+    window.addEventListener('vocab-progress-storage-updated', syncStageScores);
+
+    return () => {
+      window.removeEventListener('vocab-progress-storage-updated', syncStageScores);
+    };
   }, []);
 
   const clearedCount = useMemo(() => {
@@ -141,9 +146,7 @@ export default function Level730Course({ onBack }) {
         nextScores[selectedStage] = finalScore;
       }
       setStageScores(nextScores);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextScores));
-      } catch (e) {}
+      saveCourseProgress(STORAGE_KEY, nextScores);
 
       const updatedClearedCount = Object.values(nextScores).filter((s) => s >= PASS_SCORE).length;
       if (updatedClearedCount === totalStages && finalScore >= PASS_SCORE) {

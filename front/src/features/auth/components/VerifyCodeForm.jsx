@@ -20,7 +20,7 @@ export default function VerifyCodeForm({ email, name, onVerifySuccess }) {
       const token = (result && typeof result === 'object' ? (result.token || result.data?.token) : null) 
                     || 'auto_login_token_after_verify';
       
-      const userName = name || (result && typeof result === 'object' ? result.user?.name : null) || email.split('@')[0];
+      const userName = name || (result && typeof result === 'object' ? result.name : null) || email.split('@')[0];
       
       onVerifySuccess(token, userName);
     }

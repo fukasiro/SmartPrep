@@ -18,8 +18,8 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onL
     
     if (result && onLoginSuccess) {
       const token = result.token || 'dummy_token';
-      const name = result.user?.name || email.split('@')[0];
-      onLoginSuccess(token, name);
+      const name = result.name || email.split('@')[0];
+      onLoginSuccess(token, name, result.email || email);
     }
   };
 

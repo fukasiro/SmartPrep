@@ -116,7 +116,6 @@ export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigat
                 <div className="profile-avatar">👤</div>
                 <div className="profile-details">
                   <span className="profile-name">{userName || 'ゲストユーザー'}</span>
-                  <span className="profile-status">Premium 会員</span>
                 </div>
               </div>
               <button className="sidebar-logout-btn" onClick={onLogout}>

@@ -15,7 +15,7 @@ export default function SignUpForm({ onNavigateToLanding, onNavigateToLogin, onA
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) return;
+    if (!name || !email || !password) return;
 
     const result = await signUpWithEmail({ name, email, password });
     if (result?.email) {
@@ -65,6 +65,7 @@ export default function SignUpForm({ onNavigateToLanding, onNavigateToLogin, onA
               placeholder="ユーザー名"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </div>
 
