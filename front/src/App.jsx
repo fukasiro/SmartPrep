@@ -11,7 +11,7 @@ function App() {
   const [userName, setUserName] = useState('');
 
   // サイドバーを表示する画面の条件
-  const showSidebar = mode === 'landing' || mode === 'chat' || mode === 'vocab' || mode === 'vocabMenu' || mode === 'vocabCourseList' || mode === 'readingMenu' || mode === 'readingCourseList' || mode === 'course450' || mode === 'course600' || mode === 'course730' || mode === 'course860' || mode === 'consultant' || mode === 'test' || mode === 'mypage';
+  const showSidebar = mode === 'landing' || mode === 'chat' || mode === 'vocab' || mode === 'vocabMenu' || mode === 'vocabCourseList' || mode === 'readingMenu' || mode === 'readingCourseList' || mode === 'course450' || mode === 'course600' || mode === 'course730' || mode === 'course860' || mode === 'reading_course450' || mode === 'reading_course600' || mode === 'reading_course730' || mode === 'reading_course860' || mode === 'consultant' || mode === 'test' || mode === 'mypage';
 
   useEffect(() => {
     const token = localStorage.getItem('eng_learning_access_token');

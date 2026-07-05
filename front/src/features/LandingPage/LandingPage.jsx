@@ -9,6 +9,7 @@ import ReadingCourseList from '../Reading/ReadingCourseList';
 import VocabularyMenu from '../vocabulary/VocabularyMenu';
 import VocabularyCourseList from '../vocabulary/VocabularyCourseList';
 import Level450Course from '../vocabulary/courses/450LevelCourse';
+import Level450CourseReading from '../Reading/courses/450LevelCourseReading';
 import Level600Course from '../vocabulary/courses/600LevelCourse';
 import Level730Course from '../vocabulary/courses/730LevelCourse';
 import Level860Course from '../vocabulary/courses/860LevelCourse';
@@ -115,6 +116,22 @@ export default function LandingPage({
               setMode('readingMenu');
               setActiveMenu('chat');
             }}
+            onStart450={() => {
+              setMode('reading_course450');
+              setActiveMenu('chat');
+            }}
+            onStart600={() => {
+              setMode('course600');
+              setActiveMenu('chat');
+            }}
+            onStart730={() => {
+              setMode('course730');
+              setActiveMenu('chat');
+            }}
+            onStart860={() => {
+              setMode('course860');
+              setActiveMenu('chat');
+            }}
           />
         )}
 
@@ -163,6 +180,15 @@ export default function LandingPage({
           <Level450Course
             onBack={() => {
               setMode('vocabCourseList');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'reading_course450' && (
+          <Level450CourseReading
+            onBack={() => {
+              setMode('readingCourseList');
               setActiveMenu('chat');
             }}
           />

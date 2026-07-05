@@ -1,7 +1,3 @@
-/* ==========================================================================
-   450LevelCourse.css - プログレスバー＆合格証明書対応スタイル
-   ========================================================================== */
-
 .vocab-list-container {
   display: flex;
   justify-content: center;
@@ -28,9 +24,7 @@
 .vocab-list-title { font-size: 22px; color: #1e293b; margin: 0 0 6px 0; }
 .vocab-list-sub { font-size: 14px; color: #64748b; margin: 0 0 24px 0; }
 
-/* ==========================================================================
-   📊 ステータスバー（プログレスバー）
-   ========================================================================== */
+/* 📊 進捗ステータスバー */
 .progress-container {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -58,11 +52,10 @@
   background: linear-gradient(90deg, #4299e1, #319795);
   height: 100%;
   border-radius: 999px;
-  width: 0%; /* JS側で動的に上書き */
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* アニメーション */
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 証明書を再表示する特別ボタン */
 .view-cert-badge-btn {
   width: 100%;
   background: linear-gradient(135deg, #ecc94b, #d69e2e);
@@ -77,13 +70,9 @@
   box-shadow: 0 4px 12px rgba(214, 158, 46, 0.2);
   transition: transform 0.2s;
 }
-.view-cert-badge-btn:hover {
-  transform: scale(1.02);
-}
+.view-cert-badge-btn:hover { transform: scale(1.02); }
 
-/* ==========================================================================
-   1. ステージグリッド
-   ========================================================================== */
+/* 1. ステージメニューボタン */
 .day-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -118,14 +107,11 @@
 .day-num { font-weight: bold; font-size: 15px; color: #2d3748; }
 .day-btn.cleared .day-num { color: #234e52; }
 .day-btn.progressing .day-num { color: #7b341e; }
-
 .day-status { font-size: 11px; color: #a0aec0; margin-top: 4px; }
 .day-btn.cleared .day-status { color: #319795; font-weight: bold; }
 .day-btn.progressing .day-status { color: #dd6b20; font-weight: bold; }
 
-/* ==========================================================================
-   2. 各種コンポーネント用
-   ========================================================================== */
+/* 2. 各種コンポーネント用ヘッダー */
 .screen-header {
   display: flex;
   justify-content: space-between;
@@ -139,26 +125,10 @@
 .exit-btn { background: none; border: none; color: #e53e3e; cursor: pointer; font-weight: bold; font-size: 13px; }
 .exit-btn:hover { text-decoration: underline; }
 
-.word-flashcard {
-  background: #f7fafc; border: 2px solid #e2e8f0; border-radius: 16px;
-  padding: 40px 20px; margin-bottom: 24px; min-height: 180px;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-}
-.card-pos { font-size: 14px; color: #4a5568; font-weight: bold; }
-.card-word { font-size: 36px; color: #2b6cb0; margin: 12px 0; letter-spacing: 0.5px; }
-.card-divider { width: 40px; height: 3px; background: #cbd5e0; border-radius: 2px; margin: 12px 0; }
-.card-meaning { font-size: 18px; color: #2d3748; font-weight: bold; margin: 0; }
-
-.learning-quiz-skip-btn {
-  background-color: #ebf8ff; border: 1px solid #bee3f8; color: #2b6cb0;
-  padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s;
-}
-.learning-quiz-skip-btn:hover { background-color: #3182ce; border-color: #3182ce; color: #ffffff; }
-
-/* クイズ */
-.quiz-question-label { font-size: 14px; color: #718096; margin-bottom: 4px; }
-.quiz-word { font-size: 28px; color: #2d3748; margin: 0 0 24px 0; }
+.quiz-question-label { font-size: 14px; color: #718096; margin-bottom: 4px; text-align: left; }
+.quiz-word { font-size: 28px; color: #2d3748; margin: 0 0 24px 0; text-align: left; }
 .quiz-choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
 .choice-btn {
   width: 100%; padding: 14px; text-align: left; background: #ffffff; border: 1px solid #cbd5e0;
   border-radius: 8px; font-size: 15px; color: #4a5568; font-weight: 600; cursor: pointer; transition: all 0.2s;
@@ -175,7 +145,6 @@
 
 .result-score-box { border-radius: 12px; padding: 24px; margin: 20px 0; font-size: 18px; font-weight: bold; }
 .result-score-num { font-size: 42px; font-weight: bold; }
-.result-comment { color: #4a5568; font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
 
 .vocabulary-menu-primary-button {
   background: #3182ce; color: #ffffff; border: none; padding: 14px 24px;
@@ -191,134 +160,114 @@
 }
 .vocabulary-menu-secondary-button:hover { background: #f7fafc; color: #4a5568; }
 
-/* ==========================================================================
-   🏅 合格証明書（モーダルポップアップ）
-   ========================================================================== */
+/* 🏅 合格証明書（モーダル） */
 .cert-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* 背景を暗く */
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6);
+  display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px; box-sizing: border-box;
+}
+.cert-modal { background: #fffdf9; width: 100%; max-width: 540px; padding: 24px; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
+.cert-border { border: 4px double #d69e2e; padding: 30px 20px; background: #fffdf9; position: relative; }
+.cert-ribbon { font-size: 44px; margin-bottom: 10px; line-height: 1; }
+.cert-main-title { font-family: 'Georgia', serif; font-size: 28px; color: #9b6a00; margin: 0 0 4px 0; letter-spacing: 4px; }
+.cert-sub-title { font-family: 'Helvetica', sans-serif; font-size: 11px; color: #b7791f; margin: 0; letter-spacing: 2px; }
+.cert-divider-gold { width: 60px; height: 2px; background: #d69e2e; margin: 20px auto; }
+.cert-user-text { font-size: 20px; font-weight: bold; color: #2d3748; margin: 0 0 16px 0; text-decoration: underline; text-underline-offset: 6px; }
+.cert-body-text { font-size: 13px; color: #4a5568; line-height: 1.8; text-align: left; margin: 0 auto 24px auto; max-width: 420px; text-indent: 1em; }
+.cert-footer { display: flex; justify-content: space-between; align-items: flex-end; font-size: 11px; color: #718096; margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 12px; }
+.cert-date { font-family: serif; }
+.cert-close-btn { margin-top: 20px; background: #4a5568; color: white; border: none; padding: 8px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; transition: background 0.2s; }
+.cert-close-btn:hover { background: #2d3748; }
+.animate-pop { animation: certPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes certPop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* ==========================================================================
+   📖 読解コース専用レイアウト (英文＆問題スプリット表示)
+   ========================================================================== */
+.reading-quiz-layout {
+  max-width: 950px !important; /* 横並びにするため幅を拡張 */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  padding: 20px;
-  box-sizing: border-box;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
-/* 証明書本体 */
-.cert-modal {
-  background: #fffdf9; /* 高級感のある和紙・羊皮紙風の白 */
-  width: 100%;
-  max-width: 540px;
-  padding: 24px;
+.reading-full-width { width: 100%; }
+
+.reading-stage-tag {
+  font-size: 11px;
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 2px 8px;
   border-radius: 4px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  text-align: center;
+  margin-top: 4px;
+  font-weight: 600;
 }
 
-/* 2重の内枠（賞状特有の境界線） */
-.cert-border {
-  border: 4px double #d69e2e;
-  padding: 30px 20px;
+/* スプリットレイアウト: 本文（左側） */
+.reading-split-passage {
+  flex: 1 1 400px;
   background: #fffdf9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  max-height: 450px;
+  overflow-y: auto;
   position: relative;
 }
 
-.cert-ribbon {
-  font-size: 44px;
-  margin-bottom: 10px;
-  line-height: 1;
-}
-
-.cert-main-title {
-  font-family: 'Georgia', serif;
-  font-size: 28px;
-  color: #9b6a00;
-  margin: 0 0 4px 0;
-  letter-spacing: 4px;
-}
-
-.cert-sub-title {
-  font-family: 'Helvetica', sans-serif;
+.passage-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   font-size: 11px;
-  color: #b7791f;
-  margin: 0;
-  letter-spacing: 2px;
-}
-
-.cert-divider-gold {
-  width: 60px;
-  height: 2px;
-  background: #d69e2e;
-  margin: 20px auto;
-}
-
-.cert-user-text {
-  font-size: 20px;
+  background: #319795;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
   font-weight: bold;
-  color: #2d3748;
-  margin: 0 0 16px 0;
-  text-decoration: underline;
-  text-underline-offset: 6px;
 }
 
-.cert-body-text {
+.passage-content {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #2d3748;
+  white-space: pre-wrap;
+  text-align: left;
+  margin-top: 10px;
+}
+
+/* スプリットレイアウト: クイズ解答エリア（右側） */
+.reading-split-quiz {
+  flex: 1 1 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ポップアップ式の解説解説ボックス */
+.reading-explanation-box {
+  background: #f7fafc;
+  border-left: 4px solid #3182ce;
+  padding: 12px;
   font-size: 13px;
   color: #4a5568;
-  line-height: 1.8;
+  line-height: 1.5;
   text-align: left;
-  margin: 0 auto 24px auto;
-  max-width: 420px;
-  text-indent: 1em;
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 12px;
 }
 
-.cert-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  font-size: 11px;
-  color: #718096;
-  margin-top: 20px;
-  border-top: 1px dashed #e2e8f0;
-  padding-top: 12px;
+/* レレスポンシブブレイクポイント */
+@media (max-width: 850px) {
+  .reading-quiz-layout {
+    max-width: 600px !important;
+    flex-direction: column; /* スマホやタブレット縦画面では上下並び */
+  }
+  .reading-split-passage {
+    max-height: 300px; /* 上側の英文をコンパクトに収めてスクロール可能に */
+  }
 }
 
-.cert-date {
-  font-family: serif;
-}
-
-/* 閉じるボタン */
-.cert-close-btn {
-  margin-top: 20px;
-  background: #4a5568;
-  color: white;
-  border: none;
-  padding: 8px 24px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 13px;
-  transition: background 0.2s;
-}
-.cert-close-btn:hover { background: #2d3748; }
-
-/* パッと開くときのアニメーション */
-.animate-pop {
-  animation: certPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes certPop {
-  0% { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* レレスポンシブ */
 @media (max-width: 500px) {
   .day-grid { grid-template-columns: repeat(2, 1fr); }
   .vocab-list-card { padding: 24px 16px; }
-  .cert-main-title { font-size: 24px; }
 }
