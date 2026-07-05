@@ -11,7 +11,7 @@ const STORAGE_KEY = 'reading_450_stage_scores';
 const STAGE_LABEL = '講';
 const PASS_SCORE = 3; // 1ステージあたり3〜4問想定のため、3問以上正解をベースラインに設定
 
-export default function Level450CourseReading({ onBack }) {
+export default function Level450CourseReading({ onBack, userName = '学習者' }) {
   const [screen, setScreen] = useState('stage_select');
   const [selectedStage, setSelectedStage] = useState(0);
   const [showConsultantPanel, setShowConsultantPanel] = useState(false);
@@ -385,10 +385,10 @@ export default function Level450CourseReading({ onBack }) {
           <div className="cert-modal animate-pop">
             <div className="cert-border">
               <div className="cert-ribbon">🏅</div>
-              <h1 className="cert-main-title" style={{ fontSize: '24px' }}>リーディング証明書</h1>
+              <h1 className="cert-main-title" style={{ fontSize: '24px' }}>基礎読解コース修了証</h1>
               <p className="cert-sub-title">READING COURSE COMPLETION</p>
               <div className="cert-divider-gold"></div>
-              <p className="cert-user-text">あなた（学習者殿）</p>
+              <p className="cert-user-text">{userName ? `${userName}殿` : '学習者殿'}</p>
               <p className="cert-body-text">
                 あなたは、TOEIC 450点レベルに必要な「Part 6 長文穴埋め」および「Part 7 基礎読解」の全トレーニングを修了し、英文の主旨を正確に素早く掴むスキルを習得したことをここに証明します。
               </p>

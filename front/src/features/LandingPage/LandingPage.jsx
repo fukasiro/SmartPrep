@@ -192,6 +192,7 @@ export default function LandingPage({
               setMode('readingCourseList');
               setActiveMenu('chat');
             }}
+            userName={userName}
           />
         )}
 
