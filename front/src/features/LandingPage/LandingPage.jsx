@@ -22,6 +22,8 @@ export default function LandingPage({
   mode, 
   setMode, 
   setActiveMenu, 
+  setSidebarHidden,
+  onCloseConsultant,
   handleAuthSuccess,
   userName,
   handleLogout,
@@ -191,6 +193,7 @@ export default function LandingPage({
               setMode('readingCourseList');
               setActiveMenu('chat');
             }}
+            setSidebarHidden={setSidebarHidden}
           />
         )}
 
@@ -228,7 +231,14 @@ export default function LandingPage({
 
         {/* 7. 🤖 AIコンサルタント */}
         {mode === 'consultant' && (
-          <AIConsultant />
+          <AIConsultant onClose={() => {
+            if (typeof onCloseConsultant === 'function') {
+              onCloseConsultant();
+            } else {
+              setMode('chat');
+              setActiveMenu('chat');
+            }
+          }} />
         )}
 
         {/* 7. 📝 総合テスト */}

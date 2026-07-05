@@ -2,19 +2,37 @@ import React, { useEffect, useState, useMemo } from 'react';
 import './450LevelCourseReading.css';
 
 // 外部ファイルから読解問題データをインポート
-import READING_STAGES from './450_Reading'; 
+import READING_STAGES from './450_Reading';
 
 // 進捗保存用の関数も共通のものを利用する場合はパスを合わせてアンコメントしてください
 // import { loadCourseProgress, saveCourseProgress } from '../../vocabulary/progressStorage';
 
 const STORAGE_KEY = 'reading_450_stage_scores';
-const STAGE_LABEL = '講'; 
+const STAGE_LABEL = '講';
 const PASS_SCORE = 3; // 1ステージあたり3〜4問想定のため、3問以上正解をベースラインに設定
 
-export default function Level450CourseReading({ onBack }) {
+export default function Level450CourseReading({ onBack, setSidebarHidden }) {
   const [screen, setScreen] = useState('stage_select');
   const [selectedStage, setSelectedStage] = useState(0);
-  
+  const [showConsultantPanel, setShowConsultantPanel] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      if (typeof setSidebarHidden === 'function') {
+        setSidebarHidden(false);
+      }
+    };
+  }, [setSidebarHidden]);
+
+  const handleAskCoach = () => {
+    // コーチパネルを表示するだけで、サイドバーは隠さない
+    setShowConsultantPanel(true);
+  };
+
+  const closeConsultantPanel = () => {
+    setShowConsultantPanel(false);
+  };
+
   // クイズ関連
   const [currentQuizIdx, setCurrentQuizIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -74,16 +92,17 @@ export default function Level450CourseReading({ onBack }) {
     setScore(0);
     setSelectedAnswer(null);
     setIsAnswered(false);
+    setShowConsultantPanel(false); // メニューに戻るときはコーチを閉じる
   };
 
-  // ステージ選択後、直接クイズ（スプリット）画面へ移行
+  // ステージ選択後、直接クイズ画面へ移行
   const startStage = (stageIndex) => {
     setSelectedStage(stageIndex);
     setCurrentQuizIdx(0);
     setScore(0);
     setIsAnswered(false);
     setSelectedAnswer(null);
-    setScreen('quiz'); 
+    setScreen('quiz');
   };
 
   const handleSelectAnswer = (choice) => {
@@ -103,15 +122,15 @@ export default function Level450CourseReading({ onBack }) {
       setSelectedAnswer(null);
     } else {
       setScreen('result');
-      
+
       const finalScore = score + (selectedAnswer === questions[currentQuizIdx].correct ? 1 : 0);
       const previousScore = stageScores[selectedStage] !== undefined ? stageScores[selectedStage] : -1;
-      
+
       let nextScores = { ...stageScores };
       if (finalScore > previousScore) {
         nextScores[selectedStage] = finalScore;
       }
-      
+
       saveProgress(nextScores);
 
       const passBoundary = Math.min(PASS_SCORE, questions.length);
@@ -132,13 +151,17 @@ export default function Level450CourseReading({ onBack }) {
 
   return (
     <div className="vocab-list-container">
-      
+
       {/* 1. ステージ選択メニュー画面 */}
       {screen === 'stage_select' && (
         <div className="vocab-list-card">
-          <h2 className="vocab-list-title">450点レベル読解突破コース</h2>
-          <p className="vocab-list-sub">Part 6/7の基礎長文を攻略。各問題の7割以上正解でクリア！</p>
-          
+          <div className="course-header-row">
+            <div>
+              <h2 className="vocab-list-title">450点レベル読解突破コース</h2>
+              <p className="vocab-list-sub">Part 6/7の基礎長文を攻略。各問題の7割以上正解でクリア！</p>
+            </div>
+          </div>
+
           {/* 📊 全体進捗バー */}
           <div className="progress-container">
             <div className="progress-bar-label">
@@ -156,7 +179,7 @@ export default function Level450CourseReading({ onBack }) {
               🏅 読解マスター証明書を表示する
             </button>
           )}
-          
+
           {/* グリッドメニュー */}
           <div className="day-grid">
             {READING_STAGES.map((stage, index) => {
@@ -164,7 +187,7 @@ export default function Level450CourseReading({ onBack }) {
               const passBoundary = Math.min(PASS_SCORE, stage.questions.length);
               let statusText = '未挑戦';
               let btnClass = 'day-btn';
-              
+
               if (savedScore !== undefined) {
                 if (savedScore >= passBoundary) {
                   statusText = `✓ クリア (${savedScore}点)`;
@@ -191,66 +214,91 @@ export default function Level450CourseReading({ onBack }) {
         </div>
       )}
 
-      {/* 2. クイズ画面（左右/上下分割スプリット型構造） */}
+      {/* 2. クイズ画面 */}
       {screen === 'quiz' && currentStageData && (
-        <div className="vocab-list-card reading-quiz-layout">
-          <div className="screen-header reading-full-width">
-            <span>{getStageName(selectedStage)} - 問題 ({currentQuizIdx + 1} / {currentStageData.questions.length})</span>
-            <button className="exit-btn" onClick={handleGoToMenu}>中断</button>
-          </div>
-
-          {/* 左カラム: 英文読解エリア */}
-          <div className="reading-split-passage">
-            <span className="passage-badge">{currentStageData.passageType}</span>
-            <div className="passage-content">{currentStageData.passage}</div>
-          </div>
-
-          {/* 右カラム: クイズ選択肢・解答エリア */}
-          <div className="reading-split-quiz">
-            <div className="quiz-box" style={{padding: 0}}>
-              <p className="quiz-question-label">Q{currentQuizIdx + 1}.</p>
-              <h2 className="quiz-word" style={{fontSize: '18px', marginBottom: '16px'}}>
-                {currentStageData.questions[currentQuizIdx].questionText}
-              </h2>
-
-              <div className="quiz-choices">
-                {currentStageData.questions[currentQuizIdx].choices.map((choice, i) => {
-                  let btnClass = 'choice-btn';
-                  if (isAnswered) {
-                    if (choice === currentStageData.questions[currentQuizIdx].correct) {
-                      btnClass += ' correct-choice';
-                    } else if (choice === selectedAnswer) {
-                      btnClass += ' wrong-choice';
-                    } else {
-                      btnClass += ' disabled-choice';
-                    }
-                  }
-                  return (
-                    <button key={i} className={btnClass} onClick={() => handleSelectAnswer(choice)} disabled={isAnswered}>
-                      {choice}
-                    </button>
-                  );
-                })}
+        <div className="reading-stage-card-wrapper">
+          <div className={`vocab-list-card reading-stage-card${showConsultantPanel ? ' coach-open' : ''}`}>
+            {/* ヘッダーエリア */}
+            <div className="screen-header reading-full-width">
+              <span>{getStageName(selectedStage)} - 問題 ({currentQuizIdx + 1} / {currentStageData.questions.length})</span>
+              <div className="reading-header-actions">
+                <button className="ai-coach-button" onClick={handleAskCoach}>AIコーチ</button>
+                <button className="exit-btn" onClick={handleGoToMenu}>中断</button>
               </div>
+            </div>
 
-              {/* 解答後のフィードバック＆解説 */}
-              {isAnswered && (
-                <div className="quiz-feedback" style={{marginTop: '12px', paddingTop: '12px'}}>
-                  {selectedAnswer === currentStageData.questions[currentQuizIdx].correct ? (
-                    <p className="feedback-text correct" style={{fontSize: '16px', marginBottom: '8px'}}>⭕ 正解！</p>
-                  ) : (
-                    <p className="feedback-text wrong" style={{fontSize: '16px', marginBottom: '8px'}}>❌ 不正解...</p>
-                  )}
-                  <div className="reading-explanation-box">
-                    <strong>解説:</strong> {currentStageData.questions[currentQuizIdx].explanation}
-                  </div>
-                  <button className="vocabulary-menu-primary-button w-100" onClick={nextQuiz} style={{marginTop: '12px'}}>
-                    {currentQuizIdx < currentStageData.questions.length - 1 ? '次の問題へ' : '結果を見る'}
-                  </button>
+            {/* 本文エリア */}
+            <div className="reading-passage-section">
+              <span className="passage-badge">{currentStageData.passageType}</span>
+              <div className="passage-content">{currentStageData.passage}</div>
+            </div>
+
+            {/* クイズエリア */}
+            <div className="reading-quiz-section">
+              <div className="quiz-box" style={{ padding: 0 }}>
+                <p className="quiz-question-label">Q{currentQuizIdx + 1}.</p>
+                <h2 className="quiz-word" style={{ fontSize: '18px', marginBottom: '16px' }}>
+                  {currentStageData.questions[currentQuizIdx].questionText}
+                </h2>
+
+                <div className="quiz-choices">
+                  {currentStageData.questions[currentQuizIdx].choices.map((choice, i) => {
+                    let btnClass = 'choice-btn';
+                    if (isAnswered) {
+                      if (choice === currentStageData.questions[currentQuizIdx].correct) {
+                        btnClass += ' correct-choice';
+                      } else if (choice === selectedAnswer) {
+                        btnClass += ' wrong-choice';
+                      } else {
+                        btnClass += ' disabled-choice';
+                      }
+                    }
+                    return (
+                      <button key={i} className={btnClass} onClick={() => handleSelectAnswer(choice)} disabled={isAnswered}>
+                        {choice}
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
+
+                {/* 解答後のフィードバック＆解説 */}
+                {isAnswered && (
+                  <div className="quiz-feedback" style={{ marginTop: '12px', paddingTop: '12px' }}>
+                    {selectedAnswer === currentStageData.questions[currentQuizIdx].correct ? (
+                      <p className="feedback-text correct" style={{ fontSize: '16px', marginBottom: '8px' }}>⭕ 正解！</p>
+                    ) : (
+                      <p className="feedback-text wrong" style={{ fontSize: '16px', marginBottom: '8px' }}>❌ 不正解...</p>
+                    )}
+                    <div className="reading-explanation-box">
+                      <strong>解説:</strong> {currentStageData.questions[currentQuizIdx].explanation}
+                    </div>
+                    <button className="vocabulary-menu-primary-button w-100" onClick={nextQuiz} style={{ marginTop: '12px' }}>
+                      {currentQuizIdx < currentStageData.questions.length - 1 ? '次の問題へ' : '結果を見る'}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+
+          {/* AIコーチパネル */}
+          {showConsultantPanel && (
+            <div className="reading-consultant-panel animate-slide-in">
+              <div className="consultant-header">
+                <div>
+                  <h3>AIコーチ</h3>
+                  <p>質問を入力してヒントをもらいましょう。</p>
+                </div>
+                <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
+              </div>
+              <textarea
+                className="consultant-textarea"
+                placeholder="例えば：本文の要点の探し方を教えてください。"
+                rows="6"
+              />
+              <button className="consultant-submit-btn">送信する</button>
+            </div>
+          )}
         </div>
       )}
 
@@ -269,9 +317,9 @@ export default function Level450CourseReading({ onBack }) {
             </>
           )}
 
-          <div className="result-score-box" style={{ 
-            backgroundColor: score >= Math.min(PASS_SCORE, currentStageData.questions.length) ? '#f0fff4' : '#fff5f5', 
-            color: score >= Math.min(PASS_SCORE, currentStageData.questions.length) ? '#2f855a' : '#c53030' 
+          <div className="result-score-box" style={{
+            backgroundColor: score >= Math.min(PASS_SCORE, currentStageData.questions.length) ? '#f0fff4' : '#fff5f5',
+            color: score >= Math.min(PASS_SCORE, currentStageData.questions.length) ? '#2f855a' : '#c53030'
           }}>
             <span className="result-score-num">{score}</span> / {currentStageData.questions.length} 問正解
           </div>
@@ -288,7 +336,7 @@ export default function Level450CourseReading({ onBack }) {
           <div className="cert-modal animate-pop">
             <div className="cert-border">
               <div className="cert-ribbon">🏅</div>
-              <h1 className="cert-main-title" style={{fontSize: '24px'}}>リーディング証明書</h1>
+              <h1 className="cert-main-title" style={{ fontSize: '24px' }}>リーディング証明書</h1>
               <p className="cert-sub-title">READING COURSE COMPLETION</p>
               <div className="cert-divider-gold"></div>
               <p className="cert-user-text">あなた（学習者殿）</p>

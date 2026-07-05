@@ -1,7 +1,7 @@
 import React from 'react';
 import './AIConsultant.css';
 
-export default function AIConsultant() {
+export default function AIConsultant({ onClose }) {
   return (
     <main className="ai-consultant-page">
       <section className="ai-consultant-hero">
@@ -10,6 +10,9 @@ export default function AIConsultant() {
           <h1>Chat with your AI English coach</h1>
           <p>質問を入力すると、AIコンサルタントがあなたの学習状況に合わせたアドバイスを返します。</p>
         </div>
+        <button className="ai-consultant-close-btn" onClick={onClose}>
+          AIコーチを終了する
+        </button>
       </section>
 
       <section className="ai-consultant-panel">
