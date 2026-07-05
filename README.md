@@ -2,7 +2,7 @@
 
 SmartPrep is designed for Japanese TOEIC learners who want to achieve high scores by using AI efficiently. It removes unnecessary features to lower the learning barrier and provides instant, appropriate answers that analog study methods cannot deliver.
 
-![SmartPrep Reading Dashboard](./front/src/assets/ReadingOverview.png)
+![SmartPrep Reading Dashboard](./front/src/assets/Reading.png)
 
 ## Purpose
 
@@ -28,8 +28,8 @@ SmartPrep is designed for Japanese TOEIC learners who want to achieve high score
 ## Tech Stack
 
 ### Frontend
-- React 19
-- Vite
+- React 19.2.7
+- Vite 8.1.0
 - JSX components
 - `localStorage` for storing authentication tokens and user state
 - REST API communication with FastAPI
@@ -41,7 +41,7 @@ SmartPrep is designed for Japanese TOEIC learners who want to achieve high score
 - SQLite
 - PyJWT
 - Pydantic
-- Email verification code support
+- Email validation and verification support via `email-validator`
 
 ### Development
 - Docker / docker-compose support available in the repository
@@ -70,20 +70,20 @@ SmartPrep is designed for Japanese TOEIC learners who want to achieve high score
 
 ### Run backend locally
 ```bash
-cd EnglishLearningApp/backend
+cd backend
 python3 -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ### Run frontend locally
 ```bash
-cd EnglishLearningApp/front
+cd front
 npm install
 npm run dev
 ```
 
 ### Run with Docker
 ```bash
-cd EnglishLearningApp
+cd .
 docker compose up --build
 ```
 
