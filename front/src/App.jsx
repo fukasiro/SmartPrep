@@ -7,13 +7,12 @@ import Menu from './components/menu.jsx';
 function App() {
   const [mode, setMode] = useState('landing'); 
   const [activeMenu, setActiveMenu] = useState('dashboard');
-  const [sidebarHidden, setSidebarHidden] = useState(false);
   const [previousMode, setPreviousMode] = useState('chat');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
 
   // サイドバーを表示する画面の条件
-  const showSidebar = !sidebarHidden && (mode === 'landing' || mode === 'chat' || mode === 'vocab' || mode === 'vocabMenu' || mode === 'vocabCourseList' || mode === 'readingMenu' || mode === 'readingCourseList' || mode === 'course450' || mode === 'course600' || mode === 'course730' || mode === 'course860' || mode === 'reading_course450' || mode === 'reading_course600' || mode === 'reading_course730' || mode === 'reading_course860' || mode === 'test' || mode === 'mypage');
+  const showSidebar = mode === 'landing' || mode === 'chat' || mode === 'vocab' || mode === 'vocabMenu' || mode === 'vocabCourseList' || mode === 'readingMenu' || mode === 'readingCourseList' || mode === 'course450' || mode === 'course600' || mode === 'course730' || mode === 'course860' || mode === 'reading_course450' || mode === 'reading_course600' || mode === 'reading_course730' || mode === 'reading_course860' || mode === 'test' || mode === 'mypage';
 
   useEffect(() => {
     const token = localStorage.getItem('eng_learning_access_token');
@@ -113,7 +112,6 @@ function App() {
           setMode={setMode}
           setActiveMenu={setActiveMenu}
           setPreviousMode={setPreviousMode}
-          setSidebarHidden={setSidebarHidden}
           onCloseConsultant={handleCloseConsultant}
           handleAuthSuccess={handleAuthSuccess}
           userName={userName}

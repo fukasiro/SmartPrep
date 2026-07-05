@@ -396,6 +396,32 @@
   opacity: 0.9;
 }
 
+.consultant-error-text {
+  margin-top: 12px;
+  color: #e53e3e;
+  font-size: 13px;
+}
+
+.consultant-answer-box {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e0;
+}
+
+.consultant-answer-box h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #1e293b;
+}
+
+.consultant-answer-box p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.7;
+}
+
 /* アニメーション */
 .animate-slide-in {
   animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);

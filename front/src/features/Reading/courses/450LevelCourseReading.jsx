@@ -11,26 +11,61 @@ const STORAGE_KEY = 'reading_450_stage_scores';
 const STAGE_LABEL = '講';
 const PASS_SCORE = 3; // 1ステージあたり3〜4問想定のため、3問以上正解をベースラインに設定
 
-export default function Level450CourseReading({ onBack, setSidebarHidden }) {
+export default function Level450CourseReading({ onBack }) {
   const [screen, setScreen] = useState('stage_select');
   const [selectedStage, setSelectedStage] = useState(0);
   const [showConsultantPanel, setShowConsultantPanel] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      if (typeof setSidebarHidden === 'function') {
-        setSidebarHidden(false);
-      }
-    };
-  }, [setSidebarHidden]);
+  const [coachQuestion, setCoachQuestion] = useState('');
+  const [coachAnswer, setCoachAnswer] = useState('');
+  const [coachLoading, setCoachLoading] = useState(false);
+  const [coachError, setCoachError] = useState('');
 
   const handleAskCoach = () => {
-    // コーチパネルを表示するだけで、サイドバーは隠さない
     setShowConsultantPanel(true);
   };
 
   const closeConsultantPanel = () => {
     setShowConsultantPanel(false);
+    setCoachQuestion('');
+    setCoachAnswer('');
+    setCoachError('');
+  };
+
+  const submitCoachQuestion = async () => {
+    if (!coachQuestion.trim()) {
+      setCoachError('質問を入力してください。');
+      return;
+    }
+
+    setCoachLoading(true);
+    setCoachError('');
+    setCoachAnswer('');
+
+    try {
+      const response = await fetch('http://localhost:8000/ai/question', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question: coachQuestion.trim(),
+          context: currentStageData?.passage || '',
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => null);
+        const detail = error?.detail || response.statusText;
+        throw new Error(detail);
+      }
+
+      const result = await response.json();
+      setCoachAnswer(result.answer || 'AIからの応答がありませんでした。');
+    } catch (err) {
+      setCoachError(err instanceof Error ? err.message : 'AIへの問い合わせに失敗しました。');
+    } finally {
+      setCoachLoading(false);
+    }
   };
 
   // クイズ関連
@@ -291,12 +326,26 @@ export default function Level450CourseReading({ onBack, setSidebarHidden }) {
                 </div>
                 <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
               </div>
-              <textarea
+                  <textarea
                 className="consultant-textarea"
                 placeholder="例えば：本文の要点の探し方を教えてください。"
                 rows="6"
+                value={coachQuestion}
+                onChange={(e) => {
+                  setCoachQuestion(e.target.value);
+                  if (coachError) setCoachError('');
+                }}
               />
-              <button className="consultant-submit-btn">送信する</button>
+              <button className="consultant-submit-btn" onClick={submitCoachQuestion} disabled={coachLoading}>
+                {coachLoading ? '送信中…' : '送信する'}
+              </button>
+              {coachError && <p className="consultant-error-text">{coachError}</p>}
+              {coachAnswer && (
+                <div className="consultant-answer-box">
+                  <h4>AIコーチの回答</h4>
+                  <p>{coachAnswer}</p>
+                </div>
+              )}
             </div>
           )}
         </div>

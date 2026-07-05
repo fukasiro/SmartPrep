@@ -22,7 +22,6 @@ export default function LandingPage({
   mode, 
   setMode, 
   setActiveMenu, 
-  setSidebarHidden,
   onCloseConsultant,
   handleAuthSuccess,
   userName,
@@ -193,7 +192,6 @@ export default function LandingPage({
               setMode('readingCourseList');
               setActiveMenu('chat');
             }}
-            setSidebarHidden={setSidebarHidden}
           />
         )}
 
