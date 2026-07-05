@@ -55,6 +55,12 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
             />
           </div>
 
+          <p className="forgot-password-text">
+            <span className="forgot-password-link" onClick={onNavigateToForgotPassword}>
+              パスワード再設定
+            </span>
+          </p>
+
           <div className="form-button-group">
             <Button type="submit" variant="primary">
               {loading ? '処理中...' : 'ログイン'}
@@ -65,11 +71,6 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
             アカウントをお持ちでないですか？{' '}
             <span className="signup-link" onClick={onNavigateToSignUp}>
               登録する
-            </span>
-          </p>
-          <p className="forgot-password-text">
-            <span className="forgot-password-link" onClick={onNavigateToForgotPassword}>
-              パスワードを忘れた場合
             </span>
           </p>
 
@@ -83,8 +84,6 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
         >
           ログインせずに始める 🚀
         </button>
-        
-        <div className="auth-divider"><span>または</span></div>
         
         <p className="legal-text">
           ログインすると利用規約とプライバシーポリシーに同意したことになります。

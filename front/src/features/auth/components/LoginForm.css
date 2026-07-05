@@ -120,6 +120,19 @@
   color: #6b7280; 
 }
 
+.forgot-password-text {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #64748b;
+  align-self: flex-start;
+}
+
+.forgot-password-link {
+  color: #06b6d4;
+  cursor: pointer;
+  font-weight: 800;
+}
+
 .signup-link {
   color: #06b6d4; 
   cursor: pointer;
