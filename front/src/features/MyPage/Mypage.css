@@ -174,3 +174,15 @@
   border-color: #94a3b8;
   color: #0f172a;
 }
+
+.mypage-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;        /* ★追加：親要素に対して横幅100%にする */
+  flex: 1;            /* ★追加：親がFlexboxの場合、残りの余白をすべて埋める */
+  min-height: 100vh;
+  padding: 24px;
+  background-color: #f8fafc;
+  box-sizing: border-box;
+}
