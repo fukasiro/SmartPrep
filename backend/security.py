@@ -36,7 +36,7 @@ def verify_password(password: str, password_hash: str, password_salt: str) -> bo
 
 
 def generate_verification_code() -> str:
-    return secrets.token_urlsafe(16)
+    return f"{secrets.randbelow(900000) + 100000:06d}"
 
 
 def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
