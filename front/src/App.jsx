@@ -68,7 +68,7 @@ function App() {
 
   const handleMyPage = () => {
     setMode('mypage');
-    setActiveMenu('dashboard');
+    setActiveMenu('mypage');
   };
 
   return (
