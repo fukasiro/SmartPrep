@@ -18,8 +18,10 @@ export default function BookMarkVocabulary({ onBack }) {
   }, []);
 
   const handleRemove = (word) => {
-    removeBookmarkedWord(word);
-    syncBookmarks();
+    if (window.confirm(`「${word}」を削除してもよろしいですか？`)) {
+      removeBookmarkedWord(word);
+      syncBookmarks();
+    }
   };
 
   return (
@@ -32,17 +34,26 @@ export default function BookMarkVocabulary({ onBack }) {
 
         <main className="bookmark-vocab-main">
           {bookmarks.length === 0 ? (
-            <p className="bookmark-vocab-empty">まだ単語が登録されていません。単語コースでブックマークを追加してください。</p>
+            <div className="bookmark-vocab-empty">
+              <span className="bookmark-vocab-empty-icon">📚</span>
+              <p>まだ単語が登録されていません。<br />単語コースでブックマークを追加してください。</p>
+            </div>
           ) : (
             <ul className="bookmark-vocab-list">
               {bookmarks.map((item) => (
                 <li key={item.word} className="bookmark-vocab-item">
                   <div className="bookmark-vocab-item-text">
-                    <strong>{item.word}</strong>
-                    <span>{item.pos}</span>
-                    <p>{item.meaning}</p>
+                    <div className="bookmark-vocab-item-title-row">
+                      <strong className="bookmark-vocab-word">{item.word}</strong>
+                      {item.pos && <span className="bookmark-vocab-pos">{item.pos}</span>}
+                    </div>
+                    <p className="bookmark-vocab-meaning">{item.meaning}</p>
                   </div>
-                  <button className="bookmark-vocab-remove-btn" onClick={() => handleRemove(item.word)}>
+                  <button 
+                    className="bookmark-vocab-remove-btn" 
+                    onClick={() => handleRemove(item.word)}
+                    aria-label={`${item.word}を削除`}
+                  >
                     削除
                   </button>
                 </li>
@@ -54,7 +65,7 @@ export default function BookMarkVocabulary({ onBack }) {
         <footer className="bookmark-vocab-footer">
           {onBack && (
             <button className="bookmark-vocab-back-btn" onClick={onBack}>
-              戻る
+              ← 戻る
             </button>
           )}
         </footer>

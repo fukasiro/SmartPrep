@@ -1,0 +1,172 @@
+/* 全てにbox-sizingを適用してレイアウト崩れを防止 */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 全体コンテナ（幅いっぱいに広げるため、display: blockに変更） */
+.bookmark-vocab-container {
+  display: block;
+  width: 100%;
+  padding: 2rem;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* カード本体（max-widthを100%にして、親要素の幅いっぱいまで広げる） */
+.bookmark-vocab-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 10px 15px -3px rgba(0, 0, 0, 0.03);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+/* ヘッダー */
+.bookmark-vocab-header {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  padding: 1.5rem 2rem;
+  color: #ffffff;
+}
+
+.bookmark-vocab-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.bookmark-vocab-header p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #e0e7ff;
+  opacity: 0.9;
+}
+
+/* メインコンテンツエリア（ページ全体でスクロールさせるため上限を解除） */
+.bookmark-vocab-main {
+  padding: 1.5rem 2rem;
+}
+
+/* リストスタイル */
+.bookmark-vocab-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bookmark-vocab-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+.bookmark-vocab-item:last-child {
+  border-bottom: none;
+}
+
+/* 単語テキスト部分 */
+.bookmark-vocab-item-text {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.bookmark-vocab-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.bookmark-vocab-word {
+  font-size: 1.3rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.bookmark-vocab-pos {
+  font-size: 0.75rem;
+  background-color: #f1f5f9;
+  color: #64748b;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.bookmark-vocab-meaning {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* 削除ボタン */
+.bookmark-vocab-remove-btn {
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid #fee2e2;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.bookmark-vocab-remove-btn:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+/* 空の状態 */
+.bookmark-vocab-empty {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: #94a3b8;
+}
+
+.bookmark-vocab-empty-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.bookmark-vocab-empty p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* フッター＆戻るボタン */
+.bookmark-vocab-footer {
+  padding: 1.25rem 2rem;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.bookmark-vocab-back-btn {
+  background-color: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bookmark-vocab-back-btn:hover {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border-color: #94a3b8;
+}
