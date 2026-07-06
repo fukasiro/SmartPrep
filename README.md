@@ -5,7 +5,7 @@ SmartPrep is designed for Japanese TOEIC learners who want to achieve high score
 ![SmartPrep Reading Dashboard](./front/src/assets/Reading.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/ReadingAiBot.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/Certification.png)
-![SmartPrep Reading Dashboard](./front/src/assets/VocabAI.png)
+![SmartPrep Reading Dashboard](./front/src/assets/ReadingVocab.png)
 
 
 ## Purpose
