@@ -189,6 +189,26 @@
   background: transparent; border: 1px solid #cbd5e0; color: #718096;
   padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; transition: background 0.2s;
 }
+.vocab-navigation-row {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.vocab-navigation-row .vocabulary-menu-primary-button {
+  flex: 1;
+}
+
+.vocab-navigation-row .vocabulary-menu-secondary-button {
+  flex: 0 0 auto;
+}
+
+.vocab-navigation-row .vocabulary-menu-secondary-button[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 .vocabulary-menu-secondary-button:hover { background: #f7fafc; color: #4a5568; }
 
 /* ==========================================================================

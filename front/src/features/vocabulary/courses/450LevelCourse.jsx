@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import './450LevelCourse.css';
 import WORDS from './450_wordlist';
-import { loadCourseProgress, saveCourseProgress } from '../progressStorage';
+import { loadCourseProgress, saveCourseProgress, addBookmarkedWord, isWordBookmarked, removeBookmarkedWord } from '../progressStorage';
 
 const STORAGE_KEY = 'vocab_450_stage_scores';
 
@@ -36,39 +36,10 @@ export default function Level450Course({ onBack }) {
   
   // 証明書モーダルの表示フラグ
   const [showCertificate, setShowCertificate] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
 
   // 総ステージ数
   const totalStages = Math.ceil(WORDS.length / PER_STAGE);
-
-  // 進捗ロード
-  useEffect(() => {
-    const syncStageScores = () => {
-      setStageScores(loadCourseProgress(STORAGE_KEY));
-    };
-
-    syncStageScores();
-    window.addEventListener('vocab-progress-storage-updated', syncStageScores);
-
-    return () => {
-      window.removeEventListener('vocab-progress-storage-updated', syncStageScores);
-    };
-  }, []);
-
-  // クリア（合格）したステージの総数を計算
-  const clearedCount = useMemo(() => {
-    return Object.values(stageScores).filter(score => score >= PASS_SCORE).length;
-  }, [stageScores]);
-
-  // 進捗パーセンテージ（整数）
-  const progressPercent = useMemo(() => {
-    if (totalStages === 0) return 0;
-    return Math.floor((clearedCount / totalStages) * 100);
-  }, [clearedCount, totalStages]);
-
-  // 全ステージクリアしているか判定
-  const isAllCleared = useMemo(() => {
-    return totalStages > 0 && clearedCount === totalStages;
-  }, [clearedCount, totalStages]);
 
   // 今回の10語を抽出
   const todaysWords = useMemo(() => {
@@ -76,7 +47,6 @@ export default function Level450Course({ onBack }) {
     return WORDS.slice(start, start + PER_STAGE);
   }, [selectedStage]);
 
-  // クイズの4択を自動生成
   const quizQuestions = useMemo(() => {
     if (todaysWords.length === 0) return [];
     return todaysWords.map((wordObj) => {
@@ -94,6 +64,46 @@ export default function Level450Course({ onBack }) {
       };
     });
   }, [todaysWords]);
+
+  // 進捗ロード
+  useEffect(() => {
+    const syncStageScores = () => {
+      setStageScores(loadCourseProgress(STORAGE_KEY));
+    };
+
+    const syncBookmarkState = () => {
+      const currentWord = todaysWords[currentWordIdx];
+      if (currentWord) {
+        setBookmarked(isWordBookmarked(currentWord.word));
+      }
+    };
+
+    syncStageScores();
+    syncBookmarkState();
+    window.addEventListener('vocab-progress-storage-updated', syncStageScores);
+    window.addEventListener('vocab-bookmarks-updated', syncBookmarkState);
+
+    return () => {
+      window.removeEventListener('vocab-progress-storage-updated', syncStageScores);
+      window.removeEventListener('vocab-bookmarks-updated', syncBookmarkState);
+    };
+  }, [currentWordIdx, todaysWords]);
+
+  // クリア（合格）したステージの総数を計算
+  const clearedCount = useMemo(() => {
+    return Object.values(stageScores).filter(score => score >= PASS_SCORE).length;
+  }, [stageScores]);
+
+  // 進捗パーセンテージ（整数）
+  const progressPercent = useMemo(() => {
+    if (totalStages === 0) return 0;
+    return Math.floor((clearedCount / totalStages) * 100);
+  }, [clearedCount, totalStages]);
+
+  // 全ステージクリアしているか判定
+  const isAllCleared = useMemo(() => {
+    return totalStages > 0 && clearedCount === totalStages;
+  }, [clearedCount, totalStages]);
 
   const handleGoToMenu = () => {
     setScreen('stage_select');
@@ -124,6 +134,25 @@ export default function Level450Course({ onBack }) {
       setCurrentWordIdx((prev) => prev + 1);
     } else {
       skipToQuiz();
+    }
+  };
+
+  const prevWord = () => {
+    if (currentWordIdx > 0) {
+      setCurrentWordIdx((prev) => prev - 1);
+    }
+  };
+
+  const toggleBookmark = () => {
+    const currentWord = todaysWords[currentWordIdx];
+    if (!currentWord) return;
+
+    if (bookmarked) {
+      removeBookmarkedWord(currentWord.word);
+      setBookmarked(false);
+    } else {
+      addBookmarkedWord({ word: currentWord.word, pos: currentWord.pos, meaning: currentWord.meaning });
+      setBookmarked(true);
     }
   };
 
@@ -296,21 +325,31 @@ export default function Level450Course({ onBack }) {
               <span>{getStageName(selectedStage)} - 単語学習 ({currentWordIdx + 1} / {todaysWords.length})</span>
               <div className="reading-header-actions">
                 <button className="ai-coach-button" onClick={handleAskCoach}>AIコーチ</button>
+                <button className={`bookmark-action-btn${bookmarked ? ' active' : ''}`} onClick={toggleBookmark}>
+                  {bookmarked ? '★ ブックマーク済み' : '☆ ブックマーク'}
+                </button>
                 <button className="learning-quiz-skip-btn" onClick={skipToQuiz}>今すぐクイズ 📝</button>
                 <button className="exit-btn" onClick={handleGoToMenu}>中断</button>
               </div>
             </div>
 
             <div className="word-flashcard">
-              <span className="card-pos">[{todaysWords[currentWordIdx].pos}]</span>
+              <div className="bookmark-toggle-row">
+                <span className="card-pos">[{todaysWords[currentWordIdx].pos}]</span>
+              </div>
               <h1 className="card-word">{todaysWords[currentWordIdx].word}</h1>
               <div className="card-divider"></div>
               <p className="card-meaning">{todaysWords[currentWordIdx].meaning}</p>
             </div>
 
-            <button className="vocabulary-menu-primary-button w-100" onClick={nextWord}>
-              {currentWordIdx < todaysWords.length - 1 ? '次の単語へ' : '確認クイズへ進む 🚀'}
-            </button>
+            <div className="vocab-navigation-row">
+              <button className="vocabulary-menu-secondary-button" onClick={prevWord} disabled={currentWordIdx === 0}>
+                前の単語へ
+              </button>
+              <button className="vocabulary-menu-primary-button" onClick={nextWord}>
+                {currentWordIdx < todaysWords.length - 1 ? '次の単語へ' : '確認クイズへ進む 🚀'}
+              </button>
+            </div>
           </div>
           
           {showConsultantPanel && (

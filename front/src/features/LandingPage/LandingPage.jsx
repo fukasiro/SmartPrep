@@ -14,6 +14,7 @@ import Level450CourseReading from '../Reading/courses/450LevelCourseReading';
 import Level600Course from '../vocabulary/courses/600LevelCourse';
 import Level730Course from '../vocabulary/courses/730LevelCourse';
 import Level860Course from '../vocabulary/courses/860LevelCourse';
+import BookMarkVocabulary from '../vocabulary/vocabularyBook/BookMarkVocabulary';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
 import ForgotPasswordForm from '../auth/components/ForgotPasswordForm';
@@ -163,6 +164,16 @@ export default function LandingPage({
               setMode('vocabMenu');
               setActiveMenu('chat');
             }}
+            onSelect={(selection) => {
+              if (selection === 'bookmark-custom') {
+                setMode('bookmarkVocabulary');
+                setActiveMenu('chat');
+              } else if (selection === 'ai-personal') {
+                // AI個別単語帳の実装があればここに追加
+                setMode('vocabMenu');
+                setActiveMenu('chat');
+              }
+            }}
           />
         )}
 
@@ -232,6 +243,15 @@ export default function LandingPage({
           <Level860Course
             onBack={() => {
               setMode('vocabCourseList');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'bookmarkVocabulary' && (
+          <BookMarkVocabulary
+            onBack={() => {
+              setMode('myVocabulary');
               setActiveMenu('chat');
             }}
           />

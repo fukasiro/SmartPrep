@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import './600LevelCourse.css';
 import WORDS from './600_wordlist';
-import { loadCourseProgress, saveCourseProgress } from '../progressStorage';
+import { loadCourseProgress, saveCourseProgress, addBookmarkedWord, isWordBookmarked, removeBookmarkedWord } from '../progressStorage';
 
 const STORAGE_KEY = 'vocab_600_stage_scores';
 
@@ -30,21 +30,42 @@ export default function Level600Course({ onBack }) {
 
   const [stageScores, setStageScores] = useState({});
   const [showCertificate, setShowCertificate] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
 
-  const totalStages = Math.ceil(WORDS.length / PER_STAGE);
+  // WORDS が未定義または配列でない場合の安全ガード
+  const safeWords = useMemo(() => Array.isArray(WORDS) ? WORDS : [], []);
+  const totalStages = useMemo(() => Math.ceil(safeWords.length / PER_STAGE), [safeWords]);
 
+  // 今回の10語を抽出
+  const todaysWords = useMemo(() => {
+    if (safeWords.length === 0) return [];
+    const start = selectedStage * PER_STAGE;
+    return safeWords.slice(start, start + PER_STAGE);
+  }, [selectedStage, safeWords]);
+
+  // 進捗ロード (依存関係を最小限にして無限ループを防ぐ)
   useEffect(() => {
     const syncStageScores = () => {
-      setStageScores(loadCourseProgress(STORAGE_KEY));
+      if (typeof loadCourseProgress === 'function') {
+        setStageScores(loadCourseProgress(STORAGE_KEY) || {});
+      }
     };
 
     syncStageScores();
     window.addEventListener('vocab-progress-storage-updated', syncStageScores);
-
     return () => {
       window.removeEventListener('vocab-progress-storage-updated', syncStageScores);
     };
   }, []);
+
+  // ブックマーク状態の同期 (450点コース同様にヘッダー等と連動)
+  useEffect(() => {
+    if (todaysWords && todaysWords[currentWordIdx] && typeof isWordBookmarked === 'function') {
+      setBookmarked(isWordBookmarked(todaysWords[currentWordIdx].word));
+    } else {
+      setBookmarked(false);
+    }
+  }, [currentWordIdx, todaysWords]);
 
   const clearedCount = useMemo(() => {
     return Object.values(stageScores).filter((score) => score >= PASS_SCORE).length;
@@ -59,15 +80,11 @@ export default function Level600Course({ onBack }) {
     return totalStages > 0 && clearedCount === totalStages;
   }, [clearedCount, totalStages]);
 
-  const todaysWords = useMemo(() => {
-    const start = selectedStage * PER_STAGE;
-    return WORDS.slice(start, start + PER_STAGE);
-  }, [selectedStage]);
-
   const quizQuestions = useMemo(() => {
-    if (todaysWords.length === 0) return [];
+    if (todaysWords.length === 0 || safeWords.length === 0) return [];
     return todaysWords.map((wordObj) => {
-      const incorrects = WORDS.filter((w) => w.meaning !== wordObj.meaning)
+      const incorrects = safeWords
+        .filter((w) => w.meaning !== wordObj.meaning)
         .sort(() => 0.5 - Math.random())
         .slice(0, 3)
         .map((w) => w.meaning);
@@ -79,7 +96,7 @@ export default function Level600Course({ onBack }) {
         choices,
       };
     });
-  }, [todaysWords]);
+  }, [todaysWords, safeWords]);
 
   const handleGoToMenu = () => {
     setScreen('stage_select');
@@ -117,11 +134,32 @@ export default function Level600Course({ onBack }) {
     }
   };
 
+  const prevWord = () => {
+    if (currentWordIdx > 0) {
+      setCurrentWordIdx((prev) => prev - 1);
+    }
+  };
+
+  const toggleBookmark = () => {
+    const currentWord = todaysWords[currentWordIdx];
+    if (!currentWord) return;
+
+    if (bookmarked) {
+      if (typeof removeBookmarkedWord === 'function') removeBookmarkedWord(currentWord.word);
+      setBookmarked(false);
+    } else {
+      if (typeof addBookmarkedWord === 'function') {
+        addBookmarkedWord({ word: currentWord.word, pos: currentWord.pos, meaning: currentWord.meaning });
+      }
+      setBookmarked(true);
+    }
+  };
+
   const handleSelectAnswer = (choice) => {
     if (isAnswered) return;
     setSelectedAnswer(choice);
     setIsAnswered(true);
-    if (choice === quizQuestions[currentQuizIdx].correct) {
+    if (quizQuestions[currentQuizIdx] && choice === quizQuestions[currentQuizIdx].correct) {
       setScore((prev) => prev + 1);
     }
   };
@@ -191,6 +229,8 @@ export default function Level600Course({ onBack }) {
   };
 
   const nextQuiz = () => {
+    if (!quizQuestions[currentQuizIdx]) return;
+    
     if (currentQuizIdx < quizQuestions.length - 1) {
       setCurrentQuizIdx((prev) => prev + 1);
       setIsAnswered(false);
@@ -204,7 +244,9 @@ export default function Level600Course({ onBack }) {
         nextScores[selectedStage] = finalScore;
       }
       setStageScores(nextScores);
-      saveCourseProgress(STORAGE_KEY, nextScores);
+      if (typeof saveCourseProgress === 'function') {
+        saveCourseProgress(STORAGE_KEY, nextScores);
+      }
 
       const updatedClearedCount = Object.values(nextScores).filter((s) => s >= PASS_SCORE).length;
       if (updatedClearedCount === totalStages && finalScore >= PASS_SCORE) {
@@ -267,28 +309,39 @@ export default function Level600Course({ onBack }) {
         </div>
       )}
 
-      {screen === 'learning' && todaysWords.length > 0 && (
+      {/* 2. 単語カード画面 (450点コース同様のヘッダーブックマーク形式に変更) */}
+      {screen === 'learning' && todaysWords.length > 0 && todaysWords[currentWordIdx] && (
         <div className="reading-stage-card-wrapper">
           <div className={`vocab-list-card reading-stage-card${showConsultantPanel ? ' coach-open' : ''}`}>
             <div className="screen-header reading-full-width">
               <span>{getStageName(selectedStage)} - 単語学習 ({currentWordIdx + 1} / {todaysWords.length})</span>
               <div className="reading-header-actions">
                 <button className="ai-coach-button" onClick={handleAskCoach}>AIコーチ</button>
+                <button className={`bookmark-action-btn${bookmarked ? ' active' : ''}`} onClick={toggleBookmark}>
+                  {bookmarked ? '★ ブックマーク済み' : '☆ ブックマーク'}
+                </button>
                 <button className="learning-quiz-skip-btn" onClick={skipToQuiz}>今すぐクイズ 📝</button>
                 <button className="exit-btn" onClick={handleGoToMenu}>中断</button>
               </div>
             </div>
 
             <div className="word-flashcard">
-              <span className="card-pos">[{todaysWords[currentWordIdx].pos}]</span>
+              <div className="bookmark-toggle-row">
+                <span className="card-pos">[{todaysWords[currentWordIdx].pos}]</span>
+              </div>
               <h1 className="card-word">{todaysWords[currentWordIdx].word}</h1>
               <div className="card-divider"></div>
               <p className="card-meaning">{todaysWords[currentWordIdx].meaning}</p>
             </div>
 
-            <button className="vocabulary-menu-primary-button w-100" onClick={nextWord}>
-              {currentWordIdx < todaysWords.length - 1 ? '次の単語へ' : '確認クイズへ進む 🚀'}
-            </button>
+            <div className="vocab-navigation-row">
+              <button className="vocabulary-menu-secondary-button" onClick={prevWord} disabled={currentWordIdx === 0}>
+                前の単語へ
+              </button>
+              <button className="vocabulary-menu-primary-button" onClick={nextWord}>
+                {currentWordIdx < todaysWords.length - 1 ? '次の単語へ' : '確認クイズへ進む 🚀'}
+              </button>
+            </div>
           </div>
 
           {showConsultantPanel && (
@@ -325,7 +378,7 @@ export default function Level600Course({ onBack }) {
         </div>
       )}
 
-      {screen === 'quiz' && quizQuestions.length > 0 && (
+      {screen === 'quiz' && quizQuestions.length > 0 && quizQuestions[currentQuizIdx] && (
         <div className="reading-stage-card-wrapper">
           <div className={`vocab-list-card reading-stage-card${showConsultantPanel ? ' coach-open' : ''}`}>
             <div className="screen-header reading-full-width">

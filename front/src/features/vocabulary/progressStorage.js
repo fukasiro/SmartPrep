@@ -69,3 +69,57 @@ export function clearCourseProgress(courseKey, storage = globalThis.localStorage
   storage.removeItem(courseKey);
   notifyProgressStorageChanged(storage);
 }
+
+const BOOKMARK_STORAGE_KEY = 'bookmark_vocab';
+
+export function getBookmarkStorageKey(storage = globalThis.localStorage) {
+  return `${BOOKMARK_STORAGE_KEY}:${getCurrentUserIdentifier(storage)}`;
+}
+
+export function loadBookmarkedWords(storage = globalThis.localStorage) {
+  if (!storage) return [];
+  const scopedKey = getBookmarkStorageKey(storage);
+  const raw = storage.getItem(scopedKey);
+  if (raw) {
+    try {
+      return JSON.parse(raw);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  return [];
+}
+
+export function saveBookmarkedWords(words, storage = globalThis.localStorage) {
+  if (!storage) return;
+  storage.setItem(getBookmarkStorageKey(storage), JSON.stringify(words));
+  notifyBookmarkStorageChanged(storage);
+}
+
+export function addBookmarkedWord(wordEntry, storage = globalThis.localStorage) {
+  if (!storage || !wordEntry || !wordEntry.word) return;
+  const current = loadBookmarkedWords(storage);
+  const exists = current.some((item) => item.word === wordEntry.word);
+  if (!exists) {
+    const next = [...current, wordEntry];
+    saveBookmarkedWords(next, storage);
+  }
+}
+
+export function removeBookmarkedWord(word, storage = globalThis.localStorage) {
+  if (!storage || !word) return;
+  const current = loadBookmarkedWords(storage);
+  const next = current.filter((item) => item.word !== word);
+  saveBookmarkedWords(next, storage);
+}
+
+export function isWordBookmarked(word, storage = globalThis.localStorage) {
+  if (!storage || !word) return false;
+  const current = loadBookmarkedWords(storage);
+  return current.some((item) => item.word === word);
+}
+
+function notifyBookmarkStorageChanged(storage = globalThis.localStorage) {
+  if (!storage || typeof window === 'undefined') return;
+  window.dispatchEvent(new Event('vocab-bookmarks-updated'));
+}
