@@ -24,6 +24,13 @@ export default function Level450Course({ onBack }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
 
+  // AIコーチ関連
+  const [showConsultantPanel, setShowConsultantPanel] = useState(false);
+  const [coachQuestion, setCoachQuestion] = useState('');
+  const [coachAnswer, setCoachAnswer] = useState('');
+  const [coachLoading, setCoachLoading] = useState(false);
+  const [coachError, setCoachError] = useState('');
+
   // スコア記録 { 0: 8, 1: 5 }
   const [stageScores, setStageScores] = useState({});
   
@@ -95,6 +102,7 @@ export default function Level450Course({ onBack }) {
     setScore(0);
     setSelectedAnswer(null);
     setIsAnswered(false);
+    setShowConsultantPanel(false);
   };
 
   const startStage = (stageIndex) => {
@@ -128,6 +136,70 @@ export default function Level450Course({ onBack }) {
     }
   };
 
+  const handleAskCoach = () => {
+    setShowConsultantPanel(true);
+  };
+
+  const closeConsultantPanel = () => {
+    setShowConsultantPanel(false);
+    setCoachQuestion('');
+    setCoachAnswer('');
+    setCoachError('');
+  };
+
+  const coachContext = useMemo(() => {
+    const currentWord = todaysWords[currentWordIdx];
+    const currentQuiz = quizQuestions[currentQuizIdx];
+    const stageWords = todaysWords.map((word) => `${word.word}：${word.meaning}`).join('\n');
+
+    if (screen === 'learning' && currentWord) {
+      return `現在の単語：${currentWord.word}\n品詞：${currentWord.pos}\n意味：${currentWord.meaning}\n\n同じステージの単語一覧:\n${stageWords}`;
+    }
+
+    if (screen === 'quiz' && currentQuiz) {
+      return `現在の問題：${currentQuiz.word} (${currentQuiz.pos})\n正しい意味：${currentQuiz.correct}\n選択肢：${currentQuiz.choices.join(' / ')}\n\n同じステージの単語一覧:\n${stageWords}`;
+    }
+
+    return `単語一覧:\n${stageWords}`;
+  }, [screen, todaysWords, currentWordIdx, currentQuizIdx, quizQuestions]);
+
+  const submitCoachQuestion = async () => {
+    if (!coachQuestion.trim()) {
+      setCoachError('質問を入力してください。');
+      return;
+    }
+
+    setCoachLoading(true);
+    setCoachError('');
+    setCoachAnswer('');
+
+    try {
+      const response = await fetch('http://localhost:8000/ai/question', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question: coachQuestion.trim(),
+          context: coachContext,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => null);
+        const detail = error?.detail || response.statusText;
+        throw new Error(detail);
+      }
+
+      const result = await response.json();
+      setCoachAnswer(result.answer || 'AIからの応答がありませんでした。');
+    } catch (err) {
+      setCoachError(err instanceof Error ? err.message : 'AIへの問い合わせに失敗しました。');
+    } finally {
+      setCoachLoading(false);
+    }
+  };
+
   const nextQuiz = () => {
     if (currentQuizIdx < quizQuestions.length - 1) {
       setCurrentQuizIdx((prev) => prev + 1);
@@ -136,7 +208,7 @@ export default function Level450Course({ onBack }) {
     } else {
       setScreen('result');
       
-      const finalScore = score + (selectedAnswer === quizQuestions[currentQuizIdx].correct ? 1 : 0);
+      const finalScore = score;
       const previousScore = stageScores[selectedStage] !== undefined ? stageScores[selectedStage] : -1;
       
       let nextScores = { ...stageScores };
@@ -149,7 +221,6 @@ export default function Level450Course({ onBack }) {
       setStageScores(nextScores);
       saveCourseProgress(STORAGE_KEY, nextScores);
 
-      // もしこの合格で「全クリア」を達成したら、お祝いのために証明書フラグを立てる
       const updatedClearedCount = Object.values(nextScores).filter(s => s >= PASS_SCORE).length;
       if (updatedClearedCount === totalStages && finalScore >= PASS_SCORE) {
         setShowCertificate(true);
@@ -219,73 +290,145 @@ export default function Level450Course({ onBack }) {
 
       {/* 2. 単語カード画面 */}
       {screen === 'learning' && todaysWords.length > 0 && (
-        <div className="vocab-list-card text-center">
-          <div className="screen-header">
-            <span>{getStageName(selectedStage)} - 単語学習 ({currentWordIdx + 1} / {todaysWords.length})</span>
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <button className="learning-quiz-skip-btn" onClick={skipToQuiz}>今すぐクイズ 📝</button>
-              <button className="exit-btn" onClick={handleGoToMenu}>中断</button>
+        <div className="reading-stage-card-wrapper">
+          <div className={`vocab-list-card reading-stage-card${showConsultantPanel ? ' coach-open' : ''}`}>
+            <div className="screen-header reading-full-width">
+              <span>{getStageName(selectedStage)} - 単語学習 ({currentWordIdx + 1} / {todaysWords.length})</span>
+              <div className="reading-header-actions">
+                <button className="ai-coach-button" onClick={handleAskCoach}>AIコーチ</button>
+                <button className="learning-quiz-skip-btn" onClick={skipToQuiz}>今すぐクイズ 📝</button>
+                <button className="exit-btn" onClick={handleGoToMenu}>中断</button>
+              </div>
             </div>
-          </div>
 
-          <div className="word-flashcard">
-            <span className="card-pos">[{todaysWords[currentWordIdx].pos}]</span>
-            <h1 className="card-word">{todaysWords[currentWordIdx].word}</h1>
-            <div className="card-divider"></div>
-            <p className="card-meaning">{todaysWords[currentWordIdx].meaning}</p>
-          </div>
+            <div className="word-flashcard">
+              <span className="card-pos">[{todaysWords[currentWordIdx].pos}]</span>
+              <h1 className="card-word">{todaysWords[currentWordIdx].word}</h1>
+              <div className="card-divider"></div>
+              <p className="card-meaning">{todaysWords[currentWordIdx].meaning}</p>
+            </div>
 
-          <button className="vocabulary-menu-primary-button w-100" onClick={nextWord}>
-            {currentWordIdx < todaysWords.length - 1 ? '次の単語へ' : '確認クイズへ進む 🚀'}
-          </button>
+            <button className="vocabulary-menu-primary-button w-100" onClick={nextWord}>
+              {currentWordIdx < todaysWords.length - 1 ? '次の単語へ' : '確認クイズへ進む 🚀'}
+            </button>
+          </div>
+          
+          {showConsultantPanel && (
+            <div className="reading-consultant-panel animate-slide-in">
+              <div className="consultant-header">
+                <div>
+                  <h3>AIコーチ</h3>
+                  <p>質問を入力してヒントをもらいましょう。</p>
+                </div>
+                <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
+              </div>
+              <textarea
+                className="consultant-textarea"
+                placeholder="例えば：この単語の覚え方を教えてください。"
+                rows="6"
+                value={coachQuestion}
+                onChange={(e) => {
+                  setCoachQuestion(e.target.value);
+                  if (coachError) setCoachError('');
+                }}
+              />
+              <button className="consultant-submit-btn" onClick={submitCoachQuestion} disabled={coachLoading}>
+                {coachLoading ? '送信中…' : '送信する'}
+              </button>
+              {coachError && <p className="consultant-error-text">{coachError}</p>}
+              {coachAnswer && (
+                <div className="consultant-answer-box">
+                  <h4>AIコーチの回答</h4>
+                  <p>{coachAnswer}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
       {/* 3. クイズ画面 */}
       {screen === 'quiz' && quizQuestions.length > 0 && (
-        <div className="vocab-list-card">
-          <div className="screen-header">
-            <span>{getStageName(selectedStage)} - クイズ ({currentQuizIdx + 1} / {quizQuestions.length})</span>
-            <button className="exit-btn" onClick={handleGoToMenu}>中断</button>
-          </div>
-
-          <div className="quiz-box">
-            <p className="quiz-question-label">正しい意味を選んでください：</p>
-            <h2 className="quiz-word">{quizQuestions[currentQuizIdx].word} <span style={{fontSize: '14px', fontWeight: 'normal'}}>({quizQuestions[currentQuizIdx].pos})</span></h2>
-
-            <div className="quiz-choices">
-              {quizQuestions[currentQuizIdx].choices.map((choice, i) => {
-                let btnClass = 'choice-btn';
-                if (isAnswered) {
-                  if (choice === quizQuestions[currentQuizIdx].correct) {
-                    btnClass += ' correct-choice';
-                  } else if (choice === selectedAnswer) {
-                    btnClass += ' wrong-choice';
-                  } else {
-                    btnClass += ' disabled-choice';
-                  }
-                }
-                return (
-                  <button key={i} className={btnClass} onClick={() => handleSelectAnswer(choice)} disabled={isAnswered}>
-                    {choice}
-                  </button>
-                );
-              })}
+        <div className="reading-stage-card-wrapper">
+          <div className={`vocab-list-card reading-stage-card${showConsultantPanel ? ' coach-open' : ''}`}>
+            <div className="screen-header reading-full-width">
+              <span>{getStageName(selectedStage)} - クイズ ({currentQuizIdx + 1} / {quizQuestions.length})</span>
+              <div className="reading-header-actions">
+                <button className="ai-coach-button" onClick={handleAskCoach}>AIコーチ</button>
+                <button className="exit-btn" onClick={handleGoToMenu}>中断</button>
+              </div>
             </div>
 
-            {isAnswered && (
-              <div className="quiz-feedback">
-                {selectedAnswer === quizQuestions[currentQuizIdx].correct ? (
-                  <p className="feedback-text correct">⭕ 正解！</p>
-                ) : (
-                  <p className="feedback-text wrong">❌ 不正解...（正解: {quizQuestions[currentQuizIdx].correct}）</p>
-                )}
-                <button className="vocabulary-menu-primary-button w-100" onClick={nextQuiz}>
-                  {currentQuizIdx < quizQuestions.length - 1 ? '次の問題へ' : '結果を見る'}
-                </button>
+            <div className="quiz-box" style={{ padding: 0 }}>
+              <p className="quiz-question-label">正しい意味を選んでください：</p>
+              <h2 className="quiz-word">{quizQuestions[currentQuizIdx].word} <span style={{ fontSize: '14px', fontWeight: 'normal' }}>({quizQuestions[currentQuizIdx].pos})</span></h2>
+
+              <div className="quiz-choices">
+                {quizQuestions[currentQuizIdx].choices.map((choice, i) => {
+                  let btnClass = 'choice-btn';
+                  if (isAnswered) {
+                    if (choice === quizQuestions[currentQuizIdx].correct) {
+                      btnClass += ' correct-choice';
+                    } else if (choice === selectedAnswer) {
+                      btnClass += ' wrong-choice';
+                    } else {
+                      btnClass += ' disabled-choice';
+                    }
+                  }
+                  return (
+                    <button key={i} className={btnClass} onClick={() => handleSelectAnswer(choice)} disabled={isAnswered}>
+                      {choice}
+                    </button>
+                  );
+                })}
               </div>
-            )}
+
+              {isAnswered && (
+                <div className="quiz-feedback" style={{ marginTop: '12px', paddingTop: '12px' }}>
+                  {selectedAnswer === quizQuestions[currentQuizIdx].correct ? (
+                    <p className="feedback-text correct" style={{ fontSize: '16px', marginBottom: '8px' }}>⭕ 正解！</p>
+                  ) : (
+                    <p className="feedback-text wrong" style={{ fontSize: '16px', marginBottom: '8px' }}>❌ 不正解...（正解: {quizQuestions[currentQuizIdx].correct}）</p>
+                  )}
+                  <button className="vocabulary-menu-primary-button w-100" onClick={nextQuiz} style={{ marginTop: '12px' }}>
+                    {currentQuizIdx < quizQuestions.length - 1 ? '次の問題へ' : '結果を見る'}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
+
+          {showConsultantPanel && (
+            <div className="reading-consultant-panel animate-slide-in">
+              <div className="consultant-header">
+                <div>
+                  <h3>AIコーチ</h3>
+                  <p>質問を入力してヒントをもらいましょう。</p>
+                </div>
+                <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
+              </div>
+              <textarea
+                className="consultant-textarea"
+                placeholder="例えば：この単語の覚え方を教えてください。"
+                rows="6"
+                value={coachQuestion}
+                onChange={(e) => {
+                  setCoachQuestion(e.target.value);
+                  if (coachError) setCoachError('');
+                }}
+              />
+              <button className="consultant-submit-btn" onClick={submitCoachQuestion} disabled={coachLoading}>
+                {coachLoading ? '送信中…' : '送信する'}
+              </button>
+              {coachError && <p className="consultant-error-text">{coachError}</p>}
+              {coachAnswer && (
+                <div className="consultant-answer-box">
+                  <h4>AIコーチの回答</h4>
+                  <p>{coachAnswer}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
