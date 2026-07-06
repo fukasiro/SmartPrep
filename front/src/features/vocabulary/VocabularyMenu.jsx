@@ -1,7 +1,7 @@
 import React from 'react';
 import './VocabularyMenu.css';
 
-export default function VocabularyMenu({ onBack, onStartCourse }) {
+export default function VocabularyMenu({ onBack, onStartCourse, onStartMyVocabulary }) {
   return (
     <div className="vocabulary-menu-container">
       <div className="vocabulary-menu-card">
@@ -26,7 +26,7 @@ export default function VocabularyMenu({ onBack, onStartCourse }) {
             <p className="vocab-card-description">
               あなたが登録した単語とテスト履歴を一括管理。復習すべき単語をすぐに取り出せます。
             </p>
-            <button className="vocab-card-button">単語帳を開く</button>
+            <button className="vocab-card-button" onClick={onStartMyVocabulary}>単語帳を開く</button>
           </div>
         </div>
 

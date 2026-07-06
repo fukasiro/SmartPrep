@@ -8,6 +8,7 @@ import ReadingMenu from '../Reading/ReadingMenu';
 import ReadingCourseList from '../Reading/ReadingCourseList';
 import VocabularyMenu from '../vocabulary/VocabularyMenu';
 import VocabularyCourseList from '../vocabulary/VocabularyCourseList';
+import MyVocabulary from '../vocabulary/MyVocabulary';
 import Level450Course from '../vocabulary/courses/450LevelCourse';
 import Level450CourseReading from '../Reading/courses/450LevelCourseReading';
 import Level600Course from '../vocabulary/courses/600LevelCourse';
@@ -147,6 +148,19 @@ export default function LandingPage({
               setMode('vocabCourseList');
               // Vocabulary screens are conceptually under Reading (chat),
               // keep the sidebar active as 'chat' so the Reading menu stays highlighted.
+              setActiveMenu('chat');
+            }}
+            onStartMyVocabulary={() => {
+              setMode('myVocabulary');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'myVocabulary' && (
+          <MyVocabulary
+            onBack={() => {
+              setMode('vocabMenu');
               setActiveMenu('chat');
             }}
           />
