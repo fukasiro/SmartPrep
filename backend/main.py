@@ -7,6 +7,7 @@ from google import genai  # 新しい公式SDK (google-genai) をインポート
 
 from database import engine, Base
 from routers.auth import router as auth_router
+from rag import build_knowledge_base_from_frontend, retrieve_relevant_context
 
 # .envファイルから環境変数を読み込み
 load_dotenv()
@@ -43,11 +44,15 @@ def ask_ai_question(request: AIQuestionRequest):
     if not api_key:
         raise HTTPException(status_code=500, detail="AI API key is not configured.")
 
+    # まずは検索して、関連する教材本文を取り出す
+    knowledge_base = request.context or build_knowledge_base_from_frontend()
+    retrieved_context = retrieve_relevant_context(request.question.strip(), knowledge_base)
+
     # プロンプトの組み立て
-    if request.context:
+    if retrieved_context:
         prompt_text = (
-            "You are an AI English coach. Use the following passage as context and answer the user's question clearly in Japanese.\n\n"
-            f"Passage:\n{request.context}\n\nQuestion:\n{request.question.strip()}"
+            "You are an AI English coach. Use the following retrieved passages as context and answer the user's question clearly in Japanese.\n\n"
+            f"Retrieved passages:\n{retrieved_context}\n\nQuestion:\n{request.question.strip()}"
         )
     else:
         prompt_text = (
