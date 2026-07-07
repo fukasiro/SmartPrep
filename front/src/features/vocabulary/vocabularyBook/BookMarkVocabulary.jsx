@@ -188,7 +188,7 @@ export default function BookMarkVocabulary({ onBack }) {
   };
 
   return (
-    <div className="vocab-list-container">
+    <div className="vocab-list-container bookmark-vocab-page">
       <div className="reading-stage-card-wrapper">
         
         {/* 左側：メインカード */}

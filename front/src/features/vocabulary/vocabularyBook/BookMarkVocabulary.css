@@ -3,15 +3,19 @@
    ========================================================================== */
 
 /* 全体コンテナ */
-.vocab-list-container {
+.bookmark-vocab-page.vocab-list-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
   background-color: #f0f4f8;
-  padding: 40px 20px;
+  padding: 40px 28px;
   box-sizing: border-box;
   font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+}
+
+.bookmark-vocab-page {
+  width: 100%;
 }
 
 /* レイアウトラッパー */
@@ -21,8 +25,9 @@
   align-items: stretch; /* 縦ラインの上端を絶対一致 */
   gap: 24px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1180px;
   margin: 0 auto;
+  padding: 0 24px;
   box-sizing: border-box;
 }
 
@@ -30,8 +35,6 @@
 .reading-stage-card {
   flex: 1;
   min-width: 0;
-  margin: 0 !important; /* 外部要因の微小マージンをリセット */
-  padding: 0 !important;
   box-sizing: border-box;
 }
 
@@ -534,7 +537,9 @@
   box-sizing: border-box;
   flex-shrink: 0;
   height: max-content;
-  margin: 0 !important; /* メインカードと垂直ツラを完璧に統一 */
+  position: sticky;
+  top: 24px;
+  align-self: flex-start;
 }
 
 .reading-consultant-panel .consultant-header {
