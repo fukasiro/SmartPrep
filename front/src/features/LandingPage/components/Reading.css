@@ -233,7 +233,7 @@
 
 /* 各独立カードの共通デザイン */
 .reading-card {
-  background: #ffffff;
+  background: #ffffff !important;
   border: 2px solid #e5e7eb;
   border-radius: 20px;
   padding: 30px;
