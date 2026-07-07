@@ -2,7 +2,7 @@
 
 SmartPrep is a TOEIC-focused English learning app for Japanese learners. It combines structured vocabulary and reading courses with an AI English consultant so users can study with personalized guidance instead of relying only on static materials.
 
-![SmartPrep Reading Dashboard](./front/src/assets/スクリーンショット2.png)
+![SmartPrep Reading Dashboard](./front/src/assets/02D7166B-DCA0-4DD7-BF32-B5D384114AD9.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/ReadingAiBot.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/Certification.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/ReadingVocab.png)
