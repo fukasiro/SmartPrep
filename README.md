@@ -1,6 +1,6 @@
 # SmartPrep
 
-SmartPrep is designed for Japanese TOEIC learners who want to achieve high scores by using AI efficiently. It removes unnecessary features to lower the learning barrier and provides instant, appropriate answers that analog study methods cannot deliver.
+SmartPrep is a TOEIC-focused English learning app for Japanese learners. It combines structured vocabulary and reading courses with an AI English consultant so users can study with personalized guidance instead of relying only on static materials.
 
 ![SmartPrep Reading Dashboard](./front/src/assets/Reading.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/ReadingAiBot.png)
@@ -8,36 +8,33 @@ SmartPrep is designed for Japanese TOEIC learners who want to achieve high score
 ![SmartPrep Reading Dashboard](./front/src/assets/ReadingVocab.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/AiChatBot.png)
 
+## Overview
 
+SmartPrep is designed to help learners prepare for TOEIC in a simple and focused way:
 
-## Purpose
+- Keep the experience lightweight and easy to start.
+- Provide structured vocabulary and reading study paths.
+- Offer AI-powered advice based on the learner's bookmarked words and course progress.
+- Support a smooth learning flow from landing page to course study and review.
 
-- Support Japanese native speakers aiming for high TOEIC scores.
-- Keep the app body as simple as possible so users can start learning without friction.
-- Deliver instant AI-backed feedback and explanations that are difficult to obtain from analog learning alone.
+## Main Features
 
-## Key Differentiators
-
-- Minimal feature set to reduce cognitive load and app complexity.
-- Focused TOEIC preparation flow rather than a general-purpose English learning tool.
-- AI-powered response system that provides fast, context-aware guidance.
-- Simple UX that encourages continuous study by removing distractions.
-
-## Features
-
-- Login and signup flow with email verification.
-- JWT-based authentication for secure session handling.
-- AI-friendly architecture for future expansion with TOEIC-style question generation, explanations, and instant corrections.
-- Lightweight frontend experience built with React and Vite.
-- FastAPI backend with SQLite for quick local deployment.
+- User authentication flow with signup, login, password reset, and email verification
+- JWT-based session handling with frontend token persistence
+- Vocabulary study courses for TOEIC levels 450, 600, 730, and 860
+- Reading study courses with level-based progression
+- Bookmark vocabulary management with custom word addition and search
+- AI Consultant that answers questions using the learner's saved vocabulary and course progress context
+- My page and study progress tracking via browser storage
+- Responsive UI with sidebar-based navigation
 
 ## Tech Stack
 
 ### Frontend
 - React 19.2.7
 - Vite 8.1.0
-- JSX components
-- `localStorage` for storing authentication tokens and user state
+- JSX-based UI components
+- Local storage for authentication, bookmarks, and course progress
 - REST API communication with FastAPI
 
 ### Backend
@@ -47,78 +44,79 @@ SmartPrep is designed for Japanese TOEIC learners who want to achieve high score
 - SQLite
 - PyJWT
 - Pydantic
-- Email validation and verification support via `email-validator`
+- Email verification support via email-validator
 
-### Development
-- Docker / docker-compose support available in the repository
-- Local development mode with separate frontend and backend services
+### AI Integration
+- Gemini API via google-genai
+- Context-aware question answering for personalized learning support
 
-## Architecture Overview
+## Project Structure
 
-### Authentication Flow
-1. User signs up with name, email, and password.
-2. Backend stores pending signup data and generates a verification code.
-3. Verification code is sent via email, or printed to the terminal during local development.
-4. User enters the code to complete account creation.
-5. Backend issues a JWT access token after successful verification.
-6. Login also returns a JWT token and persists it in the frontend.
+- backend/ — FastAPI backend, authentication routes, AI endpoint, and database setup
+- front/ — React + Vite frontend and feature-based UI components
+- front/src/features/vocabulary/ — vocabulary courses, progress storage, and bookmark functionality
+- front/src/features/LandingPage/components/ — dashboard, AI consultant, and learning pages
 
-### Key Files
-- `backend/main.py` — FastAPI app setup, CORS configuration, router registration
-- `backend/routers/auth.py` — signup, verify-signup, and login endpoints
-- `backend/security.py` — password hashing, verification code generation, JWT creation
-- `backend/models.py` — `User` and `PendingSignup` models
-- `backend/database.py` — SQLite database connection and session handling
-- `front/src/features/auth/hooks/useAuth.js` — authentication API calls and token persistence
-- `front/src/features/auth/components/` — login, signup, and verification form components
+## Authentication Flow
+
+1. A user signs up with name, email, and password.
+2. The backend stores pending signup data and generates a verification code.
+3. The code is sent by email when SMTP is configured, otherwise it is displayed in the terminal during local development.
+4. The user verifies the account and completes registration.
+5. A JWT token is issued and stored in the frontend.
 
 ## Getting Started
 
-### Run backend locally
+### 1) Backend
+
 ```bash
 cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 python3 -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Run frontend locally
+### 2) Frontend
+
 ```bash
 cd front
 npm install
 npm run dev
 ```
 
-### Run with Docker
+Then open the frontend in your browser.
+
+### 3) Docker Compose
+
 ```bash
-cd .
 docker compose up --build
 ```
 
-## Environment Settings
+## Environment Variables
 
-### Backend environment variables
-- `SECRET_KEY` — JWT signing key
-- `JWT_ALGORITHM` — usually `HS256`
-- `ACCESS_TOKEN_EXPIRE_MINUTES` — token expiration time
-- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `FROM_EMAIL` — optional email settings
+Create a backend environment file with the following values:
 
-> If SMTP is not configured, the verification code is output to the terminal for local development.
+- SECRET_KEY — JWT signing key
+- JWT_ALGORITHM — typically HS256
+- ACCESS_TOKEN_EXPIRE_MINUTES — access token expiration time
+- GOOGLE_API_KEY or GEMINI_API_KEY — required for AI answers
+- SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, FROM_EMAIL — optional email configuration
 
-## Current Status and Estimated Work
+If SMTP is not configured, verification codes are shown in the terminal for local development.
 
-### Current status
-- Authentication flow is implemented.
-- Login, signup, and email verification form flows exist.
-- JWT authorization and frontend token storage are connected.
-- TOEIC-specific AI content is still a future expansion area.
+## Current Status
 
-### Estimated remaining effort
-- AI problem generation and TOEIC content integration: 
-- UI/UX improvements and responsive polishing: 
-- Production hardening, secrets, SMTP, and security improvements:
+SmartPrep currently includes:
 
+- Authentication and account verification
+- Vocabulary and reading course flows
+- Bookmark-based vocabulary study and custom word entry
+- AI consultant support using user-specific learning context
+- Local progress persistence for study history and bookmarks
 
-## Why this app is different
+## Notes
 
-- It is built specifically for TOEIC learners, not general English learners.
-- It uses AI to provide fast, accurate feedback in a study flow designed for Japanese users.
-- It intentionally limits features so users can focus on learning instead of being overwhelmed.
+- Vocabulary and course progress are stored in browser local storage for the current user session.
+- The AI Consultant uses the learner's bookmarked words and course progress to generate more relevant advice.
+- The app is intentionally focused on a simple TOEIC study experience rather than a broad general-purpose English platform.
