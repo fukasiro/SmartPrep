@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AIコンサルタント - チャットボットUI (洗練版)
+   AIコンサルタント - チャットボットUI (SVG表示・レイアウト修正版)
    ========================================================================== */
 
 .ai-consultant-page {
@@ -10,6 +10,15 @@
   background: #f8fafc; /* すっきりした明るい背景に統一 */
   box-sizing: border-box;
   overflow: hidden;
+}
+
+/* --- 追加：SVGアイコンの共通強制スタイル --- */
+.menu-svg-icon {
+  width: 22px !important;    /* アイコンの横幅 */
+  height: 22px !important;   /* アイコンの縦幅 */
+  flex-shrink: 0;
+  display: inline-block;
+  color: inherit;            /* 親要素の文字色をそのまま引き継ぐ */
 }
 
 /* --- ヘッダー --- */
@@ -31,7 +40,14 @@
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 8px; /* アイコンとテキストの間隔 */
+}
+
+/* ヘッダー内のSVGの色を調整（アクセントカラー） */
+.ai-consultant-title-section h1 .menu-svg-icon {
+  color: #3b82f6; 
+  width: 24px !important;
+  height: 24px !important;
 }
 
 .ai-consultant-title-section p {
@@ -108,6 +124,7 @@
   flex-direction: row-reverse;
 }
 
+/* アバター表示の修正：SVGが入っても崩れないように flex センター配置を保証 */
 .message-avatar {
   font-size: 20px;
   background: #ffffff;
@@ -119,6 +136,8 @@
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   flex-shrink: 0;
+  color: #475569; /* AIのSVGアイコンの色 */
+  overflow: hidden;
 }
 
 .message-bubble {
@@ -234,7 +253,7 @@
   transform: translateY(-1px);
 }
 
-/* --- 入力フォーム (正しく横並びになるよう修正) --- */
+/* --- 入力フォーム --- */
 .ai-consultant-input-form {
   width: 100%;
 }
@@ -275,7 +294,7 @@
   color: #94a3b8;
 }
 
-/* 送信ボタンのレイアウト崩れを修正 */
+/* 送信ボタン */
 .ai-consultant-submit-btn {
   flex-shrink: 0;
   padding: 8px 18px;

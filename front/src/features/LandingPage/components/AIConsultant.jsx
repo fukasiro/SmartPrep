@@ -158,7 +158,38 @@ ${userContext.readingCoursesStatus}
     <main className="ai-consultant-page">
       <section className="ai-consultant-header">
         <div className="ai-consultant-title-section">
-          <h1>🤖 AI English Consultant</h1>
+          <h1> <svg
+  viewBox="0 0 24 24"
+  className="menu-svg-icon"
+  aria-hidden="true"
+>
+  <path
+    d="M12 3v2"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+  />
+  <rect
+    x="5"
+    y="5"
+    width="14"
+    height="12"
+    rx="4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+  />
+  <circle cx="9.5" cy="10.5" r="1" fill="currentColor" />
+  <circle cx="14.5" cy="10.5" r="1" fill="currentColor" />
+  <path
+    d="M9.5 14c.8.6 1.6.9 2.5.9s1.7-.3 2.5-.9"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+  />
+</svg> AI English Consultant</h1>
           <p>あなたの学習に合わせた、パーソナライズされたアドバイス</p>
         </div>
         <button className="ai-consultant-close-btn" onClick={onClose}>
@@ -174,7 +205,38 @@ ${userContext.readingCoursesStatus}
               className={`ai-consultant-message ${msg.sender === 'user' ? 'user-message' : 'assistant-message'}`}
             >
               <div className="message-avatar">
-                {msg.sender === 'user' ? '👤' : '🤖'}
+                {msg.sender === 'user' ? '👤' :  <svg
+  viewBox="0 0 24 24"
+  className="menu-svg-icon"
+  aria-hidden="true"
+>
+  <path
+    d="M12 3v2"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+  />
+  <rect
+    x="5"
+    y="5"
+    width="14"
+    height="12"
+    rx="4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+  />
+  <circle cx="9.5" cy="10.5" r="1" fill="currentColor" />
+  <circle cx="14.5" cy="10.5" r="1" fill="currentColor" />
+  <path
+    d="M9.5 14c.8.6 1.6.9 2.5.9s1.7-.3 2.5-.9"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+  />
+</svg>}
               </div>
               <div className="message-bubble">
                 <p className="message-text">{msg.text}</p>
