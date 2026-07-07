@@ -1,172 +1,609 @@
-/* 全てにbox-sizingを適用してレイアウト崩れを防止 */
-*, *::before, *::after {
+/* ==========================================================================
+   ブックマーク単語帳 - 統合型フラット＆プレミアムクイズスタイル
+   ========================================================================== */
+
+/* 全体コンテナ */
+.vocab-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: #f0f4f8;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+}
+
+/* レイアウトラッパー */
+.reading-stage-card-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: stretch; /* 縦ラインの上端を絶対一致 */
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
-/* 全体コンテナ（幅いっぱいに広げるため、display: blockに変更） */
-.bookmark-vocab-container {
-  display: block;
-  width: 100%;
-  padding: 2rem;
-  background-color: #f8fafc;
-  min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+/* 単語帳側のラッパー */
+.reading-stage-card {
+  flex: 1;
+  min-width: 0;
+  margin: 0 !important; /* 外部要因の微小マージンをリセット */
+  padding: 0 !important;
+  box-sizing: border-box;
 }
 
-/* カード本体（max-widthを100%にして、親要素の幅いっぱいまで広げる） */
-.bookmark-vocab-card {
+/* カード本体 */
+.vocab-list-card {
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 10px 15px -3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   width: 100%;
-  max-width: 100%;
-  overflow: hidden;
+  padding: 32px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.vocab-list-title {
+  font-size: 22px;
+  color: #1e293b;
+  margin: 0 0 6px 0;
+  font-weight: bold;
+}
+
+.vocab-list-sub {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 24px 0;
+}
+
+/* ==========================================================================
+   🌟 クイズ設定エリア - プレミアムモダンデザイン
+   ========================================================================== */
+.quiz-setup-card-premium {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  padding: 24px;
+  border-radius: 14px;
+  margin-bottom: 28px;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.quiz-setup-left {
+  flex: 1;
+  text-align: left;
+}
+
+.quiz-setup-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.quiz-setup-lead {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.quiz-setup-desc {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.quiz-setup-right {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.quiz-count-selector-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.quiz-label-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  padding-left: 2px;
+}
+
+.quiz-count-dropdown-modern {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e0;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  outline: none;
+  cursor: pointer;
+  min-width: 90px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.quiz-count-dropdown-modern:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.quiz-start-btn-modern {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.quiz-start-btn-modern:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+  filter: brightness(1.05);
+}
+
+.quiz-start-btn-modern:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   クイズ進行中・結果画面
+   ========================================================================== */
+.quiz-container {
+  padding: 12px 0;
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 12px;
+}
+
+.quiz-progress-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.quiz-abort-btn {
+  background: transparent;
+  border: 1px solid #cbd5e0;
+  color: #94a3b8;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.quiz-abort-btn:hover {
+  background: #f8fafc;
+  color: #ef4444;
+  border-color: #fca5a5;
+}
+
+.quiz-question-box {
+  text-align: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 32px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.quiz-word {
+  font-size: 28px;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.quiz-choices-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.quiz-choice-btn {
+  width: 100%;
+  text-align: left;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.quiz-choice-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #cbd5e0;
+  transform: translateX(4px);
+}
+
+.choice-number {
+  color: #3b82f6;
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+.quiz-choice-btn.correct {
+  background: #dcfce7 !important;
+  border-color: #4ade80 !important;
+  color: #14532d !important;
+}
+
+.quiz-choice-btn.incorrect {
+  background: #fee2e2 !important;
+  border-color: #fca5a5 !important;
+  color: #7f1d1d !important;
+}
+
+.quiz-choice-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quiz-feedback-section {
+  text-align: center;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  animation: slideInRight 0.2s ease;
+}
+
+.feedback-message {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+}
+
+.feedback-message.good { color: #16a34a; }
+.feedback-message.bad { color: #dc2626; }
+
+.quiz-result-view {
+  padding: 40px 20px;
+}
+
+.result-icon {
+  font-size: 54px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.result-title {
+  font-size: 24px;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.result-score {
+  font-size: 16px;
+  color: #475569;
+  margin-bottom: 32px;
+}
+
+.result-score strong {
+  font-size: 28px;
+  color: #2563eb;
+}
+
+.result-actions {
+  display: flex;
+  gap: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   メインコンテンツ・リスト・検索・追加
+   ========================================================================== */
+.bookmark-vocab-main {
+  padding-top: 12px;
+}
+
+.bookmark-search-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bookmark-search-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #ffffff;
+  color: #1e293b;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.bookmark-search-input:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.bookmark-add-word-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bookmark-add-form {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
   border: 1px solid #e2e8f0;
 }
 
-/* ヘッダー */
-.bookmark-vocab-header {
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  padding: 1.5rem 2rem;
-  color: #ffffff;
+.form-group {
+  margin-bottom: 16px;
 }
 
-.bookmark-vocab-header h2 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.5rem;
+.form-group label {
+  display: block;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: -0.025em;
+  color: #334155;
+  margin-bottom: 8px;
 }
 
-.bookmark-vocab-header p {
-  margin: 0;
-  font-size: 0.875rem;
-  color: #e0e7ff;
-  opacity: 0.9;
+.required { color: #e53e3e; }
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
-/* メインコンテンツエリア（ページ全体でスクロールさせるため上限を解除） */
-.bookmark-vocab-main {
-  padding: 1.5rem 2rem;
+.form-error {
+  color: #e53e3e;
+  font-size: 13px;
+  margin: -12px 0 16px 0;
+  font-weight: 600;
 }
 
-/* リストスタイル */
+.form-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.form-actions button { flex: 1; }
+
+.bookmark-vocab-count {
+  font-size: 13px;
+  color: #64748b;
+  margin: 12px 0 16px 0;
+  font-weight: 600;
+}
+
 .bookmark-vocab-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .bookmark-vocab-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 0;
-  border-bottom: 1px solid #f1f5f9;
-  transition: background-color 0.2s ease;
+  align-items: flex-start;
+  gap: 12px;
+  transition: all 0.2s ease;
 }
 
-.bookmark-vocab-item:last-child {
-  border-bottom: none;
+.bookmark-vocab-item:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* 単語テキスト部分 */
-.bookmark-vocab-item-text {
-  flex: 1;
-  padding-right: 2rem;
-}
+.bookmark-vocab-item-text { flex: 1; min-width: 0; }
 
 .bookmark-vocab-item-title-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.35rem;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
 }
 
-.bookmark-vocab-word {
-  font-size: 1.3rem;
-  color: #1e293b;
-  font-weight: 600;
-}
+.bookmark-vocab-word { font-size: 16px; font-weight: 700; color: #1e293b; }
 
 .bookmark-vocab-pos {
-  font-size: 0.75rem;
-  background-color: #f1f5f9;
-  color: #64748b;
-  padding: 0.125rem 0.5rem;
+  background: #e0f2fe;
+  color: #0284c7;
+  padding: 2px 8px;
   border-radius: 4px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.bookmark-vocab-meaning {
-  margin: 0;
-  font-size: 0.95rem;
-  color: #475569;
-  line-height: 1.5;
+.bookmark-vocab-custom-badge {
+  background: #fce7f3;
+  color: #be185d;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
 }
 
-/* 削除ボタン */
+.bookmark-vocab-meaning { font-size: 14px; color: #475569; margin: 0; }
+
 .bookmark-vocab-remove-btn {
-  background-color: transparent;
-  color: #ef4444;
-  border: 1px solid #fee2e2;
-  padding: 0.5rem 1rem;
+  background: #fed7d7;
+  color: #9b2c2c;
+  border: 1px solid #fc8181;
+  padding: 6px 12px;
   border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
 }
 
-.bookmark-vocab-remove-btn:hover {
-  background-color: #ef4444;
+.bookmark-vocab-empty { text-align: center; padding: 60px 20px; color: #64748b; }
+.bookmark-vocab-empty-icon { font-size: 48px; display: block; margin-bottom: 16px; }
+
+/* ボタンコンポーネント */
+.vocabulary-menu-primary-button {
+  background: #3182ce;
   color: #ffffff;
-  border-color: #ef4444;
-}
-
-/* 空の状態 */
-.bookmark-vocab-empty {
-  text-align: center;
-  padding: 4rem 1rem;
-  color: #94a3b8;
-}
-
-.bookmark-vocab-empty-icon {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.bookmark-vocab-empty p {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-/* フッター＆戻るボタン */
-.bookmark-vocab-footer {
-  padding: 1.25rem 2rem;
-  background-color: #f8fafc;
-  border-top: 1px solid #e2e8f0;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.bookmark-vocab-back-btn {
-  background-color: #ffffff;
-  color: #475569;
-  border: 1px solid #cbd5e1;
-  padding: 0.5rem 1.25rem;
+  border: none;
+  padding: 14px 24px;
   border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 15px;
 }
 
-.bookmark-vocab-back-btn:hover {
-  background-color: #f1f5f9;
-  color: #1e293b;
-  border-color: #94a3b8;
+.vocabulary-menu-secondary-button {
+  background: transparent;
+  border: 1px solid #cbd5e0;
+  color: #718096;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.w-100 { width: 100%; }
+
+/* ==========================================================================
+   右側：AIコーチパネル（位置ズレ完全ロック版）
+   ========================================================================== */
+.reading-consultant-panel {
+  width: 360px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  padding: 32px 24px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: max-content;
+  margin: 0 !important; /* メインカードと垂直ツラを完璧に統一 */
+}
+
+.reading-consultant-panel .consultant-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.reading-consultant-panel h3 { margin: 0 0 6px; font-size: 18px; color: #111827; }
+.reading-consultant-panel p { margin: 0; color: #475569; font-size: 14px; }
+
+.consultant-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #dbeafe;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 15px;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+.consultant-submit-btn {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(90deg, #6366f1, #4f46e5);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.consultant-error-text { margin-top: 12px; color: #e53e3e; font-size: 13px; }
+.consultant-answer-box { margin-top: 18px; padding: 18px; border-radius: 16px; background: #f8fafc; border: 1px solid #cbd5e0; }
+.consultant-answer-box h4 { margin: 0 0 12px 0; font-size: 16px; color: #1e293b; }
+.consultant-answer-box p { margin: 0; color: #334155; line-height: 1.7; }
+
+.animate-slide-in { animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes slideInRight {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.bookmark-vocab-footer { display: flex; justify-content: flex-start; border-top: 1px solid #edf2f7; padding-top: 24px; margin-top: 24px; }
+.bookmark-vocab-back-btn { background: transparent; border: 1px solid #cbd5e0; color: #4b5563; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+/* ==========================================================================
+   📱 レスポンシブ
+   ========================================================================== */
+@media (max-width: 980px) {
+  .reading-stage-card-wrapper { flex-direction: column-reverse; align-items: center; padding: 10px; }
+  .reading-stage-card { max-width: 100%; width: 100%; }
+  .reading-consultant-panel { width: 100%; max-width: 100%; margin-bottom: 24px !important; }
+  .quiz-setup-card-premium { flex-direction: column; align-items: stretch; text-align: center; }
+  .quiz-setup-left { text-align: center; }
+  .quiz-setup-right { justify-content: center; align-items: center; }
+  .result-actions { flex-direction: column; }
+}
+
+@media (max-width: 650px) {
+  .vocab-list-card { padding: 24px 16px; }
+  .bookmark-vocab-item { flex-direction: column; }
+  .bookmark-vocab-remove-btn { width: 100%; }
+  .form-actions { flex-direction: column; }
 }
