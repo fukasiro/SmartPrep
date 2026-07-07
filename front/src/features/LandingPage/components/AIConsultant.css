@@ -1,132 +1,321 @@
+/* ==========================================================================
+   AIコンサルタント - チャットボットUI (洗練版)
+   ========================================================================== */
+
 .ai-consultant-page {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  padding: 36px;
+  height: 100vh;
+  background: #f8fafc; /* すっきりした明るい背景に統一 */
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-.ai-consultant-hero {
-  max-width: 920px;
-  margin-bottom: 28px;
-  padding: 28px;
-  background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 28px;
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+/* --- ヘッダー --- */
+.ai-consultant-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
+  align-items: center;
+  padding: 18px 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  flex-shrink: 0;
+}
+
+.ai-consultant-title-section h1 {
+  margin: 0 0 4px 0;
+  font-size: 20px;
+  color: #0f172a;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ai-consultant-title-section p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
 }
 
 .ai-consultant-close-btn {
-  align-self: start;
-  padding: 12px 18px;
-  border-radius: 16px;
+  padding: 8px 12px;
+  border-radius: 6px;
   border: none;
-  background: #ef4444;
-  color: white;
-  font-weight: 700;
+  background: #f1f5f9;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .ai-consultant-close-btn:hover {
-  background: #dc2626;
+  background: #e2e8f0;
+  color: #0f172a;
 }
 
-.ai-consultant-eyebrow {
-  display: inline-flex;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: #e0f2fe;
-  color: #0369a1;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 12px;
+/* --- チャットセクション --- */
+.ai-consultant-chat-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
 }
 
-.ai-consultant-hero h1 {
-  margin: 18px 0 10px;
-  font-size: 32px;
-  color: #111827;
+/* --- メッセージ表示エリア --- */
+.ai-consultant-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  box-sizing: border-box;
 }
 
-.ai-consultant-hero p {
-  margin: 0;
-  color: #475569;
-  line-height: 1.75;
+/* スクロールバーのカスタム */
+.ai-consultant-messages::-webkit-scrollbar {
+  width: 6px;
+}
+.ai-consultant-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ai-consultant-messages::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
 }
 
-.ai-consultant-panel {
-  display: grid;
-  grid-template-columns: 1.4fr 0.9fr;
-  gap: 24px;
+/* --- メッセージの気泡デザイン --- */
+.ai-consultant-message {
+  display: flex;
+  gap: 12px;
+  max-width: 75%;
+  align-items: flex-start;
+  animation: slideInUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.ai-consultant-card,
-.ai-consultant-tips-card {
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ユーザーメッセージ（右側寄せ） */
+.user-message {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  font-size: 20px;
   background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 28px;
-  padding: 28px;
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  flex-shrink: 0;
 }
 
-.ai-consultant-card h2,
-.ai-consultant-tips-card h2 {
-  font-size: 22px;
-  color: #111827;
-  margin-bottom: 16px;
+.message-bubble {
+  padding: 12px 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.ai-consultant-card p {
-  margin: 0 0 20px;
-  color: #475569;
-  line-height: 1.75;
+/* ユーザーの気泡 */
+.user-message .message-bubble {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #ffffff;
+  border-radius: 16px 16px 4px 16px;
+}
+
+/* AIの気泡 */
+.assistant-message .message-bubble {
+  background: #ffffff;
+  color: #1e293b;
+  border-radius: 16px 16px 16px 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.message-text {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* タイピングインジケーター */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 6px 4px;
+  align-items: center;
+}
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94a3b8;
+  animation: typing 1.4s infinite;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* エラー表示 */
+.ai-consultant-error {
+  margin: 0 24px 12px 24px;
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* --- フッター領域 --- */
+.ai-consultant-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+/* サンプル質問（クイックボタン） */
+.quick-questions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+
+.quick-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #3b82f6;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-btn:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* --- 入力フォーム (正しく横並びになるよう修正) --- */
+.ai-consultant-input-form {
+  width: 100%;
+}
+
+.ai-consultant-input-wrapper {
+  display: flex;
+  align-items: flex-end; /* ボタンを下揃えに固定 */
+  gap: 12px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+}
+
+.ai-consultant-input-wrapper:focus-within {
+  background: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .ai-consultant-textarea {
-  width: 100%;
-  min-height: 180px;
-  padding: 18px;
-  border-radius: 24px;
-  border: 1px solid #dbeafe;
-  background: #f8fafc;
-  color: #0f172a;
-  font-size: 15px;
-  box-sizing: border-box;
-  resize: vertical;
-}
-
-.ai-consultant-submit-btn {
-  width: 100%;
-  margin-top: 20px;
-  padding: 18px 24px;
-  border-radius: 20px;
+  flex: 1;
+  min-height: 24px;
+  max-height: 120px;
+  padding: 6px 4px;
   border: none;
-  background: linear-gradient(90deg, #22d3ee, #38bdf8);
+  background: transparent;
   color: #0f172a;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 14px;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  line-height: 1.5;
+}
+
+.ai-consultant-textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* 送信ボタンのレイアウト崩れを修正 */
+.ai-consultant-submit-btn {
+  flex-shrink: 0;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: none;
+  background: #3b82f6;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 13px;
   cursor: pointer;
-}
-
-.ai-consultant-tips-card ul {
-  margin: 0;
-  padding-left: 20px;
-  color: #475569;
+  transition: all 0.2s ease;
+  height: 36px; /* 高さを固定 */
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
 }
 
-.ai-consultant-tips-card li {
-  margin-bottom: 0;
+.ai-consultant-submit-btn:hover:not(:disabled) {
+  background: #2563eb;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
-@media screen and (max-width: 900px) {
-  .ai-consultant-panel {
-    grid-template-columns: 1fr;
+.ai-consultant-submit-btn:disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* --- レスポンシブ対応 --- */
+@media (max-width: 768px) {
+  .ai-consultant-header {
+    padding: 14px 16px;
+  }
+  .ai-consultant-messages {
+    padding: 16px;
+  }
+  .ai-consultant-message {
+    max-width: 85%;
+  }
+  .ai-consultant-footer {
+    padding: 14px 16px;
   }
 }
