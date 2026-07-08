@@ -1,6 +1,5 @@
 // front/src/features/auth/components/LoginForm.jsx
 import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import './LoginForm.css'; 
@@ -8,18 +7,46 @@ import './LoginForm.css';
 export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onNavigateToForgotPassword, onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { loginWithEmail, loading, message } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) return;
     
-    const result = await loginWithEmail(email, password);
-    
-    if (result && onLoginSuccess) {
-      const token = result.token || 'dummy_token';
-      const name = result.name || email.split('@')[0];
-      onLoginSuccess(token, name, result.email || email);
+    setLoading(true);
+    setMessage('');
+
+    try {
+      // 💡 useAuth を介さず、確実にバックエンドの /login エンドポイントを叩きます
+      const response = await fetch('http://127.0.0.1:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'ログインに失敗しました。パスワードをご確認ください。');
+      }
+
+      // 💡 バックエンドから返ってきた正しい情報をそのまま親に引き渡します
+      if (onLoginSuccess) {
+        const token = data.access_token;
+        const name = data.name || email.split('@')[0];
+        const userEmail = data.email || email;
+        
+        onLoginSuccess(token, name, userEmail);
+      }
+
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : '通信エラーが発生しました。');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,13 +101,13 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
             </span>
           </p>
 
-          {message && <p className="status-message">{message}</p>}
+          {message && <p className="status-message" style={{ color: '#ff4d4f', textAlign: 'center', marginTop: '10px' }}>{message}</p>}
         </form>
 
         <button 
           type="button" 
           className="skip-btn" 
-          onClick={() => onLoginSuccess && onLoginSuccess(null, 'ゲストユーザー')}
+          onClick={() => onLoginSuccess && onLoginSuccess(null, 'ゲストユーザー', 'guest@example.com')}
         >
           ログインせずに始める 🚀
         </button>

@@ -32,7 +32,11 @@ def split_into_chunks(text: str, chunk_size: int = 300) -> List[str]:
 
 def build_knowledge_base_from_frontend(base_dir: str | None = None) -> str:
     if base_dir is None:
-        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "front", "src", "features"))
+        candidate_dirs = [
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "front", "src", "features")),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "front", "src", "features")),
+        ]
+        base_dir = next((d for d in candidate_dirs if os.path.exists(d)), candidate_dirs[0])
 
     entries = []
 

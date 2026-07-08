@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import List, Optional
 
 
 class LoginRequest(BaseModel):
@@ -26,3 +26,25 @@ class PasswordResetConfirmRequest(BaseModel):
     email: EmailStr
     code: str
     new_password: str
+
+
+class AiVocabWordResponse(BaseModel):
+    word: str
+    pos: Optional[str] = None
+    meaning: str
+
+
+class AiVocabListResponse(BaseModel):
+    id: int
+    title: str
+    level: int
+    words_count: int
+    created_at: str
+    words: List[AiVocabWordResponse] = []
+
+
+class CreateAiVocabRequest(BaseModel):
+    email: str
+    title: Optional[str] = None
+    level: int
+    amount: int

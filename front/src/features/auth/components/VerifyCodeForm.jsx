@@ -17,12 +17,12 @@ export default function VerifyCodeForm({ email, name, onVerifySuccess }) {
     const isSuccess = result || (message && (message.includes('作成しました') || message.includes('成功')));
     
     if (isSuccess && onVerifySuccess) {
-      const token = (result && typeof result === 'object' ? (result.token || result.data?.token) : null) 
+      const token = (result && typeof result === 'object' ? (result.access_token || result.token || result.data?.token) : null)
                     || 'auto_login_token_after_verify';
       
       const userName = name || (result && typeof result === 'object' ? result.name : null) || email.split('@')[0];
       
-      onVerifySuccess(token, userName);
+      onVerifySuccess(token, userName, email);
     }
   };
 

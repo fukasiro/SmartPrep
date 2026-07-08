@@ -9,6 +9,7 @@ import ReadingCourseList from '../Reading/ReadingCourseList';
 import VocabularyMenu from '../vocabulary/VocabularyMenu';
 import VocabularyCourseList from '../vocabulary/VocabularyCourseList';
 import MyVocabulary from '../vocabulary/MyVocabulary';
+import AiVocabulary from '../vocabulary/AiVocabulary/AiVocabulary';
 import Level450Course from '../vocabulary/courses/450LevelCourse';
 import Level450CourseReading from '../Reading/courses/450LevelCourseReading';
 import Level600Course from '../vocabulary/courses/600LevelCourse';
@@ -26,7 +27,9 @@ export default function LandingPage({
   setActiveMenu, 
   onCloseConsultant,
   handleAuthSuccess,
+  handleGuestStart,
   userName,
+  userEmail,
   handleLogout,
 }) {
   return (
@@ -36,7 +39,7 @@ export default function LandingPage({
         {/* 1. ダッシュボード */}
         {mode === 'landing' && (
           <DashBoard 
-            onStartLearning={() => handleAuthSuccess(null, 'ゲストユーザー')} 
+            onStartLearning={handleGuestStart}
             onConsultantNavigate={() => {
               setMode('consultant');
               setActiveMenu('consultant');
@@ -53,7 +56,8 @@ export default function LandingPage({
             }}
             onNavigateToSignUp={() => setMode('signup')}
             onNavigateToForgotPassword={() => setMode('forgotPassword')}
-            onLoginSuccess={(token, name) => handleAuthSuccess(token, name)}
+            onLoginSuccess={(token, name, email) => handleAuthSuccess(token, name, email)}
+            onGuestStart={handleGuestStart}
           />
         )}
 
@@ -169,13 +173,19 @@ export default function LandingPage({
                 setMode('bookmarkVocabulary');
                 setActiveMenu('chat');
               } else if (selection === 'ai-personal') {
-                // AI個別単語帳の実装があればここに追加
-                setMode('vocabMenu');
+                setMode('aiVocabulary');
                 setActiveMenu('chat');
               }
             }}
           />
         )}
+
+{mode === 'aiVocabulary' && (
+  <AiVocabulary 
+    onBack={() => setMode('vocabMenu')} 
+    userEmail={userEmail}  // 💡 これを確実に追加します！
+  />
+)}
 
         {mode === 'vocabCourseList' && (
           <VocabularyCourseList

@@ -7,6 +7,7 @@ from google import genai  # 新しい公式SDK (google-genai) をインポート
 
 from database import engine, Base
 from routers.auth import router as auth_router
+from routers.ai_vocab import router as ai_vocab_router
 from rag import build_knowledge_base_from_frontend, retrieve_relevant_context
 
 # .envファイルから環境変数を読み込み
@@ -26,16 +27,23 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 # CORSの設定（フロントエンドからのアクセスを許可）
+# 💡 Docker環境の実行ポート「4173」を完全に追加しました
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",
+        "http://localhost:4173", 
+        "http://127.0.0.1:4173"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 認証系のルーティングを追加
+# 認証系とAI語彙ルーティングを追加
 app.include_router(auth_router, prefix="")
+app.include_router(ai_vocab_router, prefix="/ai-vocab")
 
 @app.post("/ai/question", response_model=AIQuestionResponse)
 def ask_ai_question(request: AIQuestionRequest):
@@ -75,7 +83,7 @@ def ask_ai_question(request: AIQuestionRequest):
             return {"answer": response.text}
             
     except Exception as e:
-        print(f"Gemini API Error: {str(e)} - main.py:73")
+        print(f"Gemini API Error: {str(e)} - main.py:86")
         raise HTTPException(status_code=502, detail=f"AI API request failed: {str(e)}")
 
     raise HTTPException(status_code=502, detail="AI API did not return a valid answer.")

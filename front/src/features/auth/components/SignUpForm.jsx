@@ -39,7 +39,7 @@ export default function SignUpForm({ onNavigateToLanding, onNavigateToLogin, onA
             onVerifySuccess={(token, userName) => {
               // 💡 親（LandingPage経由でApp.jsx）へ成功イベントを一撃で届けます
               if (onAuthSuccess) {
-                onAuthSuccess(token, userName);
+                onAuthSuccess(token, userName, pendingEmail);
               }
             }}
           />
