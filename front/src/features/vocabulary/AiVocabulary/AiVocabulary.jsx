@@ -649,6 +649,11 @@ export default function AiVocabulary({ onBack, userEmail: propUserEmail }) {
             <h2>AIパーソナル単語帳</h2>
             <p className="subtitle">AIでレベルに合った単語帳を自動生成し、あなた専用の学習リストを管理します。</p>
           </div>
+          <div className="reading-header-actions">
+            <button className="ai-coach-button" onClick={() => setShowConsultantPanel(!showConsultantPanel)}>
+              {showConsultantPanel ? '✕ AIコーチを閉じる' : '🤖 AIコーチ'}
+            </button>
+          </div>
         </header>
 
         <section className="ai-vocab-body">
@@ -700,16 +705,29 @@ export default function AiVocabulary({ onBack, userEmail: propUserEmail }) {
                           <span className="word-count">{(list.words && list.words.length) || 0} 単語</span>
                         </div>
                         <div className="list-item-meta">作成日: {list.created_at || '2026-07-08'}</div>
-                        <button
-                          type="button"
-                          className="btn-secondary ai-vocab-expand-button"
-                          onClick={() => {
-                            setSelectedList(list);
-                            setViewMode('detail');
-                          }}
-                        >
-                          単語を見る
-                        </button>
+                        <div className="list-item-actions">
+                          <button
+                            type="button"
+                            className="btn-secondary ai-vocab-expand-button"
+                            onClick={() => {
+                              setSelectedList(list);
+                              setViewMode('detail');
+                            }}
+                          >
+                            単語を見る
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-secondary ai-coach-inline-button"
+                            onClick={() => {
+                              setSelectedList(list);
+                              setViewMode('detail');
+                              setShowConsultantPanel(true);
+                            }}
+                          >
+                            AIコーチ
+                          </button>
+                        </div>
                       </article>
                     ))}
                   </div>
