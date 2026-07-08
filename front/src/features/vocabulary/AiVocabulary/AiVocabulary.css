@@ -1,258 +1,625 @@
+/* ==========================================================================
+   AiVocabulary.css 全体レイアウト＆レスポンシブ制御
+   ========================================================================== */
+
 .ai-vocab-page {
   display: flex;
   justify-content: center;
-  padding: 40px;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 32px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.ai-vocab-card {
-  width: min(100%, 920px);
+.ai-vocab-card, .vocab-list-card, .card-full-width {
+  width: 100%;
+  max-width: 100%; 
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 24px;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04);
   padding: 32px;
+  box-sizing: border-box;
 }
+
+/* 画面右側に並ぶAIコーチパネルの基本スタイル */
+.reading-consultant-panel {
+  width: 360px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+  padding: 24px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   🖥️ デスクトップ（PC）サイズ時の自動レイアウト制御 (1025px以上)
+   ========================================================================== */
+@media screen and (min-width: 1025px) {
+  /* PCではAIコーチボタンを不要なので非表示にする */
+  .ai-coach-button {
+    display: none !important;
+  }
+  /* PCでは常時表示なのでパネル内の「閉じる」ボタンも非表示 */
+  .consultant-close-btn {
+    display: none !important;
+  }
+  /* stateに関わらず右側に常時表示 */
+  .reading-consultant-panel {
+    display: flex !important;
+  }
+  /* メインカードの横幅を「全幅 - AIコーチ(360px) - 余白(24px)」でジャスト計算 */
+  .main-content-card {
+    flex: 1;
+    width: calc(100% - 384px) !important;
+    max-width: 1000px;
+  }
+}
+
+/* ==========================================================================
+   📱 スマホ・タブレット（レスポンシブ）サイズ時の制御 (1024px以下)
+   ========================================================================== */
+@media screen and (max-width: 1024px) {
+  .ai-vocab-page {
+    flex-direction: column;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .main-content-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px;
+  }
+
+  /* スマホの時だけヘッダーに AIコーチ トグルボタンを表示 */
+  .ai-coach-button {
+    display: inline-flex !important;
+  }
+
+  /* 閉じるボタンもスマホの時だけ表示 */
+  .consultant-close-btn {
+    display: inline-block !important;
+  }
+
+  /* デフォルトは非表示 */
+  .reading-consultant-panel.mobile-closed {
+    display: none !important;
+  }
+
+  /* トグルで開いたとき、レイアウト崩れを防ぎ最上段(order: -1)にスライド表示 */
+  .reading-consultant-panel.mobile-open {
+    display: flex !important;
+    width: 100% !important;
+    order: -1; /* カードよりも上に配置 */
+    margin: 0 0 8px 0 !important;
+    animation: fadeInDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   ヘッダー ＆ 各種ボタン（スクリーンショットに合わせたデザイン）
+   ========================================================================== */
 
 .ai-vocab-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .ai-vocab-header h2 {
-  margin: 0 0 8px 0;
-  font-size: 24px;
-  color: #111827;
+  margin: 0 0 6px 0;
+  font-size: 26px;
+  color: #0f172a;
+  font-weight: 700;
 }
 
-.ai-vocab-header p {
+.subtitle {
   margin: 0;
-  color: #475569;
-  line-height: 1.75;
+  color: #64748b;
+  font-size: 14px;
 }
 
 .ai-vocab-body {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 28px;
 }
 
-.ai-vocab-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
-}
-
-.ai-vocab-list-item {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 20px;
+.reading-header-actions {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  align-items: center;
+  gap: 12px;
 }
 
-.list-item-header {
+/* 「単語クイズ」ボタン（スクショの爽やかな水色ピルボタンに最適化） */
+.learning-quiz-skip-btn {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.learning-quiz-skip-btn:hover {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+}
+
+/* スマホ用 AIコーチ トグルボタン（パープル・インディゴ系） */
+.ai-coach-button {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);
+  transition: all 0.2s ease;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-coach-button:hover {
+  background: linear-gradient(135deg, #4338ca, #3730a3);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   🤖 AI単語 追加自動生成ボックス
+   ========================================================================== */
+.ai-generate-box {
+  background: linear-gradient(135deg, #eff6ff, #f8fafc);
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.03);
+}
+
+.ai-generate-box h3 {
+  margin: 0 0 6px 0;
+  font-size: 18px;
+  color: #1e40af;
+  font-weight: 700;
+}
+
+.box-desc {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.generate-input-group {
   display: flex;
   justify-content: space-between;
-  gap: 14px;
-  align-items: flex-start;
-}
-
-.list-item-header h3 {
-  margin: 0;
-  font-size: 18px;
-  color: #111827;
-}
-
-.list-item-header p {
-  margin: 4px 0 0;
-  font-size: 13px;
-  color: #475569;
-  line-height: 1.6;
-}
-
-.word-count {
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: #e0f2fe;
-  color: #0f172a;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.list-item-meta {
-  color: #6b7280;
-  font-size: 13px;
-}
-
-.ai-vocab-empty-state {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 18px;
-  min-height: 260px;
-  border-radius: 20px;
-  padding: 36px;
-  background: #f8fafc;
-  border: 1px dashed #cbd5e0;
-  text-align: center;
-}
-
-.ai-vocab-empty-state p {
-  margin: 0;
-  color: #475569;
-  font-size: 16px;
-  line-height: 1.8;
-}
-
-.ai-vocab-actions {
-  display: flex;
-  justify-content: flex-start;
-  gap: 12px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
-.ai-vocab-loading,
-.ai-vocab-error,
-.ai-vocab-success {
-  border-radius: 16px;
-  padding: 14px 18px;
-  font-size: 14px;
-  line-height: 1.6;
-  margin-top: 10px;
-}
-
-.ai-vocab-loading {
-  background: #f8fafc;
-  border: 1px solid #bfdbfe;
-  color: #1d4ed8;
-}
-
-.ai-vocab-error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
-}
-
-.ai-vocab-success {
-  background: #ecfdf5;
-  border: 1px solid #6ee7b7;
-  color: #065f46;
-}
-
-.ai-vocab-create-panel {
-  display: grid;
-  gap: 18px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 24px;
-}
-
-.create-panel-header h3 {
-  margin: 0;
-  font-size: 20px;
-  color: #111827;
-}
-
-.create-panel-header p {
-  margin: 4px 0 0;
-  color: #475569;
-  font-size: 14px;
-}
-
-.create-field {
-  display: grid;
+.generate-select-wrapper {
+  display: flex;
+  align-items: center;
   gap: 8px;
-}
-
-.create-field label {
-  font-size: 14px;
+  font-weight: 600;
   color: #334155;
 }
 
-.create-field input,
-.create-field select {
-  width: 100%;
+.generate-select-wrapper select {
+  padding: 10px 16px;
+  border-radius: 10px;
   border: 1px solid #cbd5e0;
-  border-radius: 12px;
-  padding: 12px 14px;
+  background: white;
   font-size: 14px;
-  color: #0f172a;
-  background: #ffffff;
-}
-
-.create-field input:focus,
-.create-field select:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 
-.create-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.ai-vocab-card .btn-primary,
-.ai-vocab-card .btn-secondary,
-.ai-vocab-card .btn-back {
-  padding: 12px 20px;
-  border-radius: 14px;
-  border: 1px solid transparent;
+.btn-ai-generate {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
   font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
   transition: all 0.2s ease;
 }
 
-.ai-vocab-card .btn-primary {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: #ffffff;
-  border-color: transparent;
-}
-
-.ai-vocab-card .btn-primary:hover {
+.btn-ai-generate:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.18);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
 }
 
-.ai-vocab-card .btn-secondary {
-  background: #ffffff;
-  color: #0f172a;
-  border-color: #cbd5e0;
-}
-
-.ai-vocab-card .btn-secondary:hover {
+/* ==========================================================================
+   🔍 単語検索
+   ========================================================================== */
+.word-search-box {
   background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
 }
 
-.ai-vocab-card .btn-back {
+.word-search-box h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.search-input-group {
+  display: flex;
+  gap: 12px;
+}
+
+.search-input-group input {
+  flex: 1;
+  border: 1px solid #cbd5e0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  outline: none;
   background: white;
+}
+
+.search-input-group input:focus {
+  border-color: #2563eb;
+}
+
+.search-results-simple {
+  margin-top: 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.simple-result-item {
+  font-size: 15px;
+  color: #334155;
+}
+
+/* ==========================================================================
+   📋 収録単語一覧
+   ========================================================================== */
+.ai-vocab-words-detail h3 {
+  font-size: 18px;
   color: #0f172a;
-  border-color: #cbd5e0;
+  margin: 0 0 16px 0;
+  font-weight: 600;
 }
 
-.btn-back:hover {
+.detail-word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48%, 1fr)); 
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.detail-word-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+}
+
+.word-text {
+  font-size: 18px;
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.word-pos {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-left: 6px;
+}
+
+.word-card-right {
+  font-size: 15px;
+  color: #334155;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   ✨ 📝 クイズ画面
+   ========================================================================== */
+.quiz-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 12px 0;
+}
+
+.screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 14px;
+  margin-bottom: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a5568;
+}
+
+.quiz-question-label {
+  font-size: 15px;
+  color: #64748b;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.quiz-word {
+  font-size: 38px;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin: 0 0 32px 0;
+  letter-spacing: -0.5px;
+}
+
+.quiz-word-pos {
+  font-size: 16px;
+  font-weight: 500;
+  color: #64748b;
+  margin-left: 8px;
+}
+
+.quiz-choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.choice-btn {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px 22px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.01);
+}
+
+.choice-btn:hover:not(:disabled) {
   background: #f8fafc;
+  border-color: #cbd5e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
 }
 
-@media screen and (max-width: 720px) {
-  .ai-vocab-page {
-    padding: 24px;
-  }
-
-  .ai-vocab-card {
-    padding: 24px;
-  }
-
-  .ai-vocab-list {
-    grid-template-columns: 1fr;
-  }
+.choice-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #64748b;
+  margin-right: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
 }
+
+.choice-text {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.correct-choice {
+  background: #f0fdf4 !important;
+  border-color: #22c55e !important;
+  color: #15803d !important;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15) !important;
+}
+.correct-choice .choice-badge {
+  background: #22c55e !important;
+  color: #ffffff !important;
+}
+
+.wrong-choice {
+  background: #fef2f2 !important;
+  border-color: #ef4444 !important;
+  color: #b91c1c !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15) !important;
+}
+.wrong-choice .choice-badge {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.disabled-choice {
+  opacity: 0.5;
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed;
+}
+
+.quiz-feedback {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.feedback-badge {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.feedback-badge.correct { background-color: #dcfce7; color: #166534; }
+.feedback-badge.wrong { background-color: #fee2e2; color: #991b1b; }
+.feedback-correct-ans { text-decoration: underline; font-weight: 800; }
+
+.next-quiz-btn {
+  padding: 16px !important;
+  font-size: 16px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* ==========================================================================
+   🤖 AIコーチパネル 内部パーツ
+   ========================================================================== */
+.reading-consultant-panel .consultant-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.reading-consultant-panel h3 { margin: 0 0 6px; font-size: 18px; color: #111827; }
+.reading-consultant-panel p { margin: 0; font-size: 13px; color: #64748b; }
+
+.consultant-close-btn {
+  background: #f1f5f9; border: none; color: #475569; padding: 6px 12px;
+  border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;
+}
+.consultant-close-btn:hover { background: #e2e8f0; }
+
+.consultant-textarea {
+  width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 10px;
+  font-size: 14px; resize: vertical; box-sizing: border-box; margin-bottom: 12px;
+  font-family: inherit;
+}
+
+.consultant-submit-btn {
+  width: 100%; background: #4f46e5; color: white; border: none; padding: 12px;
+  border-radius: 10px; font-weight: bold; cursor: pointer; transition: background 0.2s;
+}
+.consultant-submit-btn:hover:not(:disabled) { background: #4338ca; }
+.consultant-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.consultant-error-text { color: #dc2626; font-size: 13px; margin: 8px 0 0; }
+
+.consultant-answer-box {
+  margin-top: 16px; padding: 16px; background: #f8fafc; border: 1px solid #e2e8f0;
+  border-radius: 10px; font-size: 14px; line-height: 1.6; color: #334155;
+}
+.consultant-answer-box h4 { margin: 0 0 8px; font-size: 14px; color: #1e3a8a; }
+
+/* ==========================================================================
+   共通UI・ボタン・パーツ
+   ========================================================================== */
+.ai-vocab-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.ai-vocab-list-item {
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px;
+  padding: 24px; display: flex; flex-direction: column; gap: 16px;
+}
+
+.list-item-header { display: flex; justify-content: space-between; align-items: flex-start; }
+
+.word-count {
+  padding: 4px 12px; border-radius: 999px; background: #e0f2fe;
+  color: #0369a1; font-size: 12px; font-weight: 700;
+}
+
+.ai-vocab-create-panel {
+  display: grid; gap: 18px; background: #f8fafc; border: 1px solid #e2e8f0;
+  border-radius: 20px; padding: 24px;
+}
+
+.create-field { display: grid; gap: 6px; }
+.create-field input, .create-field select {
+  width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e0; box-sizing: border-box;
+}
+
+.btn-primary, .vocabulary-menu-primary-button {
+  background: #2563eb; color: white; border: none; padding: 12px 24px;
+  border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+}
+.btn-primary:hover, .vocabulary-menu-primary-button:hover { background: #1d4ed8; }
+
+.btn-secondary, .vocabulary-menu-secondary-button {
+  background: white; color: #334155; border: 1px solid #cbd5e0; padding: 12px 24px;
+  border-radius: 12px; font-weight: 600; cursor: pointer;
+}
+.btn-secondary:hover, .vocabulary-menu-secondary-button:hover { background: #f8fafc; }
+
+.btn-back, .exit-btn {
+  background: #f1f5f9; color: #475569; border: none; padding: 10px 20px;
+  border-radius: 10px; font-weight: 600; cursor: pointer;
+}
+.btn-back:hover, .exit-btn:hover { background: #e2e8f0; }
+
+.result-score-box {
+  padding: 24px; border-radius: 16px; font-size: 20px; font-weight: bold;
+  background-color: #f0f9ff; color: #1d4ed8; margin: 24px auto; max-width: 300px;
+}
+.result-score-num { font-size: 42px; font-weight: 800; }
+
+.text-center { text-align: center; }
+.w-100 { width: 100%; }
+
+.ai-vocab-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; border-radius: 12px; padding: 14px; }
+.ai-vocab-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; border-radius: 12px; padding: 14px; }
+.ai-vocab-loading { background: #f8fafc; padding: 14px; text-align: center; color: #475569; }
+
+.ai-vocab-footer {
+  margin-top: 32px; border-top: 1px solid #f1f5f9; padding-top: 20px;
+}
+
+/* モーダル表示 */
+.cert-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.6); display: flex; justify-content: center;
+  align-items: center; z-index: 9999; padding: 20px; box-sizing: border-box;
+}
+.cert-modal {
+  background: #ffffff; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  width: 100%; box-sizing: border-box;
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-pop { animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
