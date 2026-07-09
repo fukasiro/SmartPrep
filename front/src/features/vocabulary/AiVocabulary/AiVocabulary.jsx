@@ -650,9 +650,6 @@ export default function AiVocabulary({ onBack, userEmail: propUserEmail }) {
             <p className="subtitle">AIでレベルに合った単語帳を自動生成し、あなた専用の学習リストを管理します。</p>
           </div>
           <div className="reading-header-actions">
-            <button className="ai-coach-button" onClick={() => setShowConsultantPanel(!showConsultantPanel)}>
-              {showConsultantPanel ? '✕ AIコーチを閉じる' : '🤖 AIコーチ'}
-            </button>
           </div>
         </header>
 
@@ -716,17 +713,7 @@ export default function AiVocabulary({ onBack, userEmail: propUserEmail }) {
                           >
                             単語を見る
                           </button>
-                          <button
-                            type="button"
-                            className="btn-secondary ai-coach-inline-button"
-                            onClick={() => {
-                              setSelectedList(list);
-                              setViewMode('detail');
-                              setShowConsultantPanel(true);
-                            }}
-                          >
-                            AIコーチ
-                          </button>
+                          {/* AIコーチボタンを削除しました */}
                         </div>
                       </article>
                     ))}

@@ -43,7 +43,8 @@
    🖥️ デスクトップ（PC）サイズ時の自動レイアウト制御 (1025px以上)
    ========================================================================== */
 @media screen and (min-width: 1025px) {
-  .ai-coach-button.desktop-hidden {
+  /* Hide the floating AI coach toggle on desktop (we show the panel on the right instead) */
+  .ai-coach-button {
     display: none !important;
   }
   .consultant-close-btn {
@@ -54,9 +55,11 @@
   }
   /* 真ん中のカードの横幅制限を緩め、より広がるように修正 */
   .main-content-card {
-    flex: 1;
-    width: calc(100% - 384px) !important;
-    max-width: 1200px; /* 1000pxから1200pxへ拡張し、余白を削減 */
+    flex: 1 1 auto;
+    /* Make center card wider but keep space for the right panel (360px + gap) */
+    width: min(1100px, calc(100% - 420px)) !important;
+    max-width: 1100px; /* limit growth to a comfortable reading width */
+    margin-right: 24px;
   }
 }
 
