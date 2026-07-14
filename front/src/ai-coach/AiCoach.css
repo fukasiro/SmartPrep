@@ -1,0 +1,127 @@
+/* AICoach.css */
+
+.reading-consultant-panel {
+  width: 320px;
+  background-color: #f7fafc;
+  border-left: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.consultant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.consultant-header h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: #2d3748;
+}
+
+.consultant-header p {
+  margin: 0;
+  font-size: 12px;
+  color: #718096;
+}
+
+.consultant-close-btn {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+.consultant-close-btn:hover {
+  color: #4a5568;
+}
+
+.consultant-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: none;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+  font-family: inherit;
+}
+
+.consultant-textarea:focus {
+  outline: none;
+  border-color: #3182ce;
+}
+
+.consultant-submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #3182ce;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.consultant-submit-btn:hover:not(:disabled) {
+  background-color: #2b6cb0;
+}
+
+.consultant-submit-btn:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+}
+
+.consultant-error-text {
+  color: #e53e3e;
+  font-size: 13px;
+  margin: 8px 0 0 0;
+}
+
+.consultant-answer-box {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+.consultant-answer-box h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #2b6cb0;
+}
+
+.consultant-answer-box p {
+  margin: 0;
+  font-size: 13px;
+  color: #4a5568;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* スライドインアニメーション */
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

@@ -3,6 +3,9 @@ import './450LevelCourse.css';
 import WORDS from './450_wordlist';
 import { loadCourseProgress, saveCourseProgress, addBookmarkedWord, isWordBookmarked, removeBookmarkedWord } from '../progressStorage';
 
+// 📂 分離した AiCoach コンポーネントをインポート
+// 3つ上の src まで戻り、components/ai-coach/AiCoach を呼び出す
+import AiCoach from "/Users/fukashiro/Downloads/App/SmartPrep/front/src/ai-coach/AiCoach.jsx";
 const STORAGE_KEY = 'vocab_450_stage_scores';
 
 // ==========================================
@@ -24,12 +27,8 @@ export default function Level450Course({ onBack }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
 
-  // AIコーチ関連
+  // AIコーチの表示フラグのみ保持（データやロジックはAiCoachコンポーネント内へ移動）
   const [showConsultantPanel, setShowConsultantPanel] = useState(false);
-  const [coachQuestion, setCoachQuestion] = useState('');
-  const [coachAnswer, setCoachAnswer] = useState('');
-  const [coachLoading, setCoachLoading] = useState(false);
-  const [coachError, setCoachError] = useState('');
 
   // スコア記録 { 0: 8, 1: 5 }
   const [stageScores, setStageScores] = useState({});
@@ -171,11 +170,9 @@ export default function Level450Course({ onBack }) {
 
   const closeConsultantPanel = () => {
     setShowConsultantPanel(false);
-    setCoachQuestion('');
-    setCoachAnswer('');
-    setCoachError('');
   };
 
+  // AIコーチへ引き渡す文脈データの作成
   const coachContext = useMemo(() => {
     const currentWord = todaysWords[currentWordIdx];
     const currentQuiz = quizQuestions[currentQuizIdx];
@@ -191,43 +188,6 @@ export default function Level450Course({ onBack }) {
 
     return `単語一覧:\n${stageWords}`;
   }, [screen, todaysWords, currentWordIdx, currentQuizIdx, quizQuestions]);
-
-  const submitCoachQuestion = async () => {
-    if (!coachQuestion.trim()) {
-      setCoachError('質問を入力してください。');
-      return;
-    }
-
-    setCoachLoading(true);
-    setCoachError('');
-    setCoachAnswer('');
-
-    try {
-      const response = await fetch('http://localhost:8000/ai/question', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          question: coachQuestion.trim(),
-          context: coachContext,
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json().catch(() => null);
-        const detail = error?.detail || response.statusText;
-        throw new Error(detail);
-      }
-
-      const result = await response.json();
-      setCoachAnswer(result.answer || 'AIからの応答がありませんでした。');
-    } catch (err) {
-      setCoachError(err instanceof Error ? err.message : 'AIへの問い合わせに失敗しました。');
-    } finally {
-      setCoachLoading(false);
-    }
-  };
 
   const nextQuiz = () => {
     if (currentQuizIdx < quizQuestions.length - 1) {
@@ -352,36 +312,9 @@ export default function Level450Course({ onBack }) {
             </div>
           </div>
           
+          {/* 📂 新しい AiCoach コンポーネントを配置 */}
           {showConsultantPanel && (
-            <div className="reading-consultant-panel animate-slide-in">
-              <div className="consultant-header">
-                <div>
-                  <h3>AIコーチ</h3>
-                  <p>質問を入力してヒントをもらいましょう。</p>
-                </div>
-                <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
-              </div>
-              <textarea
-                className="consultant-textarea"
-                placeholder="例えば：この単語の覚え方を教えてください。"
-                rows="6"
-                value={coachQuestion}
-                onChange={(e) => {
-                  setCoachQuestion(e.target.value);
-                  if (coachError) setCoachError('');
-                }}
-              />
-              <button className="consultant-submit-btn" onClick={submitCoachQuestion} disabled={coachLoading}>
-                {coachLoading ? '送信中…' : '送信する'}
-              </button>
-              {coachError && <p className="consultant-error-text">{coachError}</p>}
-              {coachAnswer && (
-                <div className="consultant-answer-box">
-                  <h4>AIコーチの回答</h4>
-                  <p>{coachAnswer}</p>
-                </div>
-              )}
-            </div>
+            <AiCoach context={coachContext} onClose={closeConsultantPanel} />
           )}
         </div>
       )}
@@ -437,36 +370,9 @@ export default function Level450Course({ onBack }) {
             </div>
           </div>
 
+          {/* 📂 新しい AiCoach コンポーネントを配置 */}
           {showConsultantPanel && (
-            <div className="reading-consultant-panel animate-slide-in">
-              <div className="consultant-header">
-                <div>
-                  <h3>AIコーチ</h3>
-                  <p>質問を入力してヒントをもらいましょう。</p>
-                </div>
-                <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
-              </div>
-              <textarea
-                className="consultant-textarea"
-                placeholder="例えば：この単語の覚え方を教えてください。"
-                rows="6"
-                value={coachQuestion}
-                onChange={(e) => {
-                  setCoachQuestion(e.target.value);
-                  if (coachError) setCoachError('');
-                }}
-              />
-              <button className="consultant-submit-btn" onClick={submitCoachQuestion} disabled={coachLoading}>
-                {coachLoading ? '送信中…' : '送信する'}
-              </button>
-              {coachError && <p className="consultant-error-text">{coachError}</p>}
-              {coachAnswer && (
-                <div className="consultant-answer-box">
-                  <h4>AIコーチの回答</h4>
-                  <p>{coachAnswer}</p>
-                </div>
-              )}
-            </div>
+            <AiCoach context={coachContext} onClose={closeConsultantPanel} />
           )}
         </div>
       )}
