@@ -1,6 +1,6 @@
 // AICoach.jsx
 import React, { useState } from 'react';
-import './AICoach.css';
+import './AiCoach.css';
 
 export default function AICoach({ context, onClose }) {
   const [coachQuestion, setCoachQuestion] = useState('');
