@@ -1,17 +1,21 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import './450LevelCourseReading.css';
+import './ReadingCourse.css';
 
-// 外部ファイルから読解問題データをインポート
-import READING_STAGES from './450_Reading';
+// 外部コンポーネント（AIコーチ）のインポート
+// ※ 階層や大文字・小文字のエラーが起きないよう、正しい相対パスを指定しています
+import AiCoach from "../../../ai-coach/AiCoach.jsx";
 
-// 進捗保存用の関数も共通のものを利用する場合はパスを合わせてアンコメントしてください
-// import { loadCourseProgress, saveCourseProgress } from '../../vocabulary/progressStorage';
+const PASS_SCORE = 3; // 1ステージあたり3問以上正解をクリア基準に設定
 
-const STORAGE_KEY = 'reading_450_stage_scores';
-const STAGE_LABEL = '講';
-const PASS_SCORE = 3; // 1ステージあたり3〜4問想定のため、3問以上正解をベースラインに設定
-
-export default function Level450CourseReading({ onBack, userName = '学習者' }) {
+export default function ReadingCourse({
+  courseTitle = '読解突破コース',
+  courseSub = 'Part 6/7の長文を攻略。各問題の7割以上正解でクリア！',
+  stages = [],
+  storageKey = 'reading_course_scores',
+  stageLabel = '講',
+  userName = '学習者',
+  onBack
+}) {
   const [screen, setScreen] = useState('stage_select');
   const [selectedStage, setSelectedStage] = useState(0);
   const [showConsultantPanel, setShowConsultantPanel] = useState(false);
@@ -78,32 +82,33 @@ export default function Level450CourseReading({ onBack, userName = '学習者' }
   const [stageScores, setStageScores] = useState({});
   const [showCertificate, setShowCertificate] = useState(false);
 
-  const totalStages = READING_STAGES.length;
+  const totalStages = stages.length;
 
   // 進捗データのロード
   useEffect(() => {
     const loadProgress = () => {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(storageKey);
       if (saved) setStageScores(JSON.parse(saved));
     };
     loadProgress();
-  }, []);
+  }, [storageKey]);
 
   // 進捗データのセーブ
   const saveProgress = (nextScores) => {
     setStageScores(nextScores);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextScores));
+    localStorage.setItem(storageKey, JSON.stringify(nextScores));
   };
 
   // クリア（合格）したステージの総数を計算
   const clearedCount = useMemo(() => {
     return Object.keys(stageScores).filter(key => {
       const stageIdx = parseInt(key, 10);
-      const stage = READING_STAGES[stageIdx];
-      const passBoundary = stage ? Math.min(PASS_SCORE, stage.questions.length) : PASS_SCORE;
+      const stage = stages[stageIdx];
+      if (!stage) return false;
+      const passBoundary = Math.min(PASS_SCORE, stage.questions.length);
       return stageScores[key] >= passBoundary;
     }).length;
-  }, [stageScores]);
+  }, [stageScores, stages]);
 
   // 進捗パーセンテージ（整数）
   const progressPercent = useMemo(() => {
@@ -118,8 +123,8 @@ export default function Level450CourseReading({ onBack, userName = '学習者' }
 
   // 現在選択中のステージデータ
   const currentStageData = useMemo(() => {
-    return READING_STAGES[selectedStage] || null;
-  }, [selectedStage]);
+    return stages[selectedStage] || null;
+  }, [selectedStage, stages]);
 
   const handleGoToMenu = () => {
     setScreen('stage_select');
@@ -171,8 +176,9 @@ export default function Level450CourseReading({ onBack, userName = '学習者' }
       const passBoundary = Math.min(PASS_SCORE, questions.length);
       const updatedClearedCount = Object.keys(nextScores).filter(key => {
         const idx = parseInt(key, 10);
-        const stg = READING_STAGES[idx];
-        const pb = stg ? Math.min(PASS_SCORE, stg.questions.length) : PASS_SCORE;
+        const stg = stages[idx];
+        if (!stg) return false;
+        const pb = Math.min(PASS_SCORE, stg.questions.length);
         return nextScores[key] >= pb;
       }).length;
 
@@ -182,7 +188,7 @@ export default function Level450CourseReading({ onBack, userName = '学習者' }
     }
   };
 
-  const getStageName = (index) => `${STAGE_LABEL} ${index + 1}`;
+  const getStageName = (index) => `${stageLabel} ${index + 1}`;
 
   return (
     <div className="vocab-list-container">
@@ -192,8 +198,8 @@ export default function Level450CourseReading({ onBack, userName = '学習者' }
         <div className="vocab-list-card">
           <div className="course-header-row">
             <div>
-              <h2 className="vocab-list-title">450点レベル読解突破コース</h2>
-              <p className="vocab-list-sub">Part 6/7の基礎長文を攻略。各問題の7割以上正解でクリア！</p>
+              <h2 className="vocab-list-title">{courseTitle}</h2>
+              <p className="vocab-list-sub">{courseSub}</p>
             </div>
           </div>
 
@@ -217,7 +223,7 @@ export default function Level450CourseReading({ onBack, userName = '学習者' }
 
           {/* グリッドメニュー */}
           <div className="day-grid">
-            {READING_STAGES.map((stage, index) => {
+            {stages.map((stage, index) => {
               const savedScore = stageScores[index];
               const passBoundary = Math.min(PASS_SCORE, stage.questions.length);
               let statusText = '未挑戦';
@@ -326,7 +332,7 @@ export default function Level450CourseReading({ onBack, userName = '学習者' }
                 </div>
                 <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
               </div>
-                  <textarea
+              <textarea
                 className="consultant-textarea"
                 placeholder="例えば：本文の要点の探し方を教えてください。"
                 rows="6"
@@ -385,12 +391,12 @@ export default function Level450CourseReading({ onBack, userName = '学習者' }
           <div className="cert-modal animate-pop">
             <div className="cert-border">
               <div className="cert-ribbon">🏅</div>
-              <h1 className="cert-main-title" style={{ fontSize: '24px' }}>基礎読解コース修了証</h1>
+              <h1 className="cert-main-title" style={{ fontSize: '24px' }}>読解コース修了証</h1>
               <p className="cert-sub-title">READING COURSE COMPLETION</p>
               <div className="cert-divider-gold"></div>
               <p className="cert-user-text">{userName ? `${userName}殿` : '学習者殿'}</p>
               <p className="cert-body-text">
-                あなたは、TOEIC 450点レベルに必要な「Part 6 長文穴埋め」および「Part 7 基礎読解」の全トレーニングを修了し、英文の主旨を正確に素早く掴むスキルを習得したことをここに証明します。
+                あなたは、設定された読解ターゲットレベルに必要な「Part 6 長文穴埋め」および「Part 7 基礎読解」の全トレーニングを修了し、英文の主旨を正確に素早く掴むスキルを習得したことをここに証明します。
               </p>
               <div className="cert-footer">
                 <p>TOEIC読解マスター開発チーム</p>

@@ -18,7 +18,10 @@ import WORDS_600 from '../vocabulary/courses/600_wordlist';
 import WORDS_730 from '../vocabulary/courses/730_wordlist';
 import WORDS_860 from '../vocabulary/courses/860_wordlist';
 
-import Level450CourseReading from '../Reading/courses/450LevelCourseReading';
+// 共通化した ReadingCourse と、読解データリストをインポート
+import ReadingCourse from '../Reading/courses/ReadingCourse.jsx';
+import READING_STAGES_450 from '../Reading/courses/450_Reading.js';// 実際のデータファイル名に合わせて調整してください
+
 import BookMarkVocabulary from '../vocabulary/vocabularyBook/BookMarkVocabulary';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
@@ -226,13 +229,19 @@ export default function LandingPage({
           />
         )}
 
+        {/* 🛠️ 古いLevel450CourseReadingから共通化したReadingCourseへ修正 */}
         {mode === 'reading_course450' && (
-          <Level450CourseReading
+          <ReadingCourse
+            courseTitle="450点レベル読解突破コース"
+            courseSub="Part 6/7の基礎長文を攻略。各問題の7割以上正解でクリア！"
+            stages={READING_STAGES_450}
+            storageKey="reading_450_stage_scores"
+            stageLabel="講"
+            userName={userName}
             onBack={() => {
               setMode('readingCourseList');
               setActiveMenu('chat');
             }}
-            userName={userName}
           />
         )}
 
