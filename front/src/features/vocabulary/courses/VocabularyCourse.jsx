@@ -1,121 +1,111 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import './730LevelCourse.css';
-import WORDS from './730_wordlist';
-import { loadCourseProgress, saveCourseProgress, addBookmarkedWord, isWordBookmarked, removeBookmarkedWord } from '../progressStorage';
+import './VocabularyCourse.css'; 
+import { 
+  loadCourseProgress, 
+  saveCourseProgress, 
+  addBookmarkedWord, 
+  isWordBookmarked, 
+  removeBookmarkedWord 
+} from '../progressStorage';
 
-const STORAGE_KEY = 'vocab_730_stage_scores';
+// 📂 正しい AiCoach のインポート（3階層上の components/ai-coach/AiCoach を呼び出す）
+import AiCoach from "/Users/fukashiro/Downloads/App/SmartPrep/front/src/ai-coach/AiCoach.jsx";
 
 // ==========================================
 // 設定の調整
 // ==========================================
-const STAGE_LABEL = 'ステージ';
-const PER_STAGE = 10;
-const PASS_SCORE = 7;
+const STAGE_LABEL = 'ステージ'; 
+const PER_STAGE = 10;          
+const PASS_SCORE = 7;          
 // ==========================================
 
-// 安全なシャッフル関数（Fisher-Yatesアルゴリズム）
-const shuffleArray = (array) => {
-  if (!Array.isArray(array)) return [];
-  const clone = [...array];
-  for (let i = clone.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [clone[i], clone[j]] = [clone[j], clone[i]];
-  }
-  return clone;
-};
-
-export default function Level730Course({ onBack }) {
+export default function VocabularyCourse({ courseTitle, words, storageKey, onBack }) {
   const [screen, setScreen] = useState('stage_select');
   const [selectedStage, setSelectedStage] = useState(0);
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
+  
+  // クイズ関連
   const [currentQuizIdx, setCurrentQuizIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
+
+  // AIコーチの表示フラグ
   const [showConsultantPanel, setShowConsultantPanel] = useState(false);
-  const [coachQuestion, setCoachQuestion] = useState('');
-  const [coachAnswer, setCoachAnswer] = useState('');
-  const [coachLoading, setCoachLoading] = useState(false);
-  const [coachError, setCoachError] = useState('');
+
+  // スコア記録 { 0: 8, 1: 5 }
   const [stageScores, setStageScores] = useState({});
+  
+  // 証明書モーダルの表示フラグ
   const [showCertificate, setShowCertificate] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
 
-  // WORDS が未定義または配列でない場合の安全ガード
-  const safeWords = useMemo(() => Array.isArray(WORDS) ? WORDS : [], []);
-  const totalStages = useMemo(() => Math.ceil(safeWords.length / PER_STAGE), [safeWords]);
+  // 総ステージ数
+  const totalStages = Math.ceil(words.length / PER_STAGE);
 
   // 今回の10語を抽出
   const todaysWords = useMemo(() => {
-    if (safeWords.length === 0) return [];
     const start = selectedStage * PER_STAGE;
-    return safeWords.slice(start, start + PER_STAGE);
-  }, [selectedStage, safeWords]);
+    return words.slice(start, start + PER_STAGE);
+  }, [selectedStage, words]);
+
+  const quizQuestions = useMemo(() => {
+    if (todaysWords.length === 0) return [];
+    return todaysWords.map((wordObj) => {
+      const incorrects = words
+        .filter((w) => w.meaning !== wordObj.meaning)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3)
+        .map((w) => w.meaning);
+      const choices = [wordObj.meaning, ...incorrects].sort(() => 0.5 - Math.random());
+      return {
+        word: wordObj.word,
+        pos: wordObj.pos,
+        correct: wordObj.meaning,
+        choices: choices,
+      };
+    });
+  }, [todaysWords, words]);
 
   // 進捗ロード
   useEffect(() => {
     const syncStageScores = () => {
-      if (typeof loadCourseProgress === 'function') {
-        setStageScores(loadCourseProgress(STORAGE_KEY) || {});
+      setStageScores(loadCourseProgress(storageKey));
+    };
+
+    const syncBookmarkState = () => {
+      const currentWord = todaysWords[currentWordIdx];
+      if (currentWord) {
+        setBookmarked(isWordBookmarked(currentWord.word));
       }
     };
 
     syncStageScores();
+    syncBookmarkState();
     window.addEventListener('vocab-progress-storage-updated', syncStageScores);
+    window.addEventListener('vocab-bookmarks-updated', syncBookmarkState);
+
     return () => {
       window.removeEventListener('vocab-progress-storage-updated', syncStageScores);
+      window.removeEventListener('vocab-bookmarks-updated', syncBookmarkState);
     };
-  }, []);
+  }, [currentWordIdx, todaysWords, storageKey]);
 
-  // ブックマーク状態の同期 (他コースと同一のロジックに統一)
-  useEffect(() => {
-    if (todaysWords && todaysWords[currentWordIdx] && typeof isWordBookmarked === 'function') {
-      const wordKey = todaysWords[currentWordIdx].word || todaysWords[currentWordIdx].line;
-      if (wordKey) {
-        setBookmarked(isWordBookmarked(wordKey));
-        return;
-      }
-    }
-    setBookmarked(false);
-  }, [currentWordIdx, todaysWords]);
-
+  // クリア（合格）したステージの総数を計算
   const clearedCount = useMemo(() => {
-    return Object.values(stageScores).filter((score) => score >= PASS_SCORE).length;
+    return Object.values(stageScores).filter(score => score >= PASS_SCORE).length;
   }, [stageScores]);
 
+  // 進捗パーセンテージ（整数）
   const progressPercent = useMemo(() => {
     if (totalStages === 0) return 0;
     return Math.floor((clearedCount / totalStages) * 100);
   }, [clearedCount, totalStages]);
 
+  // 全ステージクリアしているか判定
   const isAllCleared = useMemo(() => {
     return totalStages > 0 && clearedCount === totalStages;
   }, [clearedCount, totalStages]);
-
-  // クイズの問題生成ロジック
-  const quizQuestions = useMemo(() => {
-    if (todaysWords.length === 0 || safeWords.length === 0) return [];
-    
-    return todaysWords.map((wordObj) => {
-      const otherWords = safeWords.filter((w) => {
-        if (wordObj.id && w.id) return w.id !== wordObj.id;
-        const targetWord = wordObj.word || wordObj.line;
-        const currentW = w.word || w.line;
-        return currentW !== targetWord;
-      });
-      
-      const shuffledOthers = shuffleArray(otherWords);
-      const incorrects = shuffledOthers.slice(0, 3).map((w) => w.meaning || '誤答選択肢');
-      const choices = shuffleArray([wordObj.meaning || '未定義の意味', ...incorrects]);
-      
-      return {
-        word: wordObj.word || wordObj.line || 'Unknown',
-        pos: wordObj.pos || '名詞',
-        correct: wordObj.meaning || '未定義の意味',
-        choices,
-      };
-    });
-  }, [todaysWords, safeWords]);
 
   const handleGoToMenu = () => {
     setScreen('stage_select');
@@ -125,9 +115,6 @@ export default function Level730Course({ onBack }) {
     setSelectedAnswer(null);
     setIsAnswered(false);
     setShowConsultantPanel(false);
-    setCoachQuestion('');
-    setCoachAnswer('');
-    setCoachError('');
   };
 
   const startStage = (stageIndex) => {
@@ -141,10 +128,6 @@ export default function Level730Course({ onBack }) {
     setScore(0);
     setIsAnswered(false);
     setSelectedAnswer(null);
-    setShowConsultantPanel(false);
-    setCoachQuestion('');
-    setCoachAnswer('');
-    setCoachError('');
     setScreen('quiz');
   };
 
@@ -166,20 +149,11 @@ export default function Level730Course({ onBack }) {
     const currentWord = todaysWords[currentWordIdx];
     if (!currentWord) return;
 
-    const wordKey = currentWord.word || currentWord.line;
-    if (!wordKey) return;
-
     if (bookmarked) {
-      if (typeof removeBookmarkedWord === 'function') removeBookmarkedWord(wordKey);
+      removeBookmarkedWord(currentWord.word);
       setBookmarked(false);
     } else {
-      if (typeof addBookmarkedWord === 'function') {
-        addBookmarkedWord({ 
-          word: wordKey, 
-          pos: currentWord.pos || '名詞', 
-          meaning: currentWord.meaning || '' 
-        });
-      }
+      addBookmarkedWord({ word: currentWord.word, pos: currentWord.pos, meaning: currentWord.meaning });
       setBookmarked(true);
     }
   };
@@ -188,7 +162,7 @@ export default function Level730Course({ onBack }) {
     if (isAnswered) return;
     setSelectedAnswer(choice);
     setIsAnswered(true);
-    if (quizQuestions[currentQuizIdx] && choice === quizQuestions[currentQuizIdx].correct) {
+    if (choice === quizQuestions[currentQuizIdx].correct) {
       setScore((prev) => prev + 1);
     }
   };
@@ -199,18 +173,16 @@ export default function Level730Course({ onBack }) {
 
   const closeConsultantPanel = () => {
     setShowConsultantPanel(false);
-    setCoachQuestion('');
-    setCoachAnswer('');
-    setCoachError('');
   };
 
+  // AIコーチへ引き渡す文脈データの作成
   const coachContext = useMemo(() => {
     const currentWord = todaysWords[currentWordIdx];
     const currentQuiz = quizQuestions[currentQuizIdx];
-    const stageWords = todaysWords.map((word) => `${word.word || word.line}：${word.meaning}`).join('\n');
+    const stageWords = todaysWords.map((word) => `${word.word}：${word.meaning}`).join('\n');
 
     if (screen === 'learning' && currentWord) {
-      return `現在の単語：${currentWord.word || currentWord.line}\n品詞：${currentWord.pos}\n意味：${currentWord.meaning}\n\n同じステージの単語一覧:\n${stageWords}`;
+      return `現在の単語：${currentWord.word}\n品詞：${currentWord.pos}\n意味：${currentWord.meaning}\n\n同じステージの単語一覧:\n${stageWords}`;
     }
 
     if (screen === 'quiz' && currentQuiz) {
@@ -220,64 +192,28 @@ export default function Level730Course({ onBack }) {
     return `単語一覧:\n${stageWords}`;
   }, [screen, todaysWords, currentWordIdx, currentQuizIdx, quizQuestions]);
 
-  const submitCoachQuestion = async () => {
-    if (!coachQuestion.trim()) {
-      setCoachError('質問を入力してください。');
-      return;
-    }
-
-    setCoachLoading(true);
-    setCoachError('');
-    setCoachAnswer('');
-
-    try {
-      const response = await fetch('http://localhost:8000/ai/question', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          question: coachQuestion.trim(),
-          context: coachContext,
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json().catch(() => null);
-        const detail = error?.detail || response.statusText;
-        throw new Error(detail);
-      }
-
-      const result = await response.json();
-      setCoachAnswer(result.answer || 'AIからの応答がありませんでした。');
-    } catch (err) {
-      setCoachError(err instanceof Error ? err.message : 'AIへの問い合わせに失敗しました。');
-    } finally {
-      setCoachLoading(false);
-    }
-  };
-
   const nextQuiz = () => {
-    if (!quizQuestions[currentQuizIdx]) return;
-
     if (currentQuizIdx < quizQuestions.length - 1) {
       setCurrentQuizIdx((prev) => prev + 1);
       setIsAnswered(false);
       setSelectedAnswer(null);
     } else {
       setScreen('result');
-      const finalScore = score + (selectedAnswer === quizQuestions[currentQuizIdx].correct ? 1 : 0);
+      
+      const finalScore = score;
       const previousScore = stageScores[selectedStage] !== undefined ? stageScores[selectedStage] : -1;
+      
       let nextScores = { ...stageScores };
-      if (finalScore > previousScore || previousScore === -1) {
+      if (finalScore > previousScore) {
+        nextScores[selectedStage] = finalScore;
+      } else if (previousScore === -1) {
         nextScores[selectedStage] = finalScore;
       }
+      
       setStageScores(nextScores);
-      if (typeof saveCourseProgress === 'function') {
-        saveCourseProgress(STORAGE_KEY, nextScores);
-      }
+      saveCourseProgress(storageKey, nextScores);
 
-      const updatedClearedCount = Object.values(nextScores).filter((s) => s >= PASS_SCORE).length;
+      const updatedClearedCount = Object.values(nextScores).filter(s => s >= PASS_SCORE).length;
       if (updatedClearedCount === totalStages && finalScore >= PASS_SCORE) {
         setShowCertificate(true);
       }
@@ -288,11 +224,14 @@ export default function Level730Course({ onBack }) {
 
   return (
     <div className="vocab-list-container">
+      
+      {/* 1. ステージ選択メニュー画面 */}
       {screen === 'stage_select' && (
         <div className="vocab-list-card">
-          <h2 className="vocab-list-title">730点レベル単語習得コース</h2>
-          <p className="vocab-list-sub">1回につき{PER_STAGE}語ずつ学習。{PASS_SCORE}問以上正解でクリア！</p>
-
+          <h2 className="vocab-list-title">{courseTitle}</h2>
+          <p className="vocab-list-sub">1回につき{PER_STAGE}語ずつサクッと学習。{PASS_SCORE}問以上正解でクリア！</p>
+          
+          {/* 📊 ステータスバー（プログレスバー） */}
           <div className="progress-container">
             <div className="progress-bar-label">
               <span>全体の進捗度</span>
@@ -303,17 +242,19 @@ export default function Level730Course({ onBack }) {
             </div>
           </div>
 
+          {/* 全クリア時にいつでも証明書を見られる特設ボタン */}
           {isAllCleared && (
             <button className="view-cert-badge-btn" onClick={() => setShowCertificate(true)}>
               🏅 合格証明書を表示する
             </button>
           )}
-
+          
           <div className="day-grid">
             {Array.from({ length: totalStages }).map((_, index) => {
               const savedScore = stageScores[index];
               let statusText = '未挑戦';
               let btnClass = 'day-btn';
+              
               if (savedScore !== undefined) {
                 if (savedScore >= PASS_SCORE) {
                   statusText = '✓ クリア';
@@ -323,6 +264,7 @@ export default function Level730Course({ onBack }) {
                   btnClass += ' progressing';
                 }
               }
+
               return (
                 <button key={index} className={btnClass} onClick={() => startStage(index)}>
                   <span className="day-num">{getStageName(index)}</span>
@@ -338,8 +280,8 @@ export default function Level730Course({ onBack }) {
         </div>
       )}
 
-      {/* 2. 単語カード画面 (ヘッダーアクションにブックマークを追加、カード内をシンプル化) */}
-      {screen === 'learning' && todaysWords.length > 0 && todaysWords[currentWordIdx] && (
+      {/* 2. 単語カード画面 */}
+      {screen === 'learning' && todaysWords.length > 0 && (
         <div className="reading-stage-card-wrapper">
           <div className={`vocab-list-card reading-stage-card${showConsultantPanel ? ' coach-open' : ''}`}>
             <div className="screen-header reading-full-width">
@@ -356,9 +298,9 @@ export default function Level730Course({ onBack }) {
 
             <div className="word-flashcard">
               <div className="bookmark-toggle-row">
-                <span className="card-pos">[{todaysWords[currentWordIdx].pos || '名詞'}]</span>
+                <span className="card-pos">[{todaysWords[currentWordIdx].pos}]</span>
               </div>
-              <h1 className="card-word">{todaysWords[currentWordIdx].word || todaysWords[currentWordIdx].line}</h1>
+              <h1 className="card-word">{todaysWords[currentWordIdx].word}</h1>
               <div className="card-divider"></div>
               <p className="card-meaning">{todaysWords[currentWordIdx].meaning}</p>
             </div>
@@ -372,42 +314,16 @@ export default function Level730Course({ onBack }) {
               </button>
             </div>
           </div>
-
+          
+          {/* 📂 新しい AiCoach コンポーネントを配置 */}
           {showConsultantPanel && (
-            <div className="reading-consultant-panel animate-slide-in">
-              <div className="consultant-header">
-                <div>
-                  <h3>AIコーチ</h3>
-                  <p>質問を入力してヒントをもわりましょう。</p>
-                </div>
-                <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
-              </div>
-              <textarea
-                className="consultant-textarea"
-                placeholder="例えば：この単語の覚え方を教えてください。"
-                rows="6"
-                value={coachQuestion}
-                onChange={(e) => {
-                  setCoachQuestion(e.target.value);
-                  if (coachError) setCoachError('');
-                }}
-              />
-              <button className="consultant-submit-btn" onClick={submitCoachQuestion} disabled={coachLoading}>
-                {coachLoading ? '送信中…' : '送信する'}
-              </button>
-              {coachError && <p className="consultant-error-text">{coachError}</p>}
-              {coachAnswer && (
-                <div className="consultant-answer-box">
-                  <h4>AIコーチの回答</h4>
-                  <p>{coachAnswer}</p>
-                </div>
-              )}
-            </div>
+            <AiCoach context={coachContext} onClose={closeConsultantPanel} />
           )}
         </div>
       )}
 
-      {screen === 'quiz' && quizQuestions.length > 0 && quizQuestions[currentQuizIdx] && (
+      {/* 3. クイズ画面 */}
+      {screen === 'quiz' && quizQuestions.length > 0 && (
         <div className="reading-stage-card-wrapper">
           <div className={`vocab-list-card reading-stage-card${showConsultantPanel ? ' coach-open' : ''}`}>
             <div className="screen-header reading-full-width">
@@ -421,6 +337,7 @@ export default function Level730Course({ onBack }) {
             <div className="quiz-box" style={{ padding: 0 }}>
               <p className="quiz-question-label">正しい意味を選んでください：</p>
               <h2 className="quiz-word">{quizQuestions[currentQuizIdx].word} <span style={{ fontSize: '14px', fontWeight: 'normal' }}>({quizQuestions[currentQuizIdx].pos})</span></h2>
+
               <div className="quiz-choices">
                 {quizQuestions[currentQuizIdx].choices.map((choice, i) => {
                   let btnClass = 'choice-btn';
@@ -456,40 +373,14 @@ export default function Level730Course({ onBack }) {
             </div>
           </div>
 
+          {/* 📂 新しい AiCoach コンポーネントを配置 */}
           {showConsultantPanel && (
-            <div className="reading-consultant-panel animate-slide-in">
-              <div className="consultant-header">
-                <div>
-                  <h3>AIコーチ</h3>
-                  <p>質問を入力してヒントをもらいましょう。</p>
-                </div>
-                <button className="consultant-close-btn" onClick={closeConsultantPanel}>閉じる</button>
-              </div>
-              <textarea
-                className="consultant-textarea"
-                placeholder="例えば：この単語の覚え方を教えてください。"
-                rows="6"
-                value={coachQuestion}
-                onChange={(e) => {
-                  setCoachQuestion(e.target.value);
-                  if (coachError) setCoachError('');
-                }}
-              />
-              <button className="consultant-submit-btn" onClick={submitCoachQuestion} disabled={coachLoading}>
-                {coachLoading ? '送信中…' : '送信する'}
-              </button>
-              {coachError && <p className="consultant-error-text">{coachError}</p>}
-              {coachAnswer && (
-                <div className="consultant-answer-box">
-                  <h4>AIコーチの回答</h4>
-                  <p>{coachAnswer}</p>
-                </div>
-              )}
-            </div>
+            <AiCoach context={coachContext} onClose={closeConsultantPanel} />
           )}
         </div>
       )}
 
+      {/* 4. 結果画面 */}
       {screen === 'result' && (
         <div className="vocab-list-card text-center">
           {score >= PASS_SCORE ? (
@@ -509,8 +400,8 @@ export default function Level730Course({ onBack }) {
           </div>
 
           <p className="result-comment">
-            {score >= PASS_SCORE
-              ? '素晴らしい集中力です！この調子で次のステージにも挑戦してみましょう！'
+            {score >= PASS_SCORE 
+              ? '素晴らしい集中力です！この調子で次のステージにも挑戦してみましょう！' 
               : '履歴に「挑戦中」として記録されました！諦めずに再チャレンジしましょう！'}
           </p>
 
@@ -520,6 +411,7 @@ export default function Level730Course({ onBack }) {
         </div>
       )}
 
+      {/* 🏅 合格証明書モーダルポップアップ */}
       {showCertificate && (
         <div className="cert-overlay">
           <div className="cert-modal animate-pop">
@@ -527,11 +419,15 @@ export default function Level730Course({ onBack }) {
               <div className="cert-ribbon">🏅</div>
               <h1 className="cert-main-title">合格証明書</h1>
               <p className="cert-sub-title">CERTIFICATE OF COMPLETION</p>
+              
               <div className="cert-divider-gold"></div>
+              
               <p className="cert-user-text">あなた（学習者殿）</p>
+              
               <p className="cert-body-text">
-                あなたは、TOEIC 730点レベルに必須とされる重要語彙のトレーニングおよび確認クイズをすべて優秀な成績で修め、全ステージを完全攻略したことをここに証明します。
+                あなたは、{courseTitle}に必須とされる重要語彙のトレーニングおよび確認クイズをすべて優秀な成績で修め、全ステージを完全攻略したことをここに証明します。
               </p>
+              
               <div className="cert-footer">
                 <p>TOEIC単語マスターアプリ開発チーム</p>
                 <p className="cert-date">達成日: {new Date().toLocaleDateString()}</p>
@@ -541,6 +437,7 @@ export default function Level730Course({ onBack }) {
           </div>
         </div>
       )}
+
     </div>
   );
 }

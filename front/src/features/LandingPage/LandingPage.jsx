@@ -10,11 +10,15 @@ import VocabularyMenu from '../vocabulary/VocabularyMenu';
 import VocabularyCourseList from '../vocabulary/VocabularyCourseList';
 import MyVocabulary from '../vocabulary/MyVocabulary';
 import AiVocabulary from '../vocabulary/AiVocabulary/AiVocabulary';
-import Level450Course from '../vocabulary/courses/450LevelCourse';
+
+// 共通化した VocabularyCourse と、各単語データリストを直接インポート
+import VocabularyCourse from '../vocabulary/courses/VocabularyCourse';
+import WORDS_450 from '../vocabulary/courses/450_wordlist';
+import WORDS_600 from '../vocabulary/courses/600_wordlist';
+import WORDS_730 from '../vocabulary/courses/730_wordlist';
+import WORDS_860 from '../vocabulary/courses/860_wordlist';
+
 import Level450CourseReading from '../Reading/courses/450LevelCourseReading';
-import Level600Course from '../vocabulary/courses/600LevelCourse';
-import Level730Course from '../vocabulary/courses/730LevelCourse';
-import Level860Course from '../vocabulary/courses/860LevelCourse';
 import BookMarkVocabulary from '../vocabulary/vocabularyBook/BookMarkVocabulary';
 import LoginForm from '../auth/components/LoginForm';
 import SignUpForm from '../auth/components/SignUpForm';
@@ -71,7 +75,7 @@ export default function LandingPage({
           />
         )}
 
-        {/* 3. 新規登録画面（onAuthSuccess として handleAuthSuccess を渡す） */}
+        {/* 3. 新規登録画面 */}
         {mode === 'signup' && (
           <SignUpForm 
             onNavigateToLanding={() => {
@@ -109,7 +113,6 @@ export default function LandingPage({
               setActiveMenu('chat');
             }}
             onStartAiCoach={() => {
-              // 今後、AIコーチ画面へのナビゲーションを追加
               setMode('chat');
               setActiveMenu('chat');
             }}
@@ -151,8 +154,6 @@ export default function LandingPage({
             }}
             onStartCourse={() => {
               setMode('vocabCourseList');
-              // Vocabulary screens are conceptually under Reading (chat),
-              // keep the sidebar active as 'chat' so the Reading menu stays highlighted.
               setActiveMenu('chat');
             }}
             onStartMyVocabulary={() => {
@@ -180,12 +181,12 @@ export default function LandingPage({
           />
         )}
 
-{mode === 'aiVocabulary' && (
-  <AiVocabulary 
-    onBack={() => setMode('vocabMenu')} 
-    userEmail={userEmail}  // 💡 これを確実に追加します！
-  />
-)}
+        {mode === 'aiVocabulary' && (
+          <AiVocabulary 
+            onBack={() => setMode('vocabMenu')} 
+            userEmail={userEmail}
+          />
+        )}
 
         {mode === 'vocabCourseList' && (
           <VocabularyCourseList
@@ -212,8 +213,12 @@ export default function LandingPage({
           />
         )}
 
+        {/* 共通の VocabularyCourse コンポーネントに各レベルのパラメータを渡して直接出し分け */}
         {mode === 'course450' && (
-          <Level450Course
+          <VocabularyCourse
+            courseTitle="450点レベル単語習得コース"
+            words={WORDS_450}
+            storageKey="vocab_450_stage_scores"
             onBack={() => {
               setMode('vocabCourseList');
               setActiveMenu('chat');
@@ -232,7 +237,10 @@ export default function LandingPage({
         )}
 
         {mode === 'course600' && (
-          <Level600Course
+          <VocabularyCourse
+            courseTitle="600点レベル単語習得コース"
+            words={WORDS_600}
+            storageKey="vocab_600_stage_scores"
             onBack={() => {
               setMode('vocabCourseList');
               setActiveMenu('chat');
@@ -241,7 +249,10 @@ export default function LandingPage({
         )}
 
         {mode === 'course730' && (
-          <Level730Course
+          <VocabularyCourse
+            courseTitle="730点レベル単語習得コース"
+            words={WORDS_730}
+            storageKey="vocab_730_stage_scores"
             onBack={() => {
               setMode('vocabCourseList');
               setActiveMenu('chat');
@@ -250,7 +261,10 @@ export default function LandingPage({
         )}
 
         {mode === 'course860' && (
-          <Level860Course
+          <VocabularyCourse
+            courseTitle="860点レベル単語習得コース"
+            words={WORDS_860}
+            storageKey="vocab_860_stage_scores"
             onBack={() => {
               setMode('vocabCourseList');
               setActiveMenu('chat');
@@ -284,7 +298,7 @@ export default function LandingPage({
           }} />
         )}
 
-        {/* 7. 📝 総合テスト */}
+        {/* 8. 📝 総合テスト */}
         {mode === 'test' && (
           <div className="chat-placeholder-container">
             <h2>📝 総合テスト画面（開発中）</h2>
@@ -306,5 +320,5 @@ export default function LandingPage({
 
       </div>
     </div>
-  );
+  ); 
 }
