@@ -8,8 +8,8 @@ import {
   removeBookmarkedWord 
 } from '../progressStorage';
 
-// 📂 正しい AiCoach のインポート（3階層上の components/ai-coach/AiCoach を呼び出す）
-import AiCoach from "/Users/fukashiro/Downloads/App/SmartPrep/front/src/ai-coach/AiCoach.jsx";
+// 📂 正しい AiCoach のインポート（3階層上の src/ai-coach/AiCoach を呼び出す）
+import AiCoach from "../../../ai-coach/AiCoach.jsx";
 
 // ==========================================
 // 設定の調整
