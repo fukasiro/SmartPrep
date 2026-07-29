@@ -1,7 +1,13 @@
 import React from 'react';
 import './ReadingCourseList.css';
 
-export default function ReadingCourseList({ onBack, onStart450, onStart600, onStart730, onStart860 }) {
+export default function ReadingCourseList({ 
+  onBack, 
+  onStart450, 
+  onStart600, 
+  onStart730, 
+  onStart860 
+}) {
   return (
     <div className="vocab-list-container">
       <div className="vocab-list-card">

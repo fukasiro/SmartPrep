@@ -18,9 +18,12 @@ import WORDS_600 from '../vocabulary/courses/600_wordlist';
 import WORDS_730 from '../vocabulary/courses/730_wordlist';
 import WORDS_860 from '../vocabulary/courses/860_wordlist';
 
-// 共通化した ReadingCourse と、読解データリストをインポート
+// 共通化した ReadingCourse と、各レベルの読解データリストをインポート
 import ReadingCourse from '../Reading/courses/ReadingCourse.jsx';
-import READING_STAGES_450 from '../Reading/courses/450_Reading.js';// 実際のデータファイル名に合わせて調整してください
+import READING_STAGES_450 from '../Reading/courses/450_Reading.js';
+import READING_STAGES_600 from '../Reading/courses/600_Reading.js';
+import READING_STAGES_730 from '../Reading/courses/730_Reading.js';
+import READING_STAGES_860 from '../Reading/courses/860_Reading.js';
 
 import BookMarkVocabulary from '../vocabulary/vocabularyBook/BookMarkVocabulary';
 import LoginForm from '../auth/components/LoginForm';
@@ -134,15 +137,76 @@ export default function LandingPage({
               setActiveMenu('chat');
             }}
             onStart600={() => {
-              setMode('course600');
+              setMode('reading_course600');
               setActiveMenu('chat');
             }}
             onStart730={() => {
-              setMode('course730');
+              setMode('reading_course730');
               setActiveMenu('chat');
             }}
             onStart860={() => {
-              setMode('course860');
+              setMode('reading_course860');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {/* 4.7 共通の ReadingCourse コンポーネントに各レベルのデータを渡して出し分け */}
+        {mode === 'reading_course450' && (
+          <ReadingCourse
+            courseTitle="450点レベル読解突破コース"
+            courseSub="Part 6/7の基礎長文を攻略。各問題の7割以上正解でクリア！"
+            stages={READING_STAGES_450}
+            storageKey="reading_450_stage_scores"
+            stageLabel="講"
+            userName={userName}
+            onBack={() => {
+              setMode('readingCourseList');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'reading_course600' && (
+          <ReadingCourse
+            courseTitle="600点レベル読解突破コース"
+            courseSub="ビジネス文書やメールなど実践的な長文問題に挑戦！"
+            stages={READING_STAGES_600}
+            storageKey="reading_600_stage_scores"
+            stageLabel="講"
+            userName={userName}
+            onBack={() => {
+              setMode('readingCourseList');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'reading_course730' && (
+          <ReadingCourse
+            courseTitle="730点レベル読解突破コース"
+            courseSub="複雑な文構造や表現に対応した高度な長文読解訓練を行います。"
+            stages={READING_STAGES_730}
+            storageKey="reading_730_stage_scores"
+            stageLabel="講"
+            userName={userName}
+            onBack={() => {
+              setMode('readingCourseList');
+              setActiveMenu('chat');
+            }}
+          />
+        )}
+
+        {mode === 'reading_course860' && (
+          <ReadingCourse
+            courseTitle="860点レベル読解突破コース"
+            courseSub="高速読解と深い理解を両立させ、高得点・満点を目指す訓練を行います。"
+            stages={READING_STAGES_860}
+            storageKey="reading_860_stage_scores"
+            stageLabel="講"
+            userName={userName}
+            onBack={() => {
+              setMode('readingCourseList');
               setActiveMenu('chat');
             }}
           />
@@ -216,7 +280,7 @@ export default function LandingPage({
           />
         )}
 
-        {/* 共通の VocabularyCourse コンポーネントに各レベルのパラメータを渡して直接出し分け */}
+        {/* 共通の VocabularyCourse コンポーネント */}
         {mode === 'course450' && (
           <VocabularyCourse
             courseTitle="450点レベル単語習得コース"
@@ -224,22 +288,6 @@ export default function LandingPage({
             storageKey="vocab_450_stage_scores"
             onBack={() => {
               setMode('vocabCourseList');
-              setActiveMenu('chat');
-            }}
-          />
-        )}
-
-        {/* 🛠️ 古いLevel450CourseReadingから共通化したReadingCourseへ修正 */}
-        {mode === 'reading_course450' && (
-          <ReadingCourse
-            courseTitle="450点レベル読解突破コース"
-            courseSub="Part 6/7の基礎長文を攻略。各問題の7割以上正解でクリア！"
-            stages={READING_STAGES_450}
-            storageKey="reading_450_stage_scores"
-            stageLabel="講"
-            userName={userName}
-            onBack={() => {
-              setMode('readingCourseList');
               setActiveMenu('chat');
             }}
           />
