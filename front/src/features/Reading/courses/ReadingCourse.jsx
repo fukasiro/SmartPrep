@@ -2,20 +2,58 @@ import React, { useEffect, useState, useMemo } from 'react';
 import './ReadingCourse.css';
 
 // 外部コンポーネント（AIコーチ）のインポート
-// ※ 階層や大文字・小文字のエラーが起きないよう、正しい相対パスを指定しています
 import AiCoach from "../../../ai-coach/AiCoach.jsx";
 
 const PASS_SCORE = 3; // 1ステージあたり3問以上正解をクリア基準に設定
 
 export default function ReadingCourse({
+  level = 600, // 親から渡されるレベル（450, 600, 700など）
   courseTitle = '読解突破コース',
   courseSub = 'Part 6/7の長文を攻略。各問題の7割以上正解でクリア！',
-  stages = [],
+  stages: propStages = [], 
   storageKey = 'reading_course_scores',
   stageLabel = '講',
   userName = '学習者',
   onBack
 }) {
+  // --- 🌐 API連携データ取得処理 ---
+  const [stages, setStages] = useState(propStages);
+  const [dataLoading, setDataLoading] = useState(false);
+  const [dataError, setDataError] = useState(null);
+
+  useEffect(() => {
+    // 親からstagesが直接渡されている場合はそれを使用
+    if (propStages && propStages.length > 0) {
+      setStages(propStages);
+      return;
+    }
+
+    // APIからデータをフェッチ
+    const fetchReadingCourseData = async () => {
+      try {
+        setDataLoading(true);
+        setDataError(null);
+        const response = await fetch(`http://localhost:8000/reading/courses/${level}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error(`レベル ${level} の問題データが見つかりません。DBにデータを登録してください。`);
+          }
+          throw new Error('データの取得に失敗しました');
+        }
+        const data = await response.json();
+        setStages(data || []);
+      } catch (err) {
+        console.error('API Error:', err);
+        setDataError(err.message);
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
+    fetchReadingCourseData();
+  }, [level]);
+
+  // --- 画面＆AIコーチ状態 ---
   const [screen, setScreen] = useState('stage_select');
   const [selectedStage, setSelectedStage] = useState(0);
   const [showConsultantPanel, setShowConsultantPanel] = useState(false);
@@ -24,10 +62,7 @@ export default function ReadingCourse({
   const [coachLoading, setCoachLoading] = useState(false);
   const [coachError, setCoachError] = useState('');
 
-  const handleAskCoach = () => {
-    setShowConsultantPanel(true);
-  };
-
+  const handleAskCoach = () => setShowConsultantPanel(true);
   const closeConsultantPanel = () => {
     setShowConsultantPanel(false);
     setCoachQuestion('');
@@ -48,9 +83,7 @@ export default function ReadingCourse({
     try {
       const response = await fetch('http://localhost:8000/ai/question', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: coachQuestion.trim(),
           context: currentStageData?.passage || '',
@@ -59,8 +92,7 @@ export default function ReadingCourse({
 
       if (!response.ok) {
         const error = await response.json().catch(() => null);
-        const detail = error?.detail || response.statusText;
-        throw new Error(detail);
+        throw new Error(error?.detail || response.statusText);
       }
 
       const result = await response.json();
@@ -82,9 +114,9 @@ export default function ReadingCourse({
   const [stageScores, setStageScores] = useState({});
   const [showCertificate, setShowCertificate] = useState(false);
 
-  const totalStages = stages.length;
+  const safeStages = Array.isArray(stages) ? stages : [];
+  const totalStages = safeStages.length;
 
-  // 進捗データのロード
   useEffect(() => {
     const loadProgress = () => {
       const saved = localStorage.getItem(storageKey);
@@ -93,38 +125,33 @@ export default function ReadingCourse({
     loadProgress();
   }, [storageKey]);
 
-  // 進捗データのセーブ
   const saveProgress = (nextScores) => {
     setStageScores(nextScores);
     localStorage.setItem(storageKey, JSON.stringify(nextScores));
   };
 
-  // クリア（合格）したステージの総数を計算
   const clearedCount = useMemo(() => {
     return Object.keys(stageScores).filter(key => {
       const stageIdx = parseInt(key, 10);
-      const stage = stages[stageIdx];
-      if (!stage) return false;
+      const stage = safeStages[stageIdx];
+      if (!stage || !stage.questions) return false;
       const passBoundary = Math.min(PASS_SCORE, stage.questions.length);
       return stageScores[key] >= passBoundary;
     }).length;
-  }, [stageScores, stages]);
+  }, [stageScores, safeStages]);
 
-  // 進捗パーセンテージ（整数）
   const progressPercent = useMemo(() => {
     if (totalStages === 0) return 0;
     return Math.floor((clearedCount / totalStages) * 100);
   }, [clearedCount, totalStages]);
 
-  // 全ステージクリアしているか判定
   const isAllCleared = useMemo(() => {
     return totalStages > 0 && clearedCount === totalStages;
   }, [clearedCount, totalStages]);
 
-  // 現在選択中のステージデータ
   const currentStageData = useMemo(() => {
-    return stages[selectedStage] || null;
-  }, [selectedStage, stages]);
+    return safeStages[selectedStage] || null;
+  }, [selectedStage, safeStages]);
 
   const handleGoToMenu = () => {
     setScreen('stage_select');
@@ -132,10 +159,9 @@ export default function ReadingCourse({
     setScore(0);
     setSelectedAnswer(null);
     setIsAnswered(false);
-    setShowConsultantPanel(false); // メニューに戻るときはコーチを閉じる
+    setShowConsultantPanel(false);
   };
 
-  // ステージ選択後、直接クイズ画面へ移行
   const startStage = (stageIndex) => {
     setSelectedStage(stageIndex);
     setCurrentQuizIdx(0);
@@ -146,7 +172,7 @@ export default function ReadingCourse({
   };
 
   const handleSelectAnswer = (choice) => {
-    if (isAnswered) return;
+    if (isAnswered || !currentStageData) return;
     setSelectedAnswer(choice);
     setIsAnswered(true);
     if (choice === currentStageData.questions[currentQuizIdx].correct) {
@@ -155,6 +181,7 @@ export default function ReadingCourse({
   };
 
   const nextQuiz = () => {
+    if (!currentStageData) return;
     const questions = currentStageData.questions;
     if (currentQuizIdx < questions.length - 1) {
       setCurrentQuizIdx((prev) => prev + 1);
@@ -176,8 +203,8 @@ export default function ReadingCourse({
       const passBoundary = Math.min(PASS_SCORE, questions.length);
       const updatedClearedCount = Object.keys(nextScores).filter(key => {
         const idx = parseInt(key, 10);
-        const stg = stages[idx];
-        if (!stg) return false;
+        const stg = safeStages[idx];
+        if (!stg || !stg.questions) return false;
         const pb = Math.min(PASS_SCORE, stg.questions.length);
         return nextScores[key] >= pb;
       }).length;
@@ -189,6 +216,32 @@ export default function ReadingCourse({
   };
 
   const getStageName = (index) => `${stageLabel} ${index + 1}`;
+
+  // --- 読み込み中UI ---
+  if (dataLoading) {
+    return (
+      <div className="vocab-list-container">
+        <div className="vocab-list-card" style={{ textAlign: 'center', padding: '40px' }}>
+          <p>問題データを読み込んでいます...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // --- エラー表示UI（白画面にならず「戻る」ボタンを表示） ---
+  if (dataError) {
+    return (
+      <div className="vocab-list-container">
+        <div className="vocab-list-card" style={{ textAlign: 'center', padding: '40px' }}>
+          <p style={{ color: '#e53e3e', fontSize: '18px', fontWeight: 'bold' }}>⚠️ エラー</p>
+          <p style={{ marginTop: '8px', color: '#4a5568' }}>{dataError}</p>
+          <button className="vocabulary-menu-secondary-button" onClick={onBack} style={{ marginTop: '20px' }}>
+            コース一覧に戻る
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="vocab-list-container">
@@ -214,7 +267,6 @@ export default function ReadingCourse({
             </div>
           </div>
 
-          {/* 全クリア時に表示される証明書確認ボタン */}
           {isAllCleared && (
             <button className="view-cert-badge-btn" onClick={() => setShowCertificate(true)}>
               🏅 読解マスター証明書を表示する
@@ -223,9 +275,9 @@ export default function ReadingCourse({
 
           {/* グリッドメニュー */}
           <div className="day-grid">
-            {stages.map((stage, index) => {
+            {safeStages.map((stage, index) => {
               const savedScore = stageScores[index];
-              const passBoundary = Math.min(PASS_SCORE, stage.questions.length);
+              const passBoundary = Math.min(PASS_SCORE, stage.questions ? stage.questions.length : 0);
               let statusText = '未挑戦';
               let btnClass = 'day-btn';
 
@@ -240,7 +292,7 @@ export default function ReadingCourse({
               }
 
               return (
-                <button key={stage.id} className={btnClass} onClick={() => startStage(index)}>
+                <button key={stage.id || index} className={btnClass} onClick={() => startStage(index)}>
                   <span className="day-num">{getStageName(index)}</span>
                   <span className="reading-stage-tag">{stage.passageType}</span>
                   <span className="day-status">{statusText}</span>
@@ -259,7 +311,6 @@ export default function ReadingCourse({
       {screen === 'quiz' && currentStageData && (
         <div className="reading-stage-card-wrapper">
           <div className={`vocab-list-card reading-stage-card${showConsultantPanel ? ' coach-open' : ''}`}>
-            {/* ヘッダーエリア */}
             <div className="screen-header reading-full-width">
               <span>{getStageName(selectedStage)} - 問題 ({currentQuizIdx + 1} / {currentStageData.questions.length})</span>
               <div className="reading-header-actions">
@@ -268,13 +319,11 @@ export default function ReadingCourse({
               </div>
             </div>
 
-            {/* 本文エリア */}
             <div className="reading-passage-section">
               <span className="passage-badge">{currentStageData.passageType}</span>
               <div className="passage-content">{currentStageData.passage}</div>
             </div>
 
-            {/* クイズエリア */}
             <div className="reading-quiz-section">
               <div className="quiz-box" style={{ padding: 0 }}>
                 <p className="quiz-question-label">Q{currentQuizIdx + 1}.</p>
@@ -302,7 +351,6 @@ export default function ReadingCourse({
                   })}
                 </div>
 
-                {/* 解答後のフィードバック＆解説 */}
                 {isAnswered && (
                   <div className="quiz-feedback" style={{ marginTop: '12px', paddingTop: '12px' }}>
                     {selectedAnswer === currentStageData.questions[currentQuizIdx].correct ? (
@@ -322,7 +370,6 @@ export default function ReadingCourse({
             </div>
           </div>
 
-          {/* AIコーチパネル */}
           {showConsultantPanel && (
             <div className="reading-consultant-panel animate-slide-in">
               <div className="consultant-header">

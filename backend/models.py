@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -58,3 +58,31 @@ class AiVocabWord(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     vocab_list = relationship('AiVocabList', back_populates='words')
+
+
+# --- 追加：TOEIC 読解コース用モデル ---
+
+class ReadingPassage(Base):
+    __tablename__ = "reading_passages"
+
+    id = Column(String, primary_key=True, index=True)  # 例: "stage_600_1"
+    course_level = Column(Integer, index=True, nullable=False)  # 例: 600
+    title = Column(String, nullable=False)
+    passage_type = Column(String, nullable=False)  # 例: "Announcement"
+    passage = Column(Text, nullable=False)  # 長文テキスト
+
+    questions = relationship("ReadingQuestion", back_populates="passage_rel", cascade="all, delete-orphan")
+
+
+class ReadingQuestion(Base):
+    __tablename__ = "reading_questions"
+
+    id = Column(String, primary_key=True, index=True)  # 例: "q600_1"
+    passage_id = Column(String, ForeignKey("reading_passages.id"), nullable=False)
+    question_number = Column(Integer, nullable=False)
+    question_text = Column(Text, nullable=False)
+    choices = Column(Text, nullable=False)  # JSON文字列形式で保存
+    correct = Column(String, nullable=False)
+    explanation = Column(Text, nullable=False)
+
+    passage_rel = relationship("ReadingPassage", back_populates="questions")

@@ -20,10 +20,7 @@ import WORDS_860 from '../vocabulary/courses/860_wordlist';
 
 // 共通化した ReadingCourse と、各レベルの読解データリストをインポート
 import ReadingCourse from '../Reading/courses/ReadingCourse.jsx';
-import READING_STAGES_450 from '../Reading/courses/450_Reading.js';
-import READING_STAGES_600 from '../Reading/courses/600_Reading.js';
-import READING_STAGES_730 from '../Reading/courses/730_Reading.js';
-import READING_STAGES_860 from '../Reading/courses/860_Reading.js';
+
 
 import BookMarkVocabulary from '../vocabulary/vocabularyBook/BookMarkVocabulary';
 import LoginForm from '../auth/components/LoginForm';
@@ -154,9 +151,9 @@ export default function LandingPage({
         {/* 4.7 共通の ReadingCourse コンポーネントに各レベルのデータを渡して出し分け */}
         {mode === 'reading_course450' && (
           <ReadingCourse
+            level={450}
             courseTitle="450点レベル読解突破コース"
             courseSub="Part 6/7の基礎長文を攻略。各問題の7割以上正解でクリア！"
-            stages={READING_STAGES_450}
             storageKey="reading_450_stage_scores"
             stageLabel="講"
             userName={userName}
@@ -169,9 +166,9 @@ export default function LandingPage({
 
         {mode === 'reading_course600' && (
           <ReadingCourse
+            level={600}
             courseTitle="600点レベル読解突破コース"
             courseSub="ビジネス文書やメールなど実践的な長文問題に挑戦！"
-            stages={READING_STAGES_600}
             storageKey="reading_600_stage_scores"
             stageLabel="講"
             userName={userName}
@@ -184,9 +181,9 @@ export default function LandingPage({
 
         {mode === 'reading_course730' && (
           <ReadingCourse
+            level={730}
             courseTitle="730点レベル読解突破コース"
-            courseSub="複雑な文構造や表現に対応した高度な長文読解訓練を行います。"
-            stages={READING_STAGES_730}
+            courseSub="複雑な文構造や表現に対応した高度な読解訓練を行います。"
             storageKey="reading_730_stage_scores"
             stageLabel="講"
             userName={userName}
@@ -199,9 +196,9 @@ export default function LandingPage({
 
         {mode === 'reading_course860' && (
           <ReadingCourse
+            level={860}
             courseTitle="860点レベル読解突破コース"
             courseSub="高速読解と深い理解を両立させ、高得点・満点を目指す訓練を行います。"
-            stages={READING_STAGES_860}
             storageKey="reading_860_stage_scores"
             stageLabel="講"
             userName={userName}

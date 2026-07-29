@@ -48,3 +48,28 @@ class CreateAiVocabRequest(BaseModel):
     title: Optional[str] = None
     level: int
     amount: int
+
+
+
+
+class ReadingQuestionResponse(BaseModel):
+    id: str
+    questionNumber: int
+    questionText: str
+    choices: List[str]
+    correct: str
+    explanation: str
+
+    class Config:
+        from_attributes = True
+
+
+class ReadingStageResponse(BaseModel):
+    id: str
+    title: str
+    passageType: str
+    passage: str
+    questions: List[ReadingQuestionResponse]
+
+    class Config:
+        from_attributes = True
