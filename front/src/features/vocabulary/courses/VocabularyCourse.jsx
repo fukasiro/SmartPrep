@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import './VocabularyCourse.css'; 
 import { 
-  loadCourseProgress, 
-  saveCourseProgress, 
   addBookmarkedWord, 
   isWordBookmarked, 
   removeBookmarkedWord 
 } from '../progressStorage';
+import { fetchCourseProgress, saveCourseProgress } from '../../../api/progress.js';
 
 // 📂 正しい AiCoach のインポート（3階層上の src/ai-coach/AiCoach を呼び出す）
 import AiCoach from "../../../ai-coach/AiCoach.jsx";
@@ -69,8 +68,14 @@ export default function VocabularyCourse({ courseTitle, words, storageKey, onBac
 
   // 進捗ロード
   useEffect(() => {
-    const syncStageScores = () => {
-      setStageScores(loadCourseProgress(storageKey));
+    const syncStageScores = async () => {
+      try {
+        const progress = await fetchCourseProgress(storageKey);
+        setStageScores(progress || {});
+      } catch (err) {
+        console.error('進捗取得エラー:', err);
+        setStageScores({});
+      }
     };
 
     const syncBookmarkState = () => {
@@ -82,11 +87,9 @@ export default function VocabularyCourse({ courseTitle, words, storageKey, onBac
 
     syncStageScores();
     syncBookmarkState();
-    window.addEventListener('vocab-progress-storage-updated', syncStageScores);
     window.addEventListener('vocab-bookmarks-updated', syncBookmarkState);
 
     return () => {
-      window.removeEventListener('vocab-progress-storage-updated', syncStageScores);
       window.removeEventListener('vocab-bookmarks-updated', syncBookmarkState);
     };
   }, [currentWordIdx, todaysWords, storageKey]);

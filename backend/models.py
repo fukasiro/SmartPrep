@@ -14,6 +14,8 @@ class User(Base):
     password_salt = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+    progress_entries = relationship('UserProgress', back_populates='user', cascade='all, delete-orphan')
+
 
 class PendingSignup(Base):
     __tablename__ = "pending_signups"
@@ -34,6 +36,17 @@ class PasswordReset(Base):
     reset_code = Column(String, nullable=False)
     expires_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class UserProgress(Base):
+    __tablename__ = "user_progress"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    course_key = Column(String, index=True, nullable=False)
+    progress = Column(Text, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship('User', back_populates='progress_entries')
 
 
 class AiVocabList(Base):

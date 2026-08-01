@@ -3,6 +3,7 @@ import './ReadingCourse.css';
 
 // 外部コンポーネント（AIコーチ）のインポート
 import AiCoach from "../../../ai-coach/AiCoach.jsx";
+import { fetchCourseProgress, saveCourseProgress } from '../../../api/progress.js';
 
 const PASS_SCORE = 3; // 1ステージあたり3問以上正解をクリア基準に設定
 
@@ -11,7 +12,7 @@ export default function ReadingCourse({
   courseTitle = '読解突破コース',
   courseSub = 'Part 6/7の長文を攻略。各問題の7割以上正解でクリア！',
   stages: propStages = [], 
-  storageKey = 'reading_course_scores',
+  storageKey = null,
   stageLabel = '講',
   userName = '学習者',
   onBack
@@ -116,18 +117,27 @@ export default function ReadingCourse({
 
   const safeStages = Array.isArray(stages) ? stages : [];
   const totalStages = safeStages.length;
+  const effectiveStorageKey = storageKey || `reading_course_scores_${level}`;
 
   useEffect(() => {
-    const loadProgress = () => {
-      const saved = localStorage.getItem(storageKey);
-      if (saved) setStageScores(JSON.parse(saved));
+    const loadProgress = async () => {
+      try {
+        const progress = await fetchCourseProgress(effectiveStorageKey);
+        setStageScores(progress || {});
+      } catch (err) {
+        console.error('進捗取得エラー:', err);
+      }
     };
     loadProgress();
-  }, [storageKey]);
+  }, [effectiveStorageKey]);
 
-  const saveProgress = (nextScores) => {
+  const saveProgress = async (nextScores) => {
     setStageScores(nextScores);
-    localStorage.setItem(storageKey, JSON.stringify(nextScores));
+    try {
+      await saveCourseProgress(effectiveStorageKey, nextScores);
+    } catch (err) {
+      console.error('進捗保存エラー:', err);
+    }
   };
 
   const clearedCount = useMemo(() => {

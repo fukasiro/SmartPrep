@@ -8,7 +8,8 @@ from google import genai
 from database import engine, Base
 from routers.auth import router as auth_router
 from routers.ai_vocab import router as ai_vocab_router
-from routers.reading import router as reading_router  
+from routers.reading import router as reading_router
+from routers.progress import router as progress_router
 from rag import build_knowledge_base_from_frontend, retrieve_relevant_context
 
 # .envファイルから環境変数を読み込み
@@ -44,7 +45,8 @@ app.add_middleware(
 # ルーティングの追加
 app.include_router(auth_router, prefix="")
 app.include_router(ai_vocab_router, prefix="/ai-vocab")
-app.include_router(reading_router, prefix="/reading")  # 👈 追加！
+app.include_router(reading_router, prefix="/reading")
+app.include_router(progress_router, prefix="/progress")
 
 @app.post("/ai/question", response_model=AIQuestionResponse)
 def ask_ai_question(request: AIQuestionRequest):

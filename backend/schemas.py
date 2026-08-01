@@ -73,3 +73,15 @@ class ReadingStageResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class CourseProgressRequest(BaseModel):
+    progress: dict[str, int]
+
+
+class CourseProgressResponse(BaseModel):
+    course_key: str
+    progress: dict[str, int]
+
+    class Config:
+        allow_population_by_field_name = True

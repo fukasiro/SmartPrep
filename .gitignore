@@ -16,3 +16,4 @@ front/dist/
 .vscode/
 .env
 .env.*
+venv
