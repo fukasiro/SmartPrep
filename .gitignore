@@ -14,6 +14,4 @@ front/node_modules/
 front/.vite/
 front/dist/
 .vscode/
-.env
-.env.*
 venv
