@@ -4,3 +4,4 @@ SQLAlchemy
 email-validator
 PyJWT
 google-genai
+python-dotenv

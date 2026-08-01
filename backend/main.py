@@ -1,4 +1,5 @@
 import os
+import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -39,4 +40,8 @@ app.include_router(ai_vocab_router, prefix="/ai-vocab")
 app.include_router(reading_router, prefix="/reading")
 app.include_router(progress_router, prefix="/progress")
 app.include_router(ai_question_router, prefix="/ai")
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False)
 
