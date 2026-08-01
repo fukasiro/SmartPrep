@@ -1,5 +1,8 @@
 import { useState } from 'react';
 
+// 環境変数からベースURLを取得（フォールバックは http://127.0.0.1:8000）
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000').replace(/\/$/, '');
+
 const TOKEN_STORAGE_KEY = 'eng_learning_access_token';
 const USER_STORAGE_KEY = 'eng_learning_user';
 
@@ -27,27 +30,32 @@ export function useAuth() {
     setMessage('');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/login', {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         clearAuthStorage();
-        setMessage(data.detail || data.message || 'ログインに失敗しました。');
-        return null;
+        const errorMsg = data.detail || data.message || 'ログインに失敗しました。パスワードをご確認ください。';
+        setMessage(errorMsg);
+        return { success: false, error: errorMsg };
       }
 
       persistAuth(data);
-      setMessage(data.message);
+      setMessage(data.message || 'ログインに成功しました。');
       setUser({ email: data.email, name: data.name });
-      return data;
+      return { success: true, data };
     } catch (error) {
       clearAuthStorage();
-      setMessage('サーバー接続に失敗しました。');
-      return null;
+      const errorMsg = '通信エラーが発生しました。';
+      setMessage(errorMsg);
+      return { success: false, error: errorMsg };
     } finally {
       setLoading(false);
     }
@@ -58,7 +66,7 @@ export function useAuth() {
     setMessage('');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/signup', {
+      const response = await fetch(`${API_BASE_URL}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
@@ -85,7 +93,7 @@ export function useAuth() {
     setMessage('');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/verify-signup', {
+      const response = await fetch(`${API_BASE_URL}/verify-signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code }),
@@ -115,7 +123,7 @@ export function useAuth() {
     setMessage('');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/password-reset/request', {
+      const response = await fetch(`${API_BASE_URL}/password-reset/request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -142,7 +150,7 @@ export function useAuth() {
     setMessage('');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/password-reset/confirm', {
+      const response = await fetch(`${API_BASE_URL}/password-reset/confirm`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code, new_password }),

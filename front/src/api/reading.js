@@ -1,6 +1,7 @@
-// src/api/reading.js (プロジェクトの構成に合わせて配置してください)
+// src/api/reading.js
 
-const BASE_URL = 'http://localhost:8000';
+// .env からベースURLを取得（未定義の場合は localhost:8000 をフォールバックとし、末尾スラッシュを除去）
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
 
 /**
  * 指定されたレベル（450, 600, 730, 860など）の読解コースデータをバックエンドから取得する

@@ -7,6 +7,9 @@ import { fetchCourseProgress, saveCourseProgress } from '../../../api/progress.j
 
 const PASS_SCORE = 3; // 1ステージあたり3問以上正解をクリア基準に設定
 
+// .env からベースURLを取得（未定義時のフォールバックおよび末尾スラッシュ除去）
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
+
 export default function ReadingCourse({
   level = 600, // 親から渡されるレベル（450, 600, 700など）
   courseTitle = '読解突破コース',
@@ -34,7 +37,8 @@ export default function ReadingCourse({
       try {
         setDataLoading(true);
         setDataError(null);
-        const response = await fetch(`http://localhost:8000/reading/courses/${level}`);
+        // 修正: ハードコードされていた URL を BASE_URL に変更
+        const response = await fetch(`${BASE_URL}/reading/courses/${level}`);
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error(`レベル ${level} の問題データが見つかりません。DBにデータを登録してください。`);
@@ -82,7 +86,8 @@ export default function ReadingCourse({
     setCoachAnswer('');
 
     try {
-      const response = await fetch('http://localhost:8000/ai/question', {
+      // 修正: ハードコードされていた URL を BASE_URL に変更
+      const response = await fetch(`${BASE_URL}/ai/question`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -238,7 +243,7 @@ export default function ReadingCourse({
     );
   }
 
-  // --- エラー表示UI（白画面にならず「戻る」ボタンを表示） ---
+  // --- エラー表示UI ---
   if (dataError) {
     return (
       <div className="vocab-list-container">

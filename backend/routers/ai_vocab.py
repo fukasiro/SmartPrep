@@ -109,7 +109,7 @@ def generate_ai_vocab_words(level: int, amount: int) -> List[dict]:
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.6-flash',
             contents=prompt,
         )
     except Exception as exc:

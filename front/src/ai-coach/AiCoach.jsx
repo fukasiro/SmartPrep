@@ -1,6 +1,14 @@
-// AICoach.jsx
 import React, { useState } from 'react';
 import './AiCoach.css';
+
+// 環境変数からベースURLを取得（フォールバックは http://localhost:8000）
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
+
+// トークン取得関数
+const getAuthToken = () => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('eng_learning_access_token');
+};
 
 export default function AICoach({ context, onClose }) {
   const [coachQuestion, setCoachQuestion] = useState('');
@@ -19,10 +27,15 @@ export default function AICoach({ context, onClose }) {
     setCoachAnswer('');
 
     try {
-      const response = await fetch('http://localhost:8000/ai/question', {
+      const authToken = getAuthToken();
+      
+      // API_BASE_URL を使用してエンドポイントを呼び出し
+      const response = await fetch(`${API_BASE_URL}/ai/question`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
         },
         body: JSON.stringify({
           question: coachQuestion.trim(),

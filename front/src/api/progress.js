@@ -1,6 +1,7 @@
 import { loadCourseProgress as loadLocalCourseProgress, saveCourseProgress as saveLocalCourseProgress } from '../features/vocabulary/progressStorage';
 
-const BASE_URL = 'http://127.0.0.1:8000';
+// BASE_URLの末尾スラッシュを除去し、未定義時のフォールバックを設定
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
 const PROGRESS_PREFIX = '/progress';
 
 function isBrowser() {

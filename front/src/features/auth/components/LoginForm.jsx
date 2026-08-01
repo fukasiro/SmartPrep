@@ -1,40 +1,25 @@
-// front/src/features/auth/components/LoginForm.jsx
 import { useState } from 'react';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
+import { useAuth } from '../hooks/useAuth'; 
 import './LoginForm.css'; 
 
 export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onNavigateToForgotPassword, onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  
+  // useAuth フックを使用
+  const { loginWithEmail, loading, message } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) return;
-    
-    setLoading(true);
-    setMessage('');
 
-    try {
-      // 💡 useAuth を介さず、確実にバックエンドの /login エンドポイントを叩きます
-      const response = await fetch('http://127.0.0.1:8000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ email, password }),
-      });
+    // useAuth の loginWithEmail 経由でログイン実行
+    const result = await loginWithEmail(email, password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || 'ログインに失敗しました。パスワードをご確認ください。');
-      }
-
-      // 💡 バックエンドから返ってきた正しい情報をそのまま親に引き渡します
+    if (result && result.success) {
+      const data = result.data;
       if (onLoginSuccess) {
         const token = data.access_token;
         const name = data.name || email.split('@')[0];
@@ -42,11 +27,6 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
         
         onLoginSuccess(token, name, userEmail);
       }
-
-    } catch (err) {
-      setMessage(err instanceof Error ? err.message : '通信エラーが発生しました。');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -89,7 +69,7 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
           </p>
 
           <div className="form-button-group">
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" disabled={loading}>
               {loading ? '処理中...' : 'ログイン'}
             </Button>
           </div>

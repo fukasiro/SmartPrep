@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import './AiVocabulary.css';
 
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
 
 // 🎲 確実なシャッフルを行うためのFisher-Yatesアルゴリズム
 const shuffleArray = (array) => {
