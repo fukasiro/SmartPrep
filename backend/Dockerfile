@@ -6,13 +6,14 @@ ENV PYTHONPATH=/app/backend
 
 WORKDIR /app/backend
 
-COPY backend/requirements.txt ./requirements.txt
+# backend フォルダ直下のファイルをそのまま指定
+COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend/ ./
-COPY front/ ../front/
+# カレントディレクトリのファイルをコピー
+COPY . ./
 
-# Cloud RunのPORT環境変数に対応（指定がない場合は8000）
+# ポート設定
 ENV PORT=8000
 EXPOSE 8000
 
