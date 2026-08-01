@@ -79,6 +79,13 @@ class CourseProgressRequest(BaseModel):
     progress: dict[str, int]
 
 
+class AIQuestionRequest(BaseModel):
+    question: str
+    context: str | None = None
+
+class AIQuestionResponse(BaseModel):
+    answer: str
+
 class CourseProgressResponse(BaseModel):
     course_key: str
     progress: dict[str, int]
