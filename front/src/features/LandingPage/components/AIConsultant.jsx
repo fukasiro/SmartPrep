@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import './AIConsultant.css';
 import { loadBookmarkedWords, loadCourseProgress } from '../../vocabulary/progressStorage';
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
+
 export default function AIConsultant({ onClose }) {
   const [messages, setMessages] = useState([
     {
@@ -112,7 +114,7 @@ ${userContext.readingCoursesStatus}
 ユーザーの質問に対して、上記の学習状況を考慮した実用的でパーソナライズされたアドバイスを日本語で提供してください。学習レベルやスピードに合わせた、次のステップやモチベーション維持のコツなど、具体的なアドバイスを心がけてください。
       `.trim();
 
-      const response = await fetch('http://localhost:8000/ai/question', {
+      const response = await fetch(`${API_BASE_URL}/ai/question`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

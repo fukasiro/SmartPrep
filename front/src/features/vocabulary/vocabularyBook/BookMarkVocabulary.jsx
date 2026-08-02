@@ -2,6 +2,8 @@ import React, { useEffect, useState, useMemo } from 'react';
 import './BookMarkVocabulary.css';
 import { loadBookmarkedWords, removeBookmarkedWord, addBookmarkedWord } from '../progressStorage';
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
+
 export default function BookMarkVocabulary({ onBack }) {
   const [bookmarks, setBookmarks] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -101,7 +103,7 @@ export default function BookMarkVocabulary({ onBack }) {
     setCoachAnswer('');
 
     try {
-      const response = await fetch('http://localhost:8000/ai/question', {
+      const response = await fetch(`${API_BASE_URL}/ai/question`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: coachQuestion.trim(), context: coachContext }),
