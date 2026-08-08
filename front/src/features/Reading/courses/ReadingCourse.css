@@ -14,7 +14,8 @@
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   width: 100%;
-  max-width: 600px;
+  /* 広めに表示するため最大幅を拡張 */
+  max-width: 900px;
   padding: 32px;
   box-sizing: border-box;
   position: relative;
@@ -222,14 +223,16 @@
   align-items: flex-start;
   gap: 24px;
   width: 100%;
-  max-width: 1200px; 
+  /* 親ラッパーの最大幅を広げ、コーチ非表示時に中央カードをより広くできるようにする */
+  max-width: 1400px; 
   margin: 0 auto;
 }
 
 /* クイズ画面のカード本体（PCファーストでコンパクト化） */
 .reading-stage-card {
-  max-width: 780px; /* 1画面で収まりやすいように少しスリムに */
-  flex: 1; 
+  /* コーチが閉じているときはより広く表示できるように最大幅を拡張 */
+  max-width: 1100px;
+  flex: 1;
   padding: 20px 24px; /* カード内部の余白を少し縮小 */
   transition: max-width 0.3s ease;
 }

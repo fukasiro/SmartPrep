@@ -1,47 +1,134 @@
+/* コンテナ全体：余白を最適化して横幅いっぱいに使う */
+.vocab-list-container {
+  width: 100%;
+  padding: 32px 40px; /* 上下左右の適切な余白 */
+  box-sizing: border-box;
+}
+
+/* カード本体：幅の制限を解除して最大100%広げる */
+.vocab-list-card {
+  width: 100%;
+  /* max-width制限を取り払い、親要素の領域を最大活用 */
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px 48px; /* カード内の余白もゆったり広げる */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.vocab-list-title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.vocab-list-sub {
+  margin: 0 0 32px 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* リスト領域 */
 .vocab-courses {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
+/* 各コースアイテム：横幅いっぱい伸ばしてゆったり配置 */
 .vocab-course-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #f8fafc;
-  border-radius: 20px;
-  padding: 16px 18px;
+  border-radius: 18px;
+  padding: 24px 32px; /* パディングを増大 */
   border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.vocab-course-item:hover {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+}
+
+.vocab-course-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
 }
 
 .vocab-course-desc {
   color: #475569;
-  font-size: 14px;
+  font-size: 15px;
   margin-top: 6px;
+  line-height: 1.6;
 }
 
+/* 開始ボタン */
 .vocab-card-button {
   background: #ffffff;
   color: #0f172a;
   border: 2px solid #dbeafe;
-  border-radius: 18px;
-  padding: 10px 16px;
-  font-size: 14px;
+  border-radius: 14px;
+  padding: 12px 32px; /* ボタンサイズも少し大きめに */
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
 }
 
-@media screen and (max-width: 960px) {
-  .vocab-list-card {
-    padding: 20px;
-  }
+.vocab-card-button:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
 
+/* 戻るボタンエリア */
+.vocab-bottom-bar {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.vocabulary-menu-secondary-button {
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vocabulary-menu-secondary-button:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* レスポンシブ調整（ウィンドウが狭くなった時） */
+@media screen and (max-width: 768px) {
+  .vocab-list-container {
+    padding: 16px;
+  }
+  .vocab-list-card {
+    padding: 24px;
+  }
   .vocab-course-item {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: stretch;
+    gap: 16px;
+    padding: 20px;
+  }
+  .vocab-card-button {
+    width: 100%;
+    text-align: center;
   }
 }
