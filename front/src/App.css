@@ -51,3 +51,1402 @@
     width: 100%;
   }
 }
+
+/* --- ダークモードの基本スタイル --- */
+body.dark-mode,
+.dark-mode {
+  background-color: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .app-viewport,
+.dark-mode .app-viewport,
+.dark-mode .app-main-content-area-with-sidebar,
+.dark-mode .app-main-content-area-full {
+  background-color: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .app-sidebar,
+.dark-mode .app-sidebar {
+  background-color: #111827 !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .sidebar-logo,
+.dark-mode .sidebar-logo {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .sidebar-item,
+.dark-mode .sidebar-item {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .sidebar-item:hover,
+.dark-mode .sidebar-item:hover {
+  background-color: #1f2937 !important;
+  color: #f8fafc !important;
+}
+
+body.dark-mode .sidebar-item.active,
+.dark-mode .sidebar-item.active {
+  background-color: #1f2937 !important;
+  color: #7dd3fc !important;
+  border-color: #38bdf8 !important;
+}
+
+body.dark-mode .mode-toggle-btn-sidebar,
+.dark-mode .mode-toggle-btn-sidebar {
+  background-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .sidebar-profile-box,
+.dark-mode .sidebar-profile-box,
+body.dark-mode .auth-separator,
+.dark-mode .auth-separator,
+body.dark-mode .sidebar-auth-buttons button,
+.dark-mode .sidebar-auth-buttons button,
+body.dark-mode .sidebar-mypage-btn,
+.dark-mode .sidebar-mypage-btn {
+  background-color: #111827 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .sidebar-auth-buttons button:hover,
+.dark-mode .sidebar-auth-buttons button:hover,
+body.dark-mode .sidebar-mypage-btn:hover,
+.dark-mode .sidebar-mypage-btn:hover {
+  background-color: #1f2937 !important;
+}
+
+.dark-mode .nav-signup-btn {
+  background: linear-gradient(90deg, #38bdf8, #0ea5e9) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 0 #0b76b0 !important;
+}
+
+.dark-mode .nav-signup-btn:hover {
+  background: linear-gradient(90deg, #22d3ee, #0ea5e9) !important;
+  filter: none !important;
+}
+
+.dark-mode .nav-login-btn {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .nav-login-btn:hover,
+.dark-mode .nav-login-btn.active {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  border-color: #38bdf8 !important;
+}
+
+body.dark-mode .landing-container,
+.dark-mode .landing-container,
+body.dark-mode .landing-main,
+.dark-mode .landing-main,
+body.dark-mode .landing-content,
+.dark-mode .landing-content,
+body.dark-mode .hero-card,
+.dark-mode .hero-card,
+body.dark-mode .reading-card,
+.dark-mode .reading-card,
+body.dark-mode .listening-card,
+.dark-mode .listening-card,
+body.dark-mode .writing-card,
+.dark-mode .writing-card,
+body.dark-mode .ai-vocab-card,
+.dark-mode .ai-vocab-card,
+body.dark-mode .vocab-list-card,
+.dark-mode .vocab-list-card,
+body.dark-mode .card-full-width,
+.dark-mode .card-full-width,
+body.dark-mode .vocab-course-item,
+.dark-mode .vocab-course-item,
+body.dark-mode .quiz-box,
+.dark-mode .quiz-box,
+body.dark-mode .message-bubble,
+.dark-mode .message-bubble,
+body.dark-mode .consultant-answer-box,
+.dark-mode .consultant-answer-box,
+body.dark-mode .consultant-textarea,
+.dark-mode .consultant-textarea,
+body.dark-mode .ai-consultant-panel,
+.dark-mode .ai-consultant-panel,
+body.dark-mode .sidebar-profile-box,
+.dark-mode .sidebar-profile-box,
+body.dark-mode .vocab-list-container,
+.dark-mode .vocab-list-container,
+body.dark-mode .vocab-list-card,
+.dark-mode .vocab-list-card,
+body.dark-mode .vocab-course-item,
+.dark-mode .vocab-course-item,
+body.dark-mode .vocab-card-button,
+.dark-mode .vocab-card-button,
+body.dark-mode .vocabulary-menu-secondary-button,
+.dark-mode .vocabulary-menu-secondary-button {
+  background-color: #111827 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .vocab-list-container {
+  background-color: #0f172a !important;
+}
+
+.dark-mode .vocab-list-card {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25) !important;
+}
+
+.dark-mode .vocab-course-item {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .vocab-course-item:hover {
+  background-color: #141c2b !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .vocab-card-button,
+.dark-mode .vocabulary-menu-secondary-button {
+  background-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .vocab-list-title,
+.dark-mode .vocab-list-sub,
+.dark-mode .vocab-course-title,
+.dark-mode .vocab-course-desc,
+.dark-mode .vocab-card-button {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .vocab-course-desc {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .vocabulary-menu-secondary-button:hover {
+  background-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .hero-title,
+.dark-mode .hero-title,
+body.dark-mode .hero-subtitle,
+.dark-mode .hero-subtitle,
+body.dark-mode .card-title,
+.dark-mode .card-title,
+body.dark-mode .card-description,
+.dark-mode .card-description,
+body.dark-mode .profile-status,
+.dark-mode .profile-status,
+body.dark-mode .sidebar-label,
+.dark-mode .sidebar-label,
+body.dark-mode .message-text,
+.dark-mode .message-text,
+body.dark-mode .quick-label,
+.dark-mode .quick-label,
+body.dark-mode .vocab-card-title,
+.dark-mode .vocab-card-title,
+body.dark-mode .vocab-card-description,
+.dark-mode .vocab-card-description,
+body.dark-mode .vocabulary-menu-header h2,
+.dark-mode .vocabulary-menu-header h2,
+body.dark-mode .vocabulary-menu-header p,
+.dark-mode .vocabulary-menu-header p {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .profile-name {
+  color: #ffffff !important;
+}
+
+.dark-mode .vocabulary-menu-container,
+.dark-mode .vocabulary-menu-card,
+.dark-mode .vocab-card,
+.dark-mode .vocab-card-icon,
+.dark-mode .vocab-card-button,
+.dark-mode .vocabulary-menu-secondary-button,
+.dark-mode .vocabulary-menu-button {
+  background-color: #111827 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .vocab-card-icon {
+  background-color: #1f2937 !important;
+}
+
+.dark-mode .vocab-card-button,
+.dark-mode .vocabulary-menu-secondary-button,
+.dark-mode .vocabulary-menu-button {
+  background-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .card-btn,
+.dark-mode .sidebar-mypage-btn,
+.dark-mode .quick-btn,
+.dark-mode .ai-coach-button,
+.dark-mode .vocabulary-menu-primary-button,
+.dark-mode .vocabulary-menu-secondary-button,
+.dark-mode .nav-login-btn,
+.dark-mode .nav-signup-btn,
+.dark-mode .consultant-close-btn,
+.dark-mode .consultant-submit-btn {
+  background-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .profile-avatar {
+  background: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .course-item,
+.dark-mode .reading-side-card,
+.dark-mode .ai-consultant-page,
+.dark-mode .ai-consultant-header,
+.dark-mode .ai-consultant-chat-section,
+.dark-mode .ai-consultant-messages,
+.dark-mode .ai-consultant-footer,
+.dark-mode .ai-consultant-input-wrapper,
+.dark-mode .message-avatar,
+.dark-mode .assistant-message .message-bubble,
+.dark-mode .ai-consultant-input-wrapper:focus-within,
+.dark-mode .ai-consultant-textarea,
+.dark-mode .ai-consultant-submit-btn,
+.dark-mode .quick-btn,
+.dark-mode .skill-summary-tag,
+.dark-mode .course-badge,
+.dark-mode .course-secondary,
+.dark-mode .course-tertiary,
+.dark-mode .reading-main-icon {
+  background-color: #111827 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .ai-consultant-header {
+  box-shadow: none !important;
+}
+
+.dark-mode .ai-consultant-page {
+  background-color: #0f172a !important;
+}
+
+.dark-mode .ai-consultant-messages {
+  background-color: transparent !important;
+}
+
+.dark-mode .assistant-message .message-bubble {
+  background-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .ai-consultant-input-wrapper {
+  background-color: #111827 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .ai-consultant-textarea {
+  background-color: transparent !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .ai-consultant-input-wrapper:focus-within {
+  background-color: #111827 !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15) !important;
+}
+
+.dark-mode .quick-btn {
+  background-color: #111827 !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .reading-main-icon,
+.dark-mode .reading-card.reading-section-card .reading-main-icon {
+  background-color: #1f2937 !important;
+  color: #7dd3fc !important;
+}
+
+.dark-mode .reading-container,
+.dark-mode .reading-header,
+.dark-mode .reading-layout,
+.dark-mode .reading-main-content,
+.dark-mode .reading-side-panel,
+.dark-mode .reading-side-card,
+.dark-mode .reading-card,
+.dark-mode .reading-section-card,
+.dark-mode .reading-grid,
+.dark-mode .course-item,
+.dark-mode .skill-section,
+.dark-mode .course-section {
+  background-color: transparent !important;
+}
+
+.dark-mode .reading-badge {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.22) !important;
+}
+
+.dark-mode .reading-main-title,
+.dark-mode .reading-subtitle,
+.dark-mode .side-card-header h3,
+.dark-mode .recommended-header h3,
+.dark-mode .card-title,
+.dark-mode .card-description,
+.dark-mode .course-item h4,
+.dark-mode .course-item p,
+.dark-mode .skill-summary-note,
+.dark-mode .metric-label,
+.dark-mode .metric-value {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .reading-card,
+.dark-mode .reading-side-card,
+.dark-mode .reading-section-card,
+.dark-mode .course-item {
+  background-color: #0f172a !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+.dark-mode .reading-card:hover,
+.dark-mode .reading-side-card:hover,
+.dark-mode .course-item:hover {
+  background-color: #111827 !important;
+  border-color: #38bdf8 !important;
+}
+
+.dark-mode .card-icon-wrapper,
+.dark-mode .reading-card:hover .card-icon-wrapper {
+  background-color: #131b2e !important;
+}
+
+.dark-mode .card-title {
+  color: #f8fafc !important;
+}
+
+.dark-mode .card-description {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .card-btn,
+.dark-mode .learning-quiz-skip-btn,
+.dark-mode .vocabulary-menu-secondary-button,
+.dark-mode .vocabulary-menu-primary-button,
+.dark-mode .consultant-submit-btn {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.24) !important;
+}
+
+.dark-mode .card-btn:hover,
+.dark-mode .learning-quiz-skip-btn:hover,
+.dark-mode .vocabulary-menu-secondary-button:hover,
+.dark-mode .vocabulary-menu-primary-button:hover {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .reading-badge {
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 40px rgba(56, 189, 248, 0.22) !important;
+}
+
+.dark-mode .reading-main-title,
+.dark-mode .reading-subtitle {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .reading-sidebar,
+.dark-mode .reading-side-card {
+  background-color: #0a1220 !important;
+}
+
+.dark-mode .skill-summary-tag,
+.dark-mode .recommended-subtitle,
+.dark-mode .course-badge,
+.dark-mode .course-secondary,
+.dark-mode .course-tertiary {
+  background-color: #111827 !important;
+  color: #cbd5e1 !important;
+  border: 1px solid #1f2937 !important;
+}
+
+.dark-mode .skill-summary-tag,
+.dark-mode .recommended-subtitle,
+.dark-mode .course-badge,
+.dark-mode .course-secondary,
+.dark-mode .course-tertiary {
+  background-color: #111827 !important;
+  color: #cbd5e1 !important;
+  border: 1px solid #1f2937 !important;
+}
+
+.dark-mode .skill-row {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .skill-bar {
+  background: #0f172a !important;
+}
+
+.dark-mode .vocab-progress {
+  background: #38bdf8 !important;
+}
+
+.dark-mode .reading-progress {
+  background: #818cf8 !important;
+}
+
+.dark-mode .grammar-progress {
+  background: #fb923c !important;
+}
+
+.dark-mode .reading-menu-container {
+  background-color: transparent !important;
+}
+
+.dark-mode .reading-menu-card {
+  background: #0f172a !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45) !important;
+}
+
+.dark-mode .reading-menu-header h2,
+.dark-mode .reading-menu-header p,
+.dark-mode .reading-card-title,
+.dark-mode .reading-card-description {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .reading-menu-header p {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .reading-section-card {
+  background: #111827 !important;
+  border: 1px solid #1f2937 !important;
+}
+
+.dark-mode .reading-card-icon {
+  background: #131b2e !important;
+  color: #7dd3fc !important;
+}
+
+.dark-mode .reading-card-button {
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+}
+
+.dark-mode .reading-card-button:hover {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+.dark-mode .reading-menu-secondary-button {
+  background: #111827 !important;
+  color: #e2e8f0 !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .reading-menu-secondary-button:hover {
+  background: #1f2937 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .course-badge,
+.dark-mode .skill-summary-tag,
+.dark-mode .recommended-subtitle {
+  background-color: #111827 !important;
+  color: #cbd5e1 !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .vocab-list-container {
+  background-color: #0f172a !important;
+}
+
+.dark-mode .progress-container,
+.dark-mode .progress-bar-bg,
+.dark-mode .progress-bar-fill {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .progress-bar-label,
+.dark-mode .progress-bar-label span {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .dashboard-hero-card,
+.dark-mode .dashboard-summary-pill,
+.dark-mode .metric-card {
+  background-color: #0d1726 !important;
+  border: 1px solid #334155 !important;
+  color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.38) !important;
+}
+
+.dark-mode .dashboard-summary-pill,
+.dark-mode .dashboard-summary-pill *,
+.dark-mode .dashboard-summary-pill strong,
+.dark-mode .dashboard-summary-pill span,
+.dark-mode .dashboard-summary-pill .score-unit,
+.dark-mode .dashboard-summary-pill .score-unit-sub {
+  color: #ffffff !important;
+}
+
+.dark-mode .dashboard-content {
+  background-color: #0b1324 !important;
+}
+
+.dark-mode .dashboard-eyebrow {
+  background-color: #0f172a !important;
+  color: #60a5fa !important;
+  border: 1px solid #334155 !important;
+}
+
+.dark-mode .dashboard-title,
+.dark-mode .dashboard-description,
+.dark-mode .metric-label,
+.dark-mode .metric-value,
+.dark-mode .score-unit,
+.dark-mode .score-unit-sub {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .dashboard-summary-pill strong {
+  color: #ffffff !important;
+}
+
+.dark-mode .dashboard-summary-pill span {
+  color: #ffffff !important;
+}
+
+.dark-mode .dashboard-summary-pill strong span,
+.dark-mode .dashboard-summary-pill .score-unit,
+.dark-mode .dashboard-summary-pill .score-unit-sub {
+  color: #ffffff !important;
+}
+
+.dark-mode .consultant-action-button {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35) !important;
+  border: 1px solid rgba(96, 165, 250, 0.3) !important;
+}
+
+.dark-mode .consultant-action-button:hover {
+  background: linear-gradient(90deg, #3b82f6, #2563eb) !important;
+}
+
+.dark-mode .metric-progress {
+  background-color: #0f172a !important;
+}
+
+.dark-mode .dashboard-top {
+  border-bottom: none !important;
+}
+
+.dark-mode .metric-card {
+  border-color: #223047 !important;
+}
+
+.dark-mode .dashboard-summary-pill {
+  border-color: #223047 !important;
+}
+
+.dark-mode .dashboard-hero-card {
+  border-color: #223047 !important;
+}
+
+.dark-mode .progress-bar {
+  background: linear-gradient(90deg, #60a5fa, #2563eb) !important;
+}
+
+.dark-mode .dashboard-summary-pill {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+}
+
+.dark-mode .dashboard-top {
+  border-bottom: none !important;
+}
+
+.dark-mode .dashboard-metrics {
+  gap: 24px;
+}
+
+.dark-mode .dashboard-hero-card {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35) !important;
+}
+
+.dark-mode .dashboard-summary-pill strong {
+  color: #ffffff !important;
+}
+
+.dark-mode .dashboard-summary-pill span {
+  color: #ffffff !important;
+}
+
+.dark-mode .dashboard-description {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .metric-card {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25) !important;
+}
+
+.dark-mode .metric-label {
+  color: #94a3b8 !important;
+}
+
+.dark-mode .metric-value {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .score-unit-sub {
+  color: #ffffff !important;
+}
+
+.dark-mode .dashboard-eyebrow {
+  background-color: #111827 !important;
+}
+
+.dark-mode .compare-card,
+.dark-mode .score-card {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .dashboard-top {
+  gap: 32px !important;
+}
+
+.dark-mode .dashboard-hero-card {
+  padding: 48px !important;
+}
+
+.dark-mode .dashboard-summary-pill {
+  padding: 24px 36px !important;
+}
+
+.dark-mode .metric-card {
+  padding: 24px !important;
+}
+
+.dark-mode .dashboard-summary-pill strong {
+  font-size: 40px !important;
+}
+
+.dark-mode .dashboard-summary-pill {
+  border-radius: 24px !important;
+}
+
+.dark-mode .dashboard-metrics {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+.dark-mode .dashboard-hero-card {
+  border-radius: 28px !important;
+}
+
+.dark-mode .dashboard-eyebrow {
+  border-radius: 8px !important;
+  padding: 6px 14px !important;
+}
+
+.dark-mode .day-grid .day-btn {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .day-btn:hover {
+  background: #141c2f !important;
+  border-color: #2f4361 !important;
+}
+
+.dark-mode .day-btn.cleared {
+  background: #163c3e !important;
+  border-color: #276b67 !important;
+}
+
+.dark-mode .day-btn.progressing {
+  background: #3d2417 !important;
+  border-color: #7c4d15 !important;
+}
+
+.dark-mode .day-num,
+.dark-mode .day-status {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .screen-header {
+  border-color: #1f2937 !important;
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .reading-passage-section {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .passage-badge {
+  background-color: #2563eb !important;
+}
+
+.dark-mode .passage-content {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .reading-quiz-section {
+  border-top-color: #1f2937 !important;
+}
+
+.dark-mode .quiz-question-label,
+.dark-mode .quiz-word,
+.dark-mode .quiz-choices,
+.dark-mode .choice-btn {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .choice-btn {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .choice-btn:hover:not(:disabled) {
+  background: #141c2f !important;
+  border-color: #2563eb !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .correct-choice {
+  background: #134f35 !important;
+  border-color: #1f8f6d !important;
+  color: #d1fae5 !important;
+}
+
+.dark-mode .wrong-choice {
+  background: #58191f !important;
+  border-color: #7f1d1d !important;
+  color: #fecaca !important;
+}
+
+.dark-mode .disabled-choice {
+  opacity: 0.75 !important;
+}
+
+.dark-mode .word-flashcard {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+}
+
+.dark-mode .card-word,
+.dark-mode .card-pos,
+.dark-mode .card-meaning {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .card-divider {
+  background: #334155 !important;
+}
+
+.dark-mode .listening-container {
+  background-color: transparent !important;
+}
+
+.dark-mode .listening-header {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .listening-badge {
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 30px rgba(56, 189, 248, 0.18) !important;
+}
+
+.dark-mode .listening-main-title {
+  color: #ffffff !important;
+}
+
+.dark-mode .listening-subtitle {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .listening-layout,
+.dark-mode .listening-main-content,
+.dark-mode .listening-side-panel {
+  background-color: transparent !important;
+}
+
+.dark-mode .listening-card {
+  background-color: #0f172a !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45) !important;
+}
+
+.dark-mode .listening-card:hover {
+  background-color: #141c2b !important;
+  border-color: #2563eb !important;
+}
+
+.dark-mode .listening-card .card-icon-wrapper {
+  background-color: #111827 !important;
+  color: #7dd3fc !important;
+}
+
+.dark-mode .listening-card .card-title {
+  color: #ffffff !important;
+}
+
+.dark-mode .listening-card .card-description {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .listening-card .card-btn {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.dark-mode .listening-card .card-btn:hover {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .listening-side-card {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.38) !important;
+}
+
+.dark-mode .side-card-header h3,
+.dark-mode .recommended-header h3 {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .skill-summary-note,
+.dark-mode .skill-row,
+.dark-mode .course-item h4,
+.dark-mode .course-item p {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .skill-row strong {
+  color: #ffffff !important;
+}
+
+.dark-mode .skill-bar {
+  background: #0f172a !important;
+}
+
+.dark-mode .skill-progress {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+}
+
+.dark-mode .vocab-progress {
+  background: #38bdf8 !important;
+}
+
+.dark-mode .reading-progress {
+  background: #8b5cf6 !important;
+}
+
+.dark-mode .grammar-progress {
+  background: #fb923c !important;
+}
+
+.dark-mode .course-item {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.32) !important;
+}
+
+.dark-mode .course-item h4 {
+  color: #ffffff !important;
+}
+
+.dark-mode .course-item p {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .course-badge {
+  color: #ffffff !important;
+  background: #2563eb !important;
+}
+
+.dark-mode .course-secondary {
+  background: #4f46e5 !important;
+}
+
+.dark-mode .course-tertiary {
+  background: #10b981 !important;
+}
+
+.dark-mode .learning-quiz-skip-btn,
+.dark-mode .vocabulary-menu-secondary-button,
+.dark-mode .vocab-card-button {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28) !important;
+}
+
+.dark-mode .learning-quiz-skip-btn:hover,
+.dark-mode .vocabulary-menu-secondary-button:hover,
+.dark-mode .vocab-card-button:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .vocabulary-menu-primary-button {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+
+.dark-mode .reading-consultant-panel {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.38) !important;
+}
+
+.dark-mode .reading-consultant-panel .consultant-header h3,
+.dark-mode .reading-consultant-panel p {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .ai-consultant-page {
+  background: #0b1324 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .ai-consultant-header {
+  background: #0f172a !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+}
+
+.dark-mode .ai-consultant-title-section h1 {
+  color: #f8fafc !important;
+}
+
+.dark-mode .ai-consultant-title-section p {
+  color: #94a3b8 !important;
+}
+
+.dark-mode .ai-consultant-close-btn {
+  background: #1f2937 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #334155 !important;
+}
+
+.dark-mode .ai-consultant-close-btn:hover {
+  background-color: #223046 !important;
+  color: #f8fafc !important;
+}
+
+.dark-mode .ai-consultant-messages {
+  background: #0b1324 !important;
+}
+
+.dark-mode .message-avatar {
+  background: #111827 !important;
+  color: #cbd5e1 !important;
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.12) !important;
+}
+
+.dark-mode .assistant-message .message-bubble {
+  background-color: #111827 !important;
+  color: #e2e8f0 !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28) !important;
+}
+
+.dark-mode .user-message .message-bubble {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .typing-indicator span {
+  background: #94a3b8 !important;
+}
+
+.dark-mode .ai-consultant-footer {
+  background: #0f172a !important;
+  border-top-color: #1f2937 !important;
+}
+
+.dark-mode .quick-btn {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .quick-btn:hover {
+  background: #1e293b !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .ai-consultant-input-wrapper {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .ai-consultant-textarea {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .ai-consultant-textarea::placeholder {
+  color: #64748b !important;
+}
+
+.dark-mode .ai-consultant-input-wrapper:focus-within {
+  background: #111827 !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16) !important;
+}
+
+.dark-mode .ai-consultant-submit-btn {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .ai-consultant-submit-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #3b82f6, #2563eb) !important;
+}
+
+.dark-mode .consultant-textarea {
+  background: #0f172a !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .consultant-textarea:focus {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15) !important;
+}
+
+.dark-mode .consultant-submit-btn {
+  background: linear-gradient(90deg, #6366f1, #4f46e5) !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .consultant-answer-box {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .consultant-close-btn:hover {
+  background-color: #223046 !important;
+  color: #f8fafc !important;
+}
+
+.dark-mode .consultant-textarea {
+  background: #0f172a !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .consultant-textarea:focus {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15) !important;
+}
+
+.dark-mode .consultant-submit-btn {
+  background: linear-gradient(90deg, #6366f1, #4f46e5) !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .consultant-answer-box {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .consultant-answer-box h4 {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .consultant-answer-box p {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .exit-btn {
+  color: #fca5a5 !important;
+}
+
+.dark-mode .exit-btn:hover {
+  text-decoration: underline;
+}
+
+.dark-mode .vocab-navigation-row {
+  border-color: #1f2937 !important;
+}
+
+.dark-mode .bookmark-action-btn {
+  background-color: #f59e0b !important;
+  color: #111827 !important;
+}
+
+.dark-mode .screen-header span {
+  color: #94a3b8 !important;
+}
+
+.dark-mode .mypage-container {
+  background-color: #0b1324 !important;
+}
+
+.dark-mode .mypage-card {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45) !important;
+}
+
+.dark-mode .mypage-header h2,
+.dark-mode .mypage-header p,
+.dark-mode .mypage-info-row .label,
+.dark-mode .mypage-info-row .value {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .mypage-avatar {
+  background: #0f172a !important;
+  color: #94a3b8 !important;
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12) !important;
+}
+
+.dark-mode .mypage-info {
+  border-top-color: #1f2937 !important;
+  border-bottom-color: #1f2937 !important;
+}
+
+.dark-mode .mypage-button.primary {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+
+.dark-mode .mypage-button.primary:hover {
+  background: #3b82f6 !important;
+}
+
+.dark-mode .mypage-button.secondary {
+  background: #111827 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .mypage-button.secondary:hover {
+  background: #1f2937 !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* --- ダークモードの基本スタイル --- */
+.dark-mode {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+.dark-mode .app-viewport,
+.dark-mode .app-main-content-area-with-sidebar,
+.dark-mode .app-main-content-area-full {
+  background-color: #0f172a !important;
+}
+
+.dark-mode .app-sidebar {
+  background-color: #111827 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .sidebar-logo {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .sidebar-item {
+  color: #cbd5e1 !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+.dark-mode .sidebar-item:hover {
+  background-color: #1f2937 !important;
+  color: #f8fafc !important;
+}
+
+.dark-mode .sidebar-item.active {
+  background-color: #1f2937 !important;
+  color: #7dd3fc !important;
+  border-color: #38bdf8 !important;
+}
+
+.dark-mode .mode-toggle-btn-sidebar {
+  background-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .sidebar-profile-box,
+.dark-mode .auth-separator,
+.dark-mode .sidebar-auth-buttons button,
+.dark-mode .sidebar-mypage-btn {
+  background-color: #111827 !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-mode .sidebar-auth-buttons button:hover,
+.dark-mode .sidebar-mypage-btn:hover {
+  background-color: #1f2937 !important;
+}
+
+.dark-mode .auth-page-container {
+  background-color: #0f172a !important;
+}
+
+.dark-mode .verify-form {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .verify-header h2 {
+  color: #f8fafc !important;
+}
+
+.dark-mode .verify-subtitle {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .verify-alert {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #93c5fd !important;
+}
+
+.dark-mode .verify-input {
+  background-color: #0f172a !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .verify-input:focus {
+  background-color: #111827 !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18) !important;
+}
+
+.dark-mode .form-button-group button {
+  background: linear-gradient(90deg, #38bdf8, #0ea5e9) !important;
+  color: #ffffff !important;
+  box-shadow: 0 5px 0 #0b76b0 !important;
+}
+
+.dark-mode .form-button-group button:active {
+  box-shadow: none !important;
+}
+
+.dark-mode .verify-message {
+  color: #fecaca !important;
+  background: #331a1d !important;
+  border-color: #7f1d1d !important;
+}
+
+.dark-mode .main-content-card {
+  background: #111827 !important;
+  border-color: #334155 !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55) !important;
+}
+
+.dark-mode .back-to-home-btn {
+  color: #94a3b8 !important;
+}
+
+.dark-mode .back-to-home-btn:hover {
+  color: #ffffff !important;
+}
+
+.dark-mode .page-title {
+  color: #ffffff !important;
+}
+
+.dark-mode .form-input-group input {
+  background-color: #0d1321 !important;
+  border-color: #2f3f55 !important;
+  color: #e2e8f0 !important;
+  box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.12) !important;
+}
+
+.dark-mode .form-input-group input:focus {
+  border-color: #60a5fa !important;
+  background-color: #111827 !important;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18) !important;
+}
+
+.dark-mode .form-button-group button {
+  background-color: #0ea5e9 !important;
+  color: #ffffff !important;
+  box-shadow: 0 5px 0 #0284c7 !important;
+}
+
+.dark-mode .form-button-group button:active {
+  box-shadow: none !important;
+}
+
+.dark-mode .signup-redirect-text,
+.dark-mode .forgot-password-text,
+.dark-mode .forgot-password-link,
+.dark-mode .signup-link,
+.dark-mode .skip-btn,
+.dark-mode .auth-divider,
+.dark-mode .auth-divider::before,
+.dark-mode .auth-divider::after,
+.dark-mode .legal-text {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .forgot-password-link,
+.dark-mode .signup-link,
+.dark-mode .skip-btn {
+  color: #38bdf8 !important;
+}
+
+.dark-mode .auth-divider::before,
+.dark-mode .auth-divider::after {
+  background-color: #1f2937 !important;
+}
+
+.dark-mode .status-message {
+  background-color: #472b2b !important;
+  border-color: #7f1d1d !important;
+  color: #fecaca !important;
+}

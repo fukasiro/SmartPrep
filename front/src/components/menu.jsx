@@ -84,7 +84,7 @@ const icons = {
   )
 };
 
-export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigate, onMyPage, isLoggedIn, userName }) {
+export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigate, onMyPage, isLoggedIn, userName, isDarkMode, onToggleDarkMode }) {
   
   return (
     <aside className="app-sidebar">
@@ -163,7 +163,9 @@ export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigat
 
       {/* 3. 最下部：ログイン・新規登録 or プロフィール切替領域 */}
       <div className="sidebar-footer-area">
-        <button className="mode-toggle-btn-sidebar">💡 ダークモード</button>
+        <button className="mode-toggle-btn-sidebar" onClick={onToggleDarkMode}>
+          {isDarkMode ? '☀️ ライトモード' : '💡 ダークモード'}
+        </button>
         
         <div className="auth-separator"></div>
 

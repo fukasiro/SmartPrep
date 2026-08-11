@@ -63,7 +63,7 @@ export default function LandingPage({
             }}
             onNavigateToSignUp={() => setMode('signup')}
             onNavigateToForgotPassword={() => setMode('forgotPassword')}
-            onLoginSuccess={(token, name, email) => handleAuthSuccess(token, name, email)}
+            onLoginSuccess={(name, email) => handleAuthSuccess(name, email)}
             onGuestStart={handleGuestStart}
           />
         )}

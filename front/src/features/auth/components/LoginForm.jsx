@@ -19,17 +19,15 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
     const result = await loginWithEmail(email, password);
 
     if (result && result.success) {
-      const data = result.data;
       if (onLoginSuccess) {
-        const token = data.access_token;
-        const name = data.name || email.split('@')[0];
-        const userEmail = data.email || email;
-        
-        onLoginSuccess(token, name, userEmail);
+        // useAuth から返ってきた値、または入力された値を渡すだけ（トークン抽出などは不要）
+        const name = result.data?.name || email.split('@')[0];
+        const userEmail = result.data?.email || email;
+
+        onLoginSuccess(name, userEmail);
       }
     }
   };
-
   return (
     <div className="auth-page-container">
       <main className="main-content-card">

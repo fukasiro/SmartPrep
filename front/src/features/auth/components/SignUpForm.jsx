@@ -34,15 +34,16 @@ export default function SignUpForm({ onNavigateToLanding, onNavigateToLogin, onA
           <h1 className="page-title">メール認証</h1>
           
           <VerifyCodeForm
-            email={pendingEmail}
-            name={name}
-            onVerifySuccess={(token, userName) => {
-              // 💡 親（LandingPage経由でApp.jsx）へ成功イベントを一撃で届けます
-              if (onAuthSuccess) {
-                onAuthSuccess(token, userName, pendingEmail);
-              }
-            }}
-          />
+  　　　　　　email={pendingEmail}
+  　　　　　　name={name}
+  　　　　　　onVerifySuccess={(userName) => {
+    // 💡 トークンは既に verifyEmailCode(persistAuth) 内で保存済みのため、
+    // 親へは (name, email) だけを渡します
+    　　　　　if (onAuthSuccess) {
+      　　　　　onAuthSuccess(userName || name, pendingEmail);
+    　　　　　　}
+  　　　　　　}}
+　　　　　/>
         </main>
       </div>
     );

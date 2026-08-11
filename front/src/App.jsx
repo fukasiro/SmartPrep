@@ -11,6 +11,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.localStorage.getItem('smartprep_dark_mode') === 'true';
+  });
 
   // サイドバーを表示する画面の条件
   const showSidebar = mode === 'landing' || mode === 'chat' || mode === 'vocab' || mode === 'vocabMenu' || mode === 'vocabCourseList' || mode === 'myVocabulary' || mode === 'bookmarkVocabulary' || mode === 'aiVocabulary' || mode === 'readingMenu' || mode === 'readingCourseList' || mode === 'course450' || mode === 'course600' || mode === 'course730' || mode === 'course860' || mode === 'reading_course450' || mode === 'reading_course600' || mode === 'reading_course730' || mode === 'reading_course860' || mode === 'test' || mode === 'mypage' || mode === 'consultant';
@@ -33,26 +37,24 @@ function App() {
     }
   }, []);
 
-  const handleAuthSuccess = (token, name, email = null) => {
-    if (token) {
-      localStorage.setItem('eng_learning_access_token', token);
-    }
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem('smartprep_dark_mode', isDarkMode ? 'true' : 'false');
+    document.body.classList.toggle('dark-mode', isDarkMode);
+  }, [isDarkMode]);
 
-    if (email) {
-      const userPayload = { name: name || null, email };
-      localStorage.setItem('eng_learning_user', JSON.stringify(userPayload));
-      setUserName(name || '');
-      setUserEmail(email);
-    } else {
-      localStorage.removeItem('eng_learning_user');
-      setUserName(name || '');
-      setUserEmail('');
-    }
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => !prev);
+  };
+  const handleAuthSuccess = (name, email) => {
+  // ストレージ保存は useAuth 側に任せるため削除
 
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new Event('vocab-progress-storage-updated'));
-    }
+  // Stateの更新
+    setUserName(name || '');
+    setUserEmail(email || '');
     setIsLoggedIn(true);
+
+  // チャット画面へ遷移
     setMode('chat'); 
     setActiveMenu('chat');
   };
@@ -117,7 +119,7 @@ function App() {
   };
 
   return (
-    <div className="app-viewport">
+    <div className={`app-viewport${isDarkMode ? ' dark-mode' : ''}`}>
       {/* 左側固定のサイドバーメニュー */}
       {showSidebar && (
         <Menu 
@@ -128,6 +130,8 @@ function App() {
           onMyPage={handleMyPage}
           isLoggedIn={isLoggedIn}
           userName={userName}
+          isDarkMode={isDarkMode}
+          onToggleDarkMode={toggleDarkMode}
         />
       )}
 
