@@ -3,6 +3,7 @@ import './LandingPage.css';
 import DashBoard from './components/DashBoard';
 import Reading from './components/Reading';
 import Listening from './components/Listening';
+import Coach from '../Coach/Coach';
 import AIConsultant from './components/AIConsultant';
 import ReadingMenu from '../Reading/ReadingMenu';
 import ReadingCourseList from '../Reading/ReadingCourseList';
@@ -352,11 +353,13 @@ export default function LandingPage({
           }} />
         )}
 
-        {/* 8. 📝 総合テスト */}
-        {mode === 'test' && (
-          <div className="chat-placeholder-container">
-            <h2>📝 総合テスト画面（開発中）</h2>
-          </div>
+        {/* 8. 🧑‍🏫 コーチ（学習塾・個人コーチの入り口） */}
+        {mode === 'coach' && (
+          <Coach
+            onBack={() => { setMode('landing'); setActiveMenu('dashboard'); }}
+            onStartPrivateTutor={() => { setMode('coach_private'); setActiveMenu('coach'); }}
+            onStartSchoolSearch={() => { setMode('coach_school'); setActiveMenu('coach'); }}
+          />
         )}
 
         {mode === 'mypage' && (

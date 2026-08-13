@@ -57,7 +57,7 @@ export default function SignUpForm({ onNavigateToLanding, onNavigateToLogin, onA
           ← ホームに戻る
         </button>
 
-        <h1 className="page-title">アカウントを作ろう！</h1>
+        <h1 className="page-title">アカウントを作成</h1>
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-input-group">
@@ -83,7 +83,7 @@ export default function SignUpForm({ onNavigateToLanding, onNavigateToLogin, onA
           <div className="form-input-group">
             <Input
               type="password"
-              placeholder="パスワードを作成"
+              placeholder="パスワード"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

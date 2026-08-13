@@ -1,0 +1,211 @@
+/* --- デフォルト（ライトモード） --- */
+.coach-root {
+  --coach-bg-card: #ffffff;
+  --coach-border-card: #e2e8f0;
+  --coach-text-primary: #0f172a;
+  --coach-text-secondary: #64748b;
+  --coach-text-list: #334155;
+  --coach-icon-bg: #f8fafc;
+  --coach-icon-color: #1e293b;
+  --coach-hover-shadow: rgba(37, 99, 235, 0.12);
+  
+  --coach-badge-tutor-bg: #eff6ff;
+  --coach-badge-tutor-text: #2563eb;
+  --coach-badge-school-bg: #ccfbf1;
+  --coach-badge-school-text: #0d9488;
+
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+/* --- ダークモード（判定用セレクタを網羅） --- */
+/* html/body/親要素/コンポーネント自身のいずれかにダークモード用クラス・属性が付いている場合に適用 */
+.dark .coach-root,
+.dark-mode .coach-root,
+[data-theme="dark"] .coach-root,
+[data-mode="dark"] .coach-root,
+.coach-root.dark,
+.coach-root.dark-mode {
+  --coach-bg-card: #1e293b;
+  --coach-border-card: #334155;
+  --coach-text-primary: #f8fafc;
+  --coach-text-secondary: #94a3b8;
+  --coach-text-list: #cbd5e1;
+  --coach-icon-bg: #0f172a;
+  --coach-icon-color: #f1f5f9;
+  --coach-hover-shadow: rgba(0, 0, 0, 0.4);
+
+  --coach-badge-tutor-bg: rgba(37, 99, 235, 0.2);
+  --coach-badge-tutor-text: #60a5fa;
+  --coach-badge-school-bg: rgba(13, 148, 136, 0.2);
+  --coach-badge-school-text: #2dd4bf;
+}
+
+/* --- コンポーネントスタイル --- */
+
+.coach-header {
+  margin-bottom: 32px;
+}
+
+.coach-back {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 12px;
+  background: transparent;
+  border: none;
+  color: var(--coach-text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.coach-back:hover {
+  color: var(--coach-text-primary);
+}
+
+.coach-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--coach-text-primary);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.02em;
+}
+
+.coach-sub {
+  color: var(--coach-text-secondary);
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.coach-entrance {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.coach-card {
+  position: relative;
+  background: var(--coach-bg-card);
+  border: 1px solid var(--coach-border-card);
+  border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.coach-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px var(--coach-hover-shadow);
+  border-color: #2563eb;
+}
+
+.coach-card-badge {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--coach-badge-tutor-text);
+  background: var(--coach-badge-tutor-bg);
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.coach-card-badge.school {
+  color: var(--coach-badge-school-text);
+  background: var(--coach-badge-school-bg);
+}
+
+.coach-card-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  background: var(--coach-icon-bg);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.coach-card-svg {
+  width: 24px;
+  height: 24px;
+  color: var(--coach-icon-color);
+}
+
+.coach-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--coach-text-primary);
+}
+
+.coach-card p {
+  margin: 0 0 20px 0;
+  color: var(--coach-text-secondary);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.coach-card-features {
+  margin: 0 0 24px 0;
+  padding: 0;
+  list-style: none;
+  color: var(--coach-text-list);
+  font-size: 13px;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.coach-card-features li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+}
+
+.coach-card-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+.coach-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.coach-card:hover .coach-card-action {
+  background: #1d4ed8;
+}
+
+.coach-card-arrow {
+  transition: transform 0.2s ease;
+}
+
+.coach-card:hover .coach-card-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .coach-entrance {
+    grid-template-columns: 1fr;
+  }
+}

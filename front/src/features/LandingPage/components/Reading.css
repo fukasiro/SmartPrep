@@ -1,14 +1,54 @@
-/* front/src/features/LandingPage/components/Reading.css */
-
+/* --- カラー変数と全体設定 --- */
 .reading-container {
+  --rd-bg-card: #ffffff;
+  --rd-border-card: #e5e7eb;
+  --rd-text-primary: #111827;
+  --rd-text-secondary: #6b7280;
+  --rd-text-body: #4b5563;
+  --rd-icon-bg: #f3f4f6;
+  --rd-icon-color: #2563eb;
+  --rd-side-bg: #f8fafc;
+  --rd-side-border: #e5e7eb;
+  
+  --rd-btn-bg: #2563eb;
+  --rd-btn-text: #ffffff;
+  --rd-btn-hover-bg: #1d4ed8;
+  --rd-btn-hover-text: #ffffff;
+  
+  --rd-shadow: rgba(15, 23, 42, 0.06);
+
   padding: 30px;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* ヘッダー周りの装飾 */
+/* --- ダークモード対応 --- */
+.dark .reading-container,
+.dark-mode .reading-container,
+[data-theme="dark"] .reading-container,
+[data-mode="dark"] .reading-container,
+.reading-container.dark {
+  --rd-bg-card: #1e293b;
+  --rd-border-card: #334155;
+  --rd-text-primary: #f8fafc;
+  --rd-text-secondary: #94a3b8;
+  --rd-text-body: #cbd5e1;
+  --rd-icon-bg: #0f172a;
+  --rd-icon-color: #38bdf8;
+  --rd-side-bg: #0f172a;
+  --rd-side-border: #334155;
+  
+  --rd-btn-bg: #2563eb;
+  --rd-btn-text: #ffffff;
+  --rd-btn-hover-bg: #1d4ed8;
+  --rd-btn-hover-text: #ffffff;
+  
+  --rd-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* ヘッダー */
 .reading-header {
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   text-align: left;
 }
 
@@ -24,34 +64,211 @@
   margin-bottom: 12px;
 }
 
+.reading-main-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--rd-text-primary);
+  margin: 0 0 10px 0;
+}
+
+.reading-main-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: #eff6ff;
+color: #7c3aed;
+}
+
+.reading-main-icon svg {
+  width: 24px;
+  height: 24px;
+  color: #7c3aed;
+}
+
+.reading-subtitle {
+  font-size: 15px;
+  color: var(--rd-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 2カラムレイアウト */
 .reading-layout {
   display: grid;
   grid-template-columns: 1.5fr 0.9fr;
   gap: 24px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .reading-main-content {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  height: 100%;
 }
 
+/* 4カードグリッド */
+.reading-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+/* ★ カード本体（他CSSの上書きを防ぐため !important を付与） ★ */
+.reading-card {
+  background: #ffffff !important;
+  border: 1px solid var(--rd-border-card);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px var(--rd-shadow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* ダークモード時のカード背景指定 */
+.dark .reading-card,
+.dark-mode .reading-card,
+[data-theme="dark"] .reading-card,
+[data-mode="dark"] .reading-card,
+.reading-container.dark .reading-card {
+  background: #1e293b !important;
+}
+
+.reading-card:hover {
+  transform: translateY(-4px);
+  border-color: #2563eb;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+}
+
+/* アイコン */
+.card-icon-wrapper {
+  background-color: var(--rd-icon-bg);
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.card-svg-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--rd-icon-color);
+}
+
+.card-icon-wrapper.fulltest-icon {
+  background-color: #eff6ff;
+}
+
+.card-icon-wrapper.fulltest-icon .card-svg-icon {
+  color: #2563eb;
+}
+
+.reading-card:hover .card-icon-wrapper {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--rd-text-primary);
+  margin: 0 0 10px 0;
+  flex-shrink: 0;
+}
+
+/* 説明文 */
+.card-description {
+  font-size: 13.5px;
+  color: var(--rd-text-body);
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  flex: 1;
+}
+
+/* ボタン（青色） */
+.card-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  box-sizing: border-box;
+  margin-top: auto;
+}
+
+/* Ensure fulltest card content spacing matches other cards */
+.fulltest-card .card-title { margin: 0 0 10px 0; }
+.fulltest-card .card-description { margin: 0 0 20px 0; }
+.fulltest-card .card-btn { margin-top: auto; }
+
+/* If the fulltest card icon wrapper uses a different size, normalize it */
+.fulltest-card .card-icon-wrapper { margin-bottom: 18px; }
+
+.card-btn:hover {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+/* 総合テスト用グラデーションボタン */
+.card-btn.primary-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+}
+
+.card-btn.primary-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+}
+
+/* サイドパネル */
 .reading-side-panel {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  height: 100%;
 }
 
 .reading-side-card {
-  background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 24px;
-  padding: 28px;
-  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.06);
+  background: #ffffff !important;
+  border: 1px solid var(--rd-border-card);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 12px var(--rd-shadow);
   display: flex;
   flex-direction: column;
   gap: 24px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.dark .reading-side-card,
+.dark-mode .reading-side-card,
+[data-theme="dark"] .reading-side-card,
+[data-mode="dark"] .reading-side-card,
+.reading-container.dark .reading-side-card {
+  background: #1e293b !important;
 }
 
 .side-card-header,
@@ -64,40 +281,43 @@
 
 .side-card-header h3,
 .recommended-header h3 {
-  font-size: 18px;
+  font-size: 17px;
   margin: 0;
-  color: #111827;
+  color: var(--rd-text-primary);
+  font-weight: 700;
 }
 
 .skill-summary-tag,
 .recommended-subtitle {
   font-size: 12px;
-  color: #6b7280;
-  background: #f8fafc;
+  color: var(--rd-text-secondary);
+  background: var(--rd-side-bg);
+  border: 1px solid var(--rd-border-card);
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: 4px 10px;
+  white-space: nowrap;
 }
 
 .skill-section,
 .course-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .skill-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 14px 0 8px;
-  font-size: 14px;
-  color: #374151;
+  margin: 10px 0 6px;
+  font-size: 13.5px;
+  color: var(--rd-text-primary);
 }
 
 .skill-bar {
   width: 100%;
-  height: 12px;
-  background: #e5e7eb;
+  height: 8px;
+  background: var(--rd-border-card);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -107,201 +327,89 @@
   border-radius: 999px;
 }
 
-.vocab-progress {
-  background: #22d3ee;
-}
-
-.reading-progress {
-  background: #6366f1;
-}
-
-.grammar-progress {
-  background: #f59e0b;
-}
+.vocab-progress { background: #06b6d4; }
+.reading-progress { background: #6366f1; }
+.grammar-progress { background: #f59e0b; }
 
 .skill-summary-note {
-  margin-top: 18px;
+  margin-top: 8px;
   font-size: 13px;
-  color: #6b7280;
-  line-height: 1.6;
+  color: var(--rd-text-secondary);
+  line-height: 1.5;
 }
 
 .course-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .course-item {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 16px;
-  border-radius: 18px;
-  border: 1px solid #e5e7eb;
-  padding: 16px;
-  background: #f8fafc;
+  gap: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--rd-side-border);
+  padding: 14px;
+  background: var(--rd-side-bg);
 }
 
 .course-item h4 {
-  margin: 0 0 6px 0;
-  font-size: 15px;
-  color: #111827;
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: var(--rd-text-primary);
+  font-weight: 700;
 }
 
 .course-item p {
   margin: 0;
-  font-size: 13px;
-  color: #4b5563;
-  line-height: 1.5;
+  font-size: 12.5px;
+  color: var(--rd-text-secondary);
+  line-height: 1.4;
 }
 
 .course-badge {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  color: #111827;
+  color: #0369a1;
   background: #e0f2fe;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: 999px;
   white-space: nowrap;
 }
 
 .course-secondary {
+  color: #4338ca;
   background: #eef2ff;
 }
 
 .course-tertiary {
+  color: #3f6212;
   background: #ecfccb;
 }
 
+/* レスポンシブ対応 */
 @media screen and (max-width: 1100px) {
   .reading-layout {
     grid-template-columns: 1fr;
   }
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 640px) {
+  .reading-container {
+    padding: 20px 16px;
+  }
   .reading-grid {
     grid-template-columns: 1fr;
   }
 }
 
-.reading-main-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 28px;
-  font-weight: 800;
-  color: #1f2937;
-  margin: 0 0 10px 0;
+/* --- 強制統一: すべてのカードでタイトル/説明/ボタンの余白を揃える --- */
+.reading-card, .reading-card * {
+  box-sizing: border-box;
 }
-
-.reading-main-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
-  background: #eff6ff;
-  color: #2563eb;
-}
-
-.reading-main-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.reading-main-icon {
-  color: #7c3aed;
-}
-
-.reading-subtitle {
-  font-size: 15px;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.6;
-}
-
-/* 💡 3つのカードを綺麗に並べるグリッド構造 */
-.reading-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  width: 100%;
-}
-
-/* 各独立カードの共通デザイン */
-.reading-card {
-  background: #ffffff !important;
-  border: 2px solid #e5e7eb;
-  border-radius: 20px;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-}
-
-/* マウスホバーでカードがふわっと浮き上がり、枠線がシアンブルーに */
-.reading-card:hover {
-  transform: translateY(-6px);
-  border-color: #22d3ee;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-/* 絵文字アイコンの背景円 */
-.card-icon-wrapper {
-  font-size: 28px;
-  background-color: #f3f4f6;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  transition: background-color 0.2s ease;
-}
-
-.reading-card:hover .card-icon-wrapper {
-  background-color: #ecfeff; /* ホバー時にアイコン背景もシンクロ */
-}
-
-.card-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 12px 0;
-}
-
-.card-description {
-  font-size: 14px;
-  color: #4b5563;
-  line-height: 1.6;
-  margin: 0 0 24px 0;
-  flex-grow: 1; /* テキスト量に差があってもボタンの位置を最下部で揃える */
-}
-
-/* カード内のスタートボタン */
-.card-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #1f2937;
-  color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-
-.card-btn:hover {
-  background-color: #22d3ee; /* SmartPrep theme color */
-  color: #111827;
-}
+.reading-card .card-icon-wrapper { margin-bottom: 18px; }
+.reading-card .card-title { margin: 0 0 12px 0; }
+.reading-card .card-description { margin: 0 0 20px 0; }
+.reading-card .card-btn { margin-top: auto; }

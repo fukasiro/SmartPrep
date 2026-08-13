@@ -1,0 +1,360 @@
+/* 全体ベース */
+.learning-root {
+  padding: 32px 40px;
+  background-color: #f4f6f8;
+  min-height: 100vh;
+  box-sizing: border-box;
+  color: #1e293b;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ヘッダー */
+.learning-header {
+  margin-bottom: 28px;
+}
+
+.learning-main-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+  color: #0f172a;
+}
+
+.learning-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* メインレイアウト */
+.learning-layout {
+  /* match Reading layout proportions: main / side = 1.5fr : 0.9fr */
+  display: grid;
+  grid-template-columns: 1.5fr 0.9fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.learning-main-content {
+  display: block;
+}
+
+.learning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+/* 学習カード */
+.learning-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 28px 24px 24px 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+.learning-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border-color: #cbd5e1;
+}
+
+.learning-card:focus-visible {
+  border-color: #3b82f6;
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card-meta .meta-icon {
+  width: 44px;
+  height: 44px;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+  flex: 1;
+}
+
+.card-btn {
+  width: 100%;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.card-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* サイドパネル (右側ダッシュボード) */
+.learning-side-panel {
+  /* side panel will size by grid fraction; set min width and allow it to grow similarly to reading */
+  min-width: 280px;
+  max-width: 440px;
+}
+
+.skill-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  border: 1px solid #e2e8f0;
+  position: sticky;
+  top: 24px;
+}
+
+.skill-header {
+  margin-bottom: 24px;
+}
+
+.skill-header h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+}
+
+.skill-note {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* プログレスバー */
+.skill-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.skill-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.skill-row span {
+  color: #334155;
+  font-weight: 600;
+}
+
+.skill-row strong {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.skill-bar {
+  background-color: #f1f5f9;
+  height: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.skill-progress {
+  height: 100%;
+  border-radius: 10px;
+}
+
+.reading-progress {
+  background-color: #38bdf8;
+}
+
+.listening-progress {
+  background-color: #2563eb;
+}
+
+/* おすすめコース */
+.recommended-courses h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 14px 0;
+}
+
+.course-item {
+  background-color: #f8fafc;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-item:last-child {
+  margin-bottom: 0;
+}
+
+.course-info h5 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.course-info p {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.badge.secondary {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1024px) {
+  .learning-layout {
+    /* stack vertically on narrower screens */
+    display: block;
+  }
+  .learning-side-panel {
+    width: 100%;
+    padding: 0; /* keep consistent with container padding */
+  }
+  /* ensure dark-mode fixed width doesn't override responsive layout */
+  .dark-mode .learning-side-panel {
+    width: 100%;
+    padding: 0 8px;
+  }
+  .skill-card {
+    position: static;
+    margin: 20px 0 0 0;
+    width: 100%;
+    max-width: none;
+    padding: 24px;
+    box-sizing: border-box;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  .learning-grid {
+    grid-template-columns: 1fr;
+  }
+  .learning-root {
+    padding: 20px 16px;
+  }
+  /* on small phones, adjust skill-card to fill viewport minus small page padding */
+  .learning-side-panel {
+    padding: 0 0px;
+  }
+  .skill-card {
+    position: static;
+    width: 100%;
+    margin: 16px 0 0 0;
+    padding: 18px 16px;
+  }
+}
+
+/* Dark mode improvements */
+.dark-mode .learning-root {
+  background-color: #071025;
+  color: #e6eef8;
+}
+.dark-mode .learning-main-title,
+.dark-mode .card-title,
+.dark-mode .skill-header h3,
+.dark-mode .recommended-courses h4,
+.dark-mode .course-info h5 {
+  color: #ffffff; /* brighter for headings */
+}
+.dark-mode .learning-subtitle,
+.dark-mode .card-desc,
+.dark-mode .skill-note,
+.dark-mode .course-info p {
+  color: #9fb1c9; /* softer but readable body text */
+}
+.dark-mode .learning-card {
+  background: linear-gradient(180deg,#081221 0%, #0f1724 100%);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 12px 30px rgba(2,6,23,0.6);
+}
+.dark-mode .learning-card:hover {
+  box-shadow: 0 22px 48px rgba(2,6,23,0.7);
+}
+.dark-mode .card-meta .meta-icon {
+  background-color: rgba(255,255,255,0.03);
+  color: #e6eef8;
+}
+.dark-mode .card-btn {
+  background-color: #2563eb; /* match light-mode primary blue */
+  background-image: none;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.2);
+  color: #ffffff;
+}
+.dark-mode .card-btn:hover { background-color: #1d4ed8; }
+.dark-mode .learning-side-panel {
+  width: 360px;
+}
+.dark-mode .skill-card {
+  background: linear-gradient(180deg,#081221,#0b1520);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 12px 30px rgba(2,6,23,0.6);
+}
+.dark-mode .skill-header h3 { font-weight: 800; }
+.dark-mode .skill-note { color: #9fb1c9; }
+.dark-mode .skill-row span { color: #ffffff; font-weight: 800; }
+.dark-mode .skill-row strong { color: #ffffff; font-weight: 800; }
+.dark-mode .skill-bar { background-color: rgba(255,255,255,0.04); }
+.dark-mode .reading-progress { background: linear-gradient(90deg,#9b5cff,#6d28d9); }
+.dark-mode .listening-progress { background: linear-gradient(90deg,#3b82f6,#2563eb); }
+.dark-mode .course-item { background: linear-gradient(180deg,#06111a,#081821); border: 1px solid rgba(255,255,255,0.03); }
+.dark-mode .badge { background-color: rgba(255,255,255,0.06); color:#e6eef8; box-shadow:none; }
+.dark-mode .badge.secondary { background-color: rgba(255,255,255,0.03); color:#bcd1ff; }
+
+/* Ensure focus outline is visible in dark */
+.dark-mode .learning-card:focus-visible {
+  border-color: rgba(99,102,241,0.9);
+  outline: 2px solid rgba(99,102,241,0.15);
+}

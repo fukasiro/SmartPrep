@@ -87,7 +87,7 @@ export default function LoginForm({ onNavigateToLanding, onNavigateToSignUp, onN
           className="skip-btn" 
           onClick={() => onLoginSuccess && onLoginSuccess(null, 'ゲストユーザー', 'guest@example.com')}
         >
-          ログインせずに始める 🚀
+          ログインせずに始める
         </button>
         
         <p className="legal-text">

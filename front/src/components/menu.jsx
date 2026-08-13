@@ -76,11 +76,12 @@ const icons = {
 </svg>
   ),
   test: (
-    <svg viewBox="0 0 24 24" className="menu-svg-icon" aria-hidden="true">
-      <path d="M7 4h10v4H7z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="5" y="8" width="14" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M9 13l2 2 4-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+<svg viewBox="0 0 24 24" className="menu-svg-icon" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <path d="M22 10L12 5 2 10l10 5 10-5z" />
+  <path d="M6 12.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-3.5" />
+  <path d="M22 10v6" />
+</svg>
+
   )
 };
 
@@ -147,17 +148,17 @@ export default function Menu({ currentMode, activeMenu, setActiveMenu, onNavigat
           <span className="sidebar-label">AIコンサルタント</span>
         </button>
 
-        {/* 📝 総合テスト */}
-        <button 
-          className={`sidebar-item test-item ${activeMenu === 'test' ? 'active' : ''}`}
+        {/* 🧑‍🏫 コーチ */}
+            <button 
+              className={`sidebar-item coach-item ${activeMenu === 'coach' ? 'active' : ''}`}
           onClick={() => {
-            onNavigate('test');
-            setActiveMenu('test');
+                onNavigate('coach');
+                setActiveMenu('coach');
           }}
-          title="総合テスト"
+          title="コーチ"
         >
           <span className="icon">{icons.test}</span>
-          <span className="sidebar-label">総合テスト</span>
+          <span className="sidebar-label">コーチ</span>
         </button>
       </nav>
 
