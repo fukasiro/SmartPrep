@@ -1,69 +1,73 @@
 # SmartPrep
 
-SmartPrep is a TOEIC-focused English learning app for Japanese learners. It combines structured vocabulary and reading courses with an AI English consultant so users can study with personalized guidance instead of relying only on static materials.
+SmartPrep is a TOEIC-focused English learning app tailored for Japanese learners. By combining structured vocabulary and reading courses with an AI English consultant, it provides personalized guidance instead of relying solely on static study materials.
 
-![SmartPrep Reading Dashboard](./front/src/assets/02D7166B-DCA0-4DD7-BF32-B5D384114AD9.png)
-![SmartPrep Reading Dashboard](./front/src/assets/ReadingAiBot.png)
+![SmartPrep Reading Dashboard](./front/src/assets/スクリーンショット 2026-08-13 14.57.32.png)
+![SmartPrep Reading Dashboard](./front/src/assets/スクリーンショット 2026-08-13 15.00.52.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/Certification.png)
+![SmartPrep Reading Dashboard](./front/src/assets/スクリーンショット 2026-08-13 15.10.30.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/ReadingVocab.png)
 ![SmartPrep Reading Dashboard](./front/src/assets/AiChatBot.png)
 
 ## Overview
 
-SmartPrep is designed to help learners prepare for TOEIC in a simple and focused way:
+SmartPrep is designed to help learners prepare for TOEIC in a simple, highly focused manner:
 
-- Keep the experience lightweight and easy to start.
-- Provide structured vocabulary and reading study paths.
-- Offer AI-powered advice based on the learner's bookmarked words and course progress.
-- Support a smooth learning flow from landing page to course study and review.
+* Delivers a lightweight, easily accessible learning experience (supporting both guest and logged-in users).
+* Offers structured learning paths for vocabulary and reading comprehension.
+* Provides context-aware AI advice based on bookmarked words and course progress.
+* Supports a seamless flow from the landing page to course study and review.
 
 ## Main Features
 
-- User authentication flow with signup, login, password reset, and email verification
-- JWT-based session handling with frontend token persistence
-- Vocabulary study courses for TOEIC levels 450, 600, 730, and 860
-- Reading study courses with level-based progression
-- Bookmark vocabulary management with custom word addition and search
-- AI Consultant that answers questions using the learner's saved vocabulary and course progress context
-- My page and study progress tracking via browser storage
-- Responsive UI with sidebar-based navigation
+* User authentication flow including signup, login, password reset, and email verification
+* JWT-based session management with persistent frontend storage
+* Vocabulary study courses targeting TOEIC score levels 450, 600, 730, and 860
+* Reading comprehension courses with level-based progression
+* Bookmark management for vocabulary with custom word creation and search
+* AI Consultant that answers questions using the learner's saved vocabulary and course progress context
+* Flexible progress persistence (saved to backend database for logged-in users; local storage for guest users)
+* Responsive UI featuring sidebar navigation
 
 ## Tech Stack
 
 ### Frontend
-- React 19.2.7
-- Vite 8.1.0
-- JSX-based UI components
-- Local storage for authentication, bookmarks, and course progress
-- REST API communication with FastAPI
+
+* React 19.2.7
+* Vite 8.1.0
+* JSX-based UI components
+* Browser storage for guest user data persistence
+* REST API integration via FastAPI for data synchronization
 
 ### Backend
-- FastAPI
-- Uvicorn
-- SQLAlchemy
-- SQLite
-- PyJWT
-- Pydantic
-- Email verification support via email-validator
+
+* FastAPI
+* Uvicorn
+* SQLAlchemy
+* PostgreSQL (Production) / SQLite (Local development)
+* PyJWT
+* Pydantic
+* Email verification support via email-validator
 
 ### AI Integration
-- Gemini API via google-genai
-- Context-aware question answering for personalized learning support
+
+* Gemini API via `google-genai`
+* Context-aware question answering for personalized learning support
 
 ## Project Structure
 
-- backend/ — FastAPI backend, authentication routes, AI endpoint, and database setup
-- front/ — React + Vite frontend and feature-based UI components
-- front/src/features/vocabulary/ — vocabulary courses, progress storage, and bookmark functionality
-- front/src/features/LandingPage/components/ — dashboard, AI consultant, and learning pages
+* `backend/` — FastAPI backend, authentication routes, AI endpoint, progress management API, and database configuration
+* `front/` — React + Vite frontend and feature-based UI components
+* `front/src/features/vocabulary/` — Vocabulary courses, progress storage, and bookmark functionality
+* `front/src/features/LandingPage/components/` — Dashboard, AI consultant, and learning pages
 
 ## Authentication Flow
 
-1. A user signs up with name, email, and password.
+1. A user signs up using name, email, and password.
 2. The backend stores pending signup data and generates a verification code.
-3. The code is sent by email when SMTP is configured, otherwise it is displayed in the terminal during local development.
-4. The user verifies the account and completes registration.
-5. A JWT token is issued and stored in the frontend.
+3. The code is sent via email when SMTP is configured; otherwise, it displays in the terminal during local development.
+4. The user verifies the account to complete registration.
+5. A JWT token is issued and stored on the frontend.
 
 ## Getting Started
 
@@ -75,6 +79,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python3 -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
 ```
 
 ### 2) Frontend
@@ -83,40 +88,51 @@ python3 -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
 cd front
 npm install
 npm run dev
+
 ```
 
-Then open the frontend in your browser.
+Then open the frontend URL in your browser.
 
 ### 3) Docker Compose
 
 ```bash
 docker compose up --build
+
 ```
 
 ## Environment Variables
 
-Create a backend environment file with the following values:
+Create a backend environment file with the following parameters:
 
-- SECRET_KEY — JWT signing key
-- JWT_ALGORITHM — typically HS256
-- ACCESS_TOKEN_EXPIRE_MINUTES — access token expiration time
-- GOOGLE_API_KEY or GEMINI_API_KEY — required for AI answers
-- SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, FROM_EMAIL — optional email configuration
+* `SECRET_KEY` — JWT signing key
+* `JWT_ALGORITHM` — Typically `HS256`
+* `ACCESS_TOKEN_EXPIRE_MINUTES` — Access token expiration period (in minutes)
+* `GOOGLE_API_KEY` or `GEMINI_API_KEY` — Required for AI response generation
+* `DATABASE_URL` — Database connection string (e.g., PostgreSQL string for production)
+* `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `FROM_EMAIL` — Optional SMTP email configuration
 
-If SMTP is not configured, verification codes are shown in the terminal for local development.
+If SMTP is not configured, verification codes will print to the terminal for local testing.
 
 ## Current Status
 
 SmartPrep currently includes:
 
-- Authentication and account verification
-- Vocabulary and reading course flows
-- Bookmark-based vocabulary study and custom word entry
-- AI consultant support using user-specific learning context
-- Local progress persistence for study history and bookmarks
+* Authentication and account verification
+* Vocabulary and reading comprehension course flows
+* Bookmark-based vocabulary study and custom word entry
+* AI Consultant utilizing individual learning context
+* Backend progress tracking for logged-in users and local storage backup for guest users
+
+## Upcoming Features (Roadmap)
+
+* **Dashboard & My Page Learning Analytics**: Integrated dashboards to visualize progress, learning stats, and detailed history.
+* **Smart Course Recommendations**: Automated suggestions on the dashboard for ongoing courses and optimal next steps.
+* **AI-Powered Skill Assessment**: Real-time generation of custom test questions to evaluate user proficiency accurately.
+* **Speech & Shadowing Features**: Voice API integration to support dedicated English shadowing practice.
+* **Coaching & Tutor Integration**: Platform connectivity to pair learners with professional freelance tutors and tutoring centers for human coaching.
 
 ## Notes
 
-- Vocabulary and course progress are stored in browser local storage for the current user session.
-- The AI Consultant uses the learner's bookmarked words and course progress to generate more relevant advice.
-- The app is intentionally focused on a simple TOEIC study experience rather than a broad general-purpose English platform.
+* Study progress and bookmarks for logged-in users are persisted to the backend database (PostgreSQL in production) for multi-device sync. Guest progress is stored temporarily in browser local storage.
+* The AI Consultant leverages saved vocabulary and course progress data to generate relevant, tailored advice.
+* The platform is intentionally tailored to provide a streamlined, TOEIC-focused study environment rather than a broad, generic language suite.
