@@ -147,18 +147,18 @@ SmartPrep currently includes:
 graph TD
     User([User / Browser])
 
-    subgraph CDN & DNS
+    subgraph "CDN & DNS"
         CF[Cloudflare DNS / CDN]
     end
 
-    subgraph Google Cloud Platform (GCP)
-        CA[Cloud Armor <br/> WAF / Security]
+    subgraph "Google Cloud Platform"
+        CA["Cloud Armor <br/> WAF / Security"]
         ALB[External Application Load Balancer]
-        CR[Cloud Run <br/> FastAPI Backend]
-        CSQL[(Cloud SQL <br/> PostgreSQL)]
+        CR["Cloud Run <br/> FastAPI Backend"]
+        CSQL[("Cloud SQL <br/> PostgreSQL")]
     end
 
-    subgraph External Services
+    subgraph "External Services"
         Gemini[Gemini API]
         SMTP[SMTP Server]
     end
