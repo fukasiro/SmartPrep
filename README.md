@@ -138,3 +138,36 @@ SmartPrep currently includes:
 * Study progress and bookmarks for logged-in users are persisted to the backend database (PostgreSQL in production) for multi-device sync. Guest progress is stored temporarily in browser local storage.
 * The AI Consultant leverages saved vocabulary and course progress data to generate relevant, tailored advice.
 * The platform is intentionally tailored to provide a streamlined, TOEIC-focused study environment rather than a broad, generic language suite.
+
+## Infrastructure & Architecture
+
+### System Architecture
+
+```mermaid
+graph TD
+    User([User / Browser])
+
+    subgraph CDN & DNS
+        CF[Cloudflare DNS / CDN]
+    end
+
+    subgraph Google Cloud Platform (GCP)
+        CA[Cloud Armor <br/> WAF / Security]
+        ALB[External Application Load Balancer]
+        CR[Cloud Run <br/> FastAPI Backend]
+        CSQL[(Cloud SQL <br/> PostgreSQL)]
+    end
+
+    subgraph External Services
+        Gemini[Gemini API]
+        SMTP[SMTP Server]
+    end
+
+    %% Flow
+    User -->|DNS / HTTPS| CF
+    CF -->|Origin Traffic| CA
+    CA --> ALB
+    ALB -->|Serverless NEG| CR
+    CR -->|Private IP / Cloud SQL Auth Proxy| CSQL
+    CR -->|google-genai| Gemini
+    CR -->|Email Verification| SMTP
