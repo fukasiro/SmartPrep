@@ -1,59 +1,108 @@
+/* --- デフォルト（ライトモード） --- */
 .vocabulary-menu-container {
+  --vm-bg-card: #ffffff;
+  --vm-border-card: #e2e8f0;
+  --vm-text-primary: #0f172a;
+  --vm-text-secondary: #475569;
+  
+  --vm-section-bg: #f8fafc;
+  --vm-section-border: #e2e8f0;
+  
+  --vm-icon-bg: #eff6ff;
+  --vm-icon-color: #2563eb;
+  --vm-icon-border: #bfdbfe;
+
+  --vm-btn-bg: #2563eb;
+  --vm-btn-text: #ffffff;
+  --vm-btn-hover-bg: #1d4ed8;
+
+  --vm-sec-btn-bg: #f1f5f9;
+  --vm-sec-btn-text: #0f172a;
+  --vm-sec-btn-hover: #e2e8f0;
+
   width: 100%;
   padding: 40px;
   box-sizing: border-box;
 }
 
+/* --- クラス指定によるダークモード（OSの自動判定による予期せぬ崩れを防止） --- */
+.dark .vocabulary-menu-container,
+.dark-mode .vocabulary-menu-container,
+[data-theme="dark"] .vocabulary-menu-container,
+[data-mode="dark"] .vocabulary-menu-container,
+:root.dark .vocabulary-menu-container,
+body.dark .vocabulary-menu-container {
+  --vm-bg-card: #151d2a;
+  --vm-border-card: rgba(255, 255, 255, 0.08);
+  --vm-text-primary: #f1f5f9;
+  --vm-text-secondary: #94a3b8;
+  
+  --vm-section-bg: #0f172a;
+  --vm-section-border: rgba(255, 255, 255, 0.06);
+  
+  --vm-icon-bg: rgba(37, 99, 235, 0.15);
+  --vm-icon-color: #38bdf8;
+  --vm-icon-border: rgba(56, 189, 248, 0.15);
+
+  --vm-btn-bg: #2563eb;
+  --vm-btn-text: #ffffff;
+  --vm-btn-hover-bg: #3b82f6;
+
+  --vm-sec-btn-bg: #1e293b;
+  --vm-sec-btn-text: #e2e8f0;
+  --vm-sec-btn-hover: #334155;
+}
+
+/* --- カード構造 --- */
 .vocabulary-menu-card {
   max-width: 960px;
   margin: 0 auto;
-  background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 28px;
+  background: var(--vm-bg-card);
+  border: 1px solid var(--vm-border-card);
+  border-radius: 24px;
   padding: 36px;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
+/* ヘッダー */
 .vocabulary-menu-header h2 {
   margin: 0 0 12px;
-  font-size: 32px;
-  color: #111827;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--vm-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--vm-icon-bg);
+  border: 1px solid var(--vm-icon-border);
+  border-radius: 12px;
+  color: var(--vm-icon-color);
+  flex-shrink: 0;
+}
+
+.header-svg-icon {
+  width: 22px;
+  height: 22px;
 }
 
 .vocabulary-menu-header p {
   margin: 0;
-  color: #475569;
-  font-size: 16px;
-  line-height: 1.75;
+  color: var(--vm-text-secondary);
+  font-size: 15px;
+  line-height: 1.7;
 }
 
-.vocabulary-menu-actions {
-  margin-top: 28px;
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.vocabulary-menu-button,
-.vocabulary-menu-secondary-button {
-  border: none;
-  border-radius: 18px;
-  padding: 16px 28px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.vocabulary-menu-button {
-  background: linear-gradient(90deg, #22d3ee, #2563eb);
-  color: #ffffff;
-}
-
-.vocabulary-menu-secondary-button {
-  background: #f8fafc;
-  color: #0f172a;
-}
-
+/* 2カラムグリッド */
 .vocabulary-menu-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -62,52 +111,161 @@
 }
 
 .vocab-card {
-  background: #f8fafc;
-  border-radius: 24px;
+  background: var(--vm-section-bg);
+  border: 1px solid var(--vm-section-border);
+  border-radius: 20px;
   padding: 28px;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  min-height: 300px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.vocab-card:hover {
+  border-color: var(--vm-icon-color);
+  transform: translateY(-2px);
 }
 
 .vocab-card-icon {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
-  background: #ffffff;
-  border-radius: 18px;
+  background: var(--vm-icon-bg);
+  border: 1px solid var(--vm-icon-border);
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+.card-svg-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--vm-icon-color);
 }
 
 .vocab-card-title {
   margin: 0;
-  font-size: 22px;
-  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--vm-text-primary);
 }
 
 .vocab-card-description {
   margin: 0;
-  color: #475569;
-  line-height: 1.75;
+  color: var(--vm-text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
   flex: 1;
 }
 
+/* プライマリボタン（統一感のある青） */
 .vocab-card-button {
-  background: #ffffff;
-  color: #0f172a;
-  border: 2px solid #dbeafe;
-  border-radius: 18px;
+  background: var(--vm-btn-bg) !important;
+  color: var(--vm-btn-text) !important;
+  border: none;
+  border-radius: 12px;
   padding: 14px 22px;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
 }
 
-@media screen and (max-width: 960px) {
+.vocab-card-button:hover {
+  background: var(--vm-btn-hover-bg) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+/* 戻るボタン */
+.vocabulary-menu-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.vocabulary-menu-secondary-button {
+  border: 1px solid var(--vm-section-border);
+  border-radius: 12px;
+  padding: 12px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--vm-sec-btn-bg);
+  color: var(--vm-sec-btn-text);
+  transition: all 0.2s ease;
+}
+
+.vocabulary-menu-secondary-button:hover {
+  background: var(--vm-sec-btn-hover);
+}
+
+/* --- レスポンシブ対応 --- */
+@media screen and (max-width: 768px) {
+  .vocabulary-menu-container {
+    padding: 16px;
+  }
+
+  .vocabulary-menu-card {
+    padding: 24px 20px;
+    border-radius: 18px;
+  }
+
+  .vocabulary-menu-header h2 {
+    font-size: 22px;
+    gap: 10px;
+  }
+
+  .header-icon-wrapper {
+    width: 38px;
+    height: 38px;
+  }
+
+  .header-svg-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .vocabulary-menu-header p {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
   .vocabulary-menu-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .vocab-card {
+    padding: 20px;
+    border-radius: 16px;
+    gap: 14px;
+  }
+
+  .vocab-card-title {
+    font-size: 18px;
+  }
+
+  .vocab-card-description {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .vocabulary-menu-actions {
+    margin-top: 20px;
+  }
+
+  .vocabulary-menu-secondary-button {
+    width: 100%;
+    padding: 14px;
+    text-align: center;
   }
 }

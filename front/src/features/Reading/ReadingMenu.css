@@ -1,50 +1,108 @@
+/* --- デフォルト（ライトモード） --- */
 .reading-menu-container {
+  --rm-bg-card: #ffffff;
+  --rm-border-card: #e2e8f0;
+  --rm-text-primary: #0f172a;
+  --rm-text-secondary: #475569;
+  
+  --rm-section-bg: #f8fafc;
+  --rm-section-border: #e2e8f0;
+  
+  --rm-icon-bg: #eff6ff;
+  --rm-icon-color: #2563eb;
+  --rm-icon-border: #bfdbfe;
+
+  --rm-btn-bg: #2563eb;
+  --rm-btn-text: #ffffff;
+  --rm-btn-hover-bg: #1d4ed8;
+
+  --rm-sec-btn-bg: #f1f5f9;
+  --rm-sec-btn-text: #0f172a;
+  --rm-sec-btn-hover: #e2e8f0;
+
   width: 100%;
   padding: 40px;
   box-sizing: border-box;
 }
 
+/* --- クラスによる明示的なダークモード指定のみ反映 --- */
+.dark .reading-menu-container,
+.dark-mode .reading-menu-container,
+[data-theme="dark"] .reading-menu-container,
+[data-mode="dark"] .reading-menu-container,
+:root.dark .reading-menu-container,
+body.dark .reading-menu-container {
+  --rm-bg-card: #151d2a;
+  --rm-border-card: rgba(255, 255, 255, 0.08);
+  --rm-text-primary: #f1f5f9;
+  --rm-text-secondary: #94a3b8;
+  
+  --rm-section-bg: #0f172a;
+  --rm-section-border: rgba(255, 255, 255, 0.06);
+  
+  --rm-icon-bg: rgba(37, 99, 235, 0.15);
+  --rm-icon-color: #38bdf8;
+  --rm-icon-border: rgba(56, 189, 248, 0.15);
+
+  --rm-btn-bg: #2563eb;
+  --rm-btn-text: #ffffff;
+  --rm-btn-hover-bg: #3b82f6;
+
+  --rm-sec-btn-bg: #1e293b;
+  --rm-sec-btn-text: #e2e8f0;
+  --rm-sec-btn-hover: #334155;
+}
+
+/* --- メインカード --- */
 .reading-menu-card {
   max-width: 960px;
   margin: 0 auto;
-  background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 28px;
+  background: var(--rm-bg-card);
+  border: 1px solid var(--rm-border-card);
+  border-radius: 24px;
   padding: 36px;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
+/* ヘッダー */
 .reading-menu-header h2 {
   margin: 0 0 12px;
-  font-size: 32px;
-  color: #111827;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--rm-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--rm-icon-bg);
+  border: 1px solid var(--rm-icon-border);
+  border-radius: 12px;
+  color: var(--rm-icon-color);
+  flex-shrink: 0;
+}
+
+.header-svg-icon {
+  width: 22px;
+  height: 22px;
 }
 
 .reading-menu-header p {
   margin: 0;
-  color: #475569;
-  font-size: 16px;
-  line-height: 1.75;
+  color: var(--rm-text-secondary);
+  font-size: 15px;
+  line-height: 1.7;
 }
 
-.reading-menu-actions {
-  margin-top: 28px;
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.reading-menu-secondary-button {
-  border: none;
-  border-radius: 18px;
-  padding: 16px 28px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  background: #f8fafc;
-  color: #0f172a;
-}
-
+/* 2カラムグリッド */
 .reading-menu-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -53,58 +111,161 @@
 }
 
 .reading-section-card {
-  background: #f8fafc;
-  border-radius: 24px;
+  background: var(--rm-section-bg);
+  border: 1px solid var(--rm-section-border);
+  border-radius: 20px;
   padding: 28px;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  min-height: 300px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.reading-section-card:hover {
+  border-color: var(--rm-icon-color);
+  transform: translateY(-2px);
 }
 
 .reading-card-icon {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
-  background: #ffffff;
-  border-radius: 18px;
+  background: var(--rm-icon-bg);
+  border: 1px solid var(--rm-icon-border);
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+.card-svg-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--rm-icon-color);
 }
 
 .reading-card-title {
   margin: 0;
-  font-size: 22px;
-  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--rm-text-primary);
 }
 
 .reading-card-description {
   margin: 0;
-  color: #475569;
-  line-height: 1.75;
+  color: var(--rm-text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
   flex: 1;
 }
 
+/* 青色アクションボタン */
 .reading-card-button {
-  background: #ffffff;
-  color: #0f172a;
-  border: 2px solid #dbeafe;
-  border-radius: 18px;
+  background: var(--rm-btn-bg) !important;
+  color: var(--rm-btn-text) !important;
+  border: none;
+  border-radius: 12px;
   padding: 14px 22px;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
 }
 
 .reading-card-button:hover {
-  background: #eff6ff;
-  border-color: #bfdbfe;
+  background: var(--rm-btn-hover-bg) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
 }
 
-@media screen and (max-width: 960px) {
+/* 戻るボタン */
+.reading-menu-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.reading-menu-secondary-button {
+  border: 1px solid var(--rm-section-border);
+  border-radius: 12px;
+  padding: 12px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--rm-sec-btn-bg);
+  color: var(--rm-sec-btn-text);
+  transition: all 0.2s ease;
+}
+
+.reading-menu-secondary-button:hover {
+  background: var(--rm-sec-btn-hover);
+}
+
+/* --- レスポンシブ対応 (スマホ・タブレット) --- */
+@media screen and (max-width: 768px) {
+  .reading-menu-container {
+    padding: 16px;
+  }
+
+  .reading-menu-card {
+    padding: 24px 20px;
+    border-radius: 18px;
+  }
+
+  .reading-menu-header h2 {
+    font-size: 22px;
+    gap: 10px;
+  }
+
+  .header-icon-wrapper {
+    width: 38px;
+    height: 38px;
+  }
+
+  .header-svg-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .reading-menu-header p {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
   .reading-menu-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .reading-section-card {
+    padding: 20px;
+    border-radius: 16px;
+    gap: 14px;
+  }
+
+  .reading-card-title {
+    font-size: 18px;
+  }
+
+  .reading-card-description {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .reading-menu-actions {
+    margin-top: 20px;
+  }
+
+  .reading-menu-secondary-button {
+    width: 100%;
+    padding: 14px;
+    text-align: center;
   }
 }

@@ -1,134 +1,229 @@
-/* コンテナ全体：余白を最適化して横幅いっぱいに使う */
-.vocab-list-container {
+/* --- デフォルト（ライトモード） --- */
+.rcl-container {
+  --rcl-bg-card: #ffffff;
+  --rcl-border-card: #e2e8f0;
+  --rcl-text-primary: #0f172a;
+  --rcl-text-secondary: #475569;
+  
+  --rcl-item-bg: #f8fafc;
+  --rcl-item-border: #e2e8f0;
+  
+  --rcl-icon-bg: #eff6ff;
+  --rcl-icon-color: #2563eb;
+  --rcl-icon-border: #bfdbfe;
+
+  --rcl-btn-bg: #2563eb;
+  --rcl-btn-text: #ffffff;
+  --rcl-btn-hover-bg: #1d4ed8;
+
+  --rcl-sec-btn-bg: #f1f5f9;
+  --rcl-sec-btn-text: #0f172a;
+  --rcl-sec-btn-hover: #e2e8f0;
+
   width: 100%;
-  padding: 32px 40px; /* 上下左右の適切な余白 */
+  padding: 40px;
   box-sizing: border-box;
 }
 
-/* カード本体：幅の制限を解除して最大100%広げる */
-.vocab-list-card {
-  width: 100%;
-  /* max-width制限を取り払い、親要素の領域を最大活用 */
-  background: #ffffff;
+/* --- クラス指定によるダークモード対応 --- */
+.dark .rcl-container,
+.dark-mode .rcl-container,
+[data-theme="dark"] .rcl-container,
+[data-mode="dark"] .rcl-container,
+:root.dark .rcl-container,
+body.dark .rcl-container {
+  --rcl-bg-card: #151d2a;
+  --rcl-border-card: rgba(255, 255, 255, 0.08);
+  --rcl-text-primary: #f1f5f9;
+  --rcl-text-secondary: #94a3b8;
+  
+  --rcl-item-bg: #0f172a;
+  --rcl-item-border: rgba(255, 255, 255, 0.06);
+  
+  --rcl-icon-bg: rgba(37, 99, 235, 0.15);
+  --rcl-icon-color: #38bdf8;
+  --rcl-icon-border: rgba(56, 189, 248, 0.15);
+
+  --rcl-btn-bg: #2563eb;
+  --rcl-btn-text: #ffffff;
+  --rcl-btn-hover-bg: #3b82f6;
+
+  --rcl-sec-btn-bg: #1e293b;
+  --rcl-sec-btn-text: #e2e8f0;
+  --rcl-sec-btn-hover: #334155;
+}
+
+/* --- メインカード --- */
+.rcl-card {
+  max-width: 960px;
+  margin: 0 auto;
+  background: var(--rcl-bg-card);
+  border: 1px solid var(--rcl-border-card);
   border-radius: 24px;
-  padding: 40px 48px; /* カード内の余白もゆったり広げる */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  padding: 36px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
-.vocab-list-title {
-  margin: 0 0 8px 0;
-  font-size: 28px;
-  font-weight: 800;
-  color: #0f172a;
+/* ヘッダー */
+.rcl-header {
+  margin-bottom: 28px;
 }
 
-.vocab-list-sub {
-  margin: 0 0 32px 0;
-  color: #64748b;
+.rcl-header h2 {
+  margin: 0 0 12px;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--rcl-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--rcl-icon-bg);
+  border: 1px solid var(--rcl-icon-border);
+  border-radius: 12px;
+  color: var(--rcl-icon-color);
+  flex-shrink: 0;
+}
+
+.header-svg-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.rcl-sub {
+  margin: 0;
+  color: var(--rcl-text-secondary);
   font-size: 15px;
+  line-height: 1.7;
 }
 
-/* リスト領域 */
-.vocab-courses {
+/* コースリスト */
+.rcl-courses {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
-/* 各コースアイテム：横幅いっぱい伸ばしてゆったり配置 */
-.vocab-course-item {
+.rcl-course-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f8fafc;
+  background: var(--rcl-item-bg);
   border-radius: 18px;
-  padding: 24px 32px; /* パディングを増大 */
-  border: 1px solid #e5e7eb;
+  padding: 20px 24px;
+  border: 1px solid var(--rcl-item-border);
+  gap: 20px;
   transition: all 0.2s ease;
 }
 
-.vocab-course-item:hover {
-  border-color: #cbd5e1;
-  background: #f1f5f9;
+.rcl-course-item:hover {
+  border-color: var(--rcl-icon-color);
+  transform: translateY(-1px);
 }
 
-.vocab-course-title {
+.rcl-course-info {
+  flex: 1;
+}
+
+.rcl-course-info strong {
   font-size: 18px;
-  font-weight: 700;
-  color: #0f172a;
+  color: var(--rcl-text-primary);
+  display: block;
 }
 
-.vocab-course-desc {
-  color: #475569;
-  font-size: 15px;
+.rcl-course-desc {
+  color: var(--rcl-text-secondary);
+  font-size: 14px;
   margin-top: 6px;
   line-height: 1.6;
 }
 
-/* 開始ボタン */
-.vocab-card-button {
-  background: #ffffff;
-  color: #0f172a;
-  border: 2px solid #dbeafe;
-  border-radius: 14px;
-  padding: 12px 32px; /* ボタンサイズも少し大きめに */
-  font-size: 15px;
+/* 右側の開始ボタン（他コンポーネントへの影響を完全に遮断） */
+.rcl-start-button {
+  background: var(--rcl-btn-bg) !important;
+  color: var(--rcl-btn-text) !important;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 28px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  white-space: nowrap;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  width: auto !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-.vocab-card-button:hover {
-  background: #3b82f6;
-  border-color: #3b82f6;
-  color: #ffffff;
+.rcl-start-button:hover {
+  background: var(--rcl-btn-hover-bg) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
 }
 
-/* 戻るボタンエリア */
-.vocab-bottom-bar {
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 1px solid #f1f5f9;
+/* アクション（戻るボタン） */
+.rcl-actions {
+  margin-top: 28px;
 }
 
-.vocabulary-menu-secondary-button {
-  background: #f8fafc;
-  color: #475569;
-  border: 1px solid #cbd5e1;
+.rcl-secondary-button {
+  border: 1px solid var(--rcl-item-border);
   border-radius: 12px;
-  padding: 12px 28px;
-  font-size: 14px;
+  padding: 12px 26px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  background: var(--rcl-sec-btn-bg);
+  color: var(--rcl-sec-btn-text);
   transition: all 0.2s ease;
 }
 
-.vocabulary-menu-secondary-button:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+.rcl-secondary-button:hover {
+  background: var(--rcl-sec-btn-hover);
 }
 
-/* レスポンシブ調整（ウィンドウが狭くなった時） */
+/* --- レスポンシブ対応 --- */
 @media screen and (max-width: 768px) {
-  .vocab-list-container {
+  .rcl-container {
     padding: 16px;
   }
-  .vocab-list-card {
-    padding: 24px;
+
+  .rcl-card {
+    padding: 24px 20px;
+    border-radius: 18px;
   }
-  .vocab-course-item {
+
+  .rcl-header h2 {
+    font-size: 22px;
+    gap: 10px;
+  }
+
+  .rcl-course-item {
     flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-    padding: 20px;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
   }
-  .vocab-card-button {
+
+  .rcl-start-button {
+    width: 100% !important;
+    padding: 12px;
+  }
+
+  .rcl-secondary-button {
     width: 100%;
+    padding: 14px;
     text-align: center;
   }
 }

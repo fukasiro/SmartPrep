@@ -1,31 +1,53 @@
-:root {
-  --text-main: #1e293b;
-  --text-sub: #475569;
-  --bg-card: #f8fafc;        /* スクショの薄いグレー背景 */
-  --btn-border: #e2e8f0;
-  --btn-text: #0f172a;
-}
+/* ==========================================
+   MyVocabulary.css
+   ========================================== */
 
+/* --- 変数定義 --- */
 .voca-container {
+  --voca-bg-card: #ffffff;
+  --voca-border-card: #e5e7eb;
+  --voca-text-primary: #111827;
+  --voca-text-secondary: #6b7280;
+  --voca-text-body: #4b5563;
+  --voca-icon-bg: #f3f4f6;
+  --voca-icon-color: #2563eb;
+  --voca-shadow: rgba(15, 23, 42, 0.06);
+
   padding: 40px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f1f5f9;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
 }
 
-/* メインのコンテナホワイトカード */
+/* --- ダークモード統合 --- */
+.dark .voca-container,
+.dark-mode .voca-container,
+[data-theme="dark"] .voca-container,
+.voca-container.dark {
+  --voca-bg-card: #1e293b;
+  --voca-border-card: #334155;
+  --voca-text-primary: #f8fafc;
+  --voca-text-secondary: #94a3b8;
+  --voca-text-body: #cbd5e1;
+  --voca-icon-bg: #0f172a;
+  --voca-icon-color: #38bdf8;
+  --voca-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* メインの外枠コンテナ */
 .voca-card {
   width: min(100%, 1000px);
-  background: #ffffff;
+  background: var(--voca-bg-card);
+  border: 1px solid var(--voca-border-card);
   border-radius: 24px;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 10px 25px var(--voca-shadow);
   padding: 40px;
   display: flex;
   flex-direction: column;
   gap: 32px;
+  box-sizing: border-box;
 }
 
 /* ヘッダー */
@@ -37,84 +59,141 @@
   margin: 0;
   font-size: 26px;
   font-weight: 800;
-  color: var(--text-main);
+  color: var(--voca-text-primary);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .voca-title-icon {
-  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: #eff6ff;
+  color: #2563eb;
 }
 
 .voca-subtitle {
-  margin: 12px 0 0;
-  color: var(--text-sub);
-  font-size: 14px;
-  line-height: 1.5;
+  margin: 10px 0 0;
+  color: var(--voca-text-secondary);
+  font-size: 14.5px;
+  line-height: 1.6;
 }
 
 /* 2カラムメニューグリッド */
 .voca-menu-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
 
-/* 個別の選択肢カード */
+/* 個別の選択肢カード (Reading.css のカードデザインと統一) */
 .menu-entrance-card {
-  background: var(--bg-card);
-  border-radius: 16px;
-  padding: 32px;
+  background: var(--voca-bg-card);
+  border: 1px solid var(--voca-border-card);
+  border-radius: 20px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  box-shadow: 0 4px 12px var(--voca-shadow);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-sizing: border-box;
 }
 
+.menu-entrance-card:hover {
+  transform: translateY(-4px);
+  border-color: #2563eb !important;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.15);
+}
+
+/* SVGアイコンボックス */
 .card-icon-box {
-  font-size: 24px;
-  line-height: 1;
+  background-color: var(--voca-icon-bg);
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
 }
 
+.card-svg-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--voca-icon-color);
+}
+
+.card-icon-box.ai-icon-box {
+  background-color: #f3e8ff;
+}
+
+.card-icon-box.ai-icon-box .card-svg-icon {
+  color: #9333ea;
+}
+
+.menu-entrance-card:hover .card-icon-box {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+/* タイトル & 説明文 */
 .card-title {
-  margin: 0;
-  font-size: 20px;
+  margin: 0 0 8px 0;
+  font-size: 18px;
   font-weight: 700;
-  color: var(--text-main);
+  color: var(--voca-text-primary);
+  line-height: 1.35;
 }
 
 .card-description {
-  margin: 0;
   font-size: 13.5px;
-  color: var(--text-sub);
+  color: var(--voca-text-body);
   line-height: 1.6;
-  flex-grow: 1; /* ボタンの位置を下部に揃える */
-  margin-bottom: 16px;
+  margin: 0 0 auto 0; /* 下部のボタンを均等に押し出す */
+  padding-bottom: 24px; /* ボタンまでの最低距離 */
 }
 
-/* アクションボタン（スクショの「コースを開始する」ライクな白丸ボタン） */
+/* アクションボタン (青系プライマリボタンデザインに統合) */
 .btn-action {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: var(--btn-text);
-  padding: 12px 24px;
-  border-radius: 999px; /* 完全な丸角 */
+  padding: 12px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
+  box-sizing: border-box;
+  margin-top: auto;
 }
 
 .btn-action:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  background-color: #1d4ed8;
+  color: #ffffff;
 }
 
-/* フッターと戻るボタン（左下配置） */
+/* AI用グラデーションボタン */
+.btn-ai-action {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
+
+.btn-ai-action:hover {
+  background: linear-gradient(135deg, #6d28d9, #5b21b6);
+}
+
+/* フッターと戻るボタン */
 .voca-footer {
   display: flex;
   justify-content: flex-start;
@@ -122,11 +201,11 @@
 }
 
 .btn-back {
-  background: var(--bg-card);
-  border: 1px solid transparent;
-  color: var(--text-main);
+  background: var(--voca-icon-bg);
+  border: 1px solid var(--voca-border-card);
+  color: var(--voca-text-primary);
   padding: 10px 24px;
-  border-radius: 999px;
+  border-radius: 12px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -134,7 +213,7 @@
 }
 
 .btn-back:hover {
-  background: #edf2f7;
+  background: var(--voca-border-card);
 }
 
 /* レスポンシブ対応 */

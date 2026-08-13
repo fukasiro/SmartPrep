@@ -1,3 +1,112 @@
+/* --- デフォルト（ライトモード） --- */
+.vocab-list-container {
+  --vcl-bg-card: #ffffff;
+  --vcl-border-card: #e2e8f0;
+  --vcl-text-primary: #0f172a;
+  --vcl-text-secondary: #475569;
+  
+  --vcl-item-bg: #f8fafc;
+  --vcl-item-border: #e2e8f0;
+  
+  --vcl-icon-bg: #eff6ff;
+  --vcl-icon-color: #2563eb;
+  --vcl-icon-border: #bfdbfe;
+
+  --vcl-btn-bg: #2563eb;
+  --vcl-btn-text: #ffffff;
+  --vcl-btn-hover-bg: #1d4ed8;
+
+  --vcl-sec-btn-bg: #f1f5f9;
+  --vcl-sec-btn-text: #0f172a;
+  --vcl-sec-btn-hover: #e2e8f0;
+
+  width: 100%;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* --- クラス指定によるダークモード対応 --- */
+.dark .vocab-list-container,
+.dark-mode .vocab-list-container,
+[data-theme="dark"] .vocab-list-container,
+[data-mode="dark"] .vocab-list-container,
+:root.dark .vocab-list-container,
+body.dark .vocab-list-container {
+  --vcl-bg-card: #151d2a;
+  --vcl-border-card: rgba(255, 255, 255, 0.08);
+  --vcl-text-primary: #f1f5f9;
+  --vcl-text-secondary: #94a3b8;
+  
+  --vcl-item-bg: #0f172a;
+  --vcl-item-border: rgba(255, 255, 255, 0.06);
+  
+  --vcl-icon-bg: rgba(37, 99, 235, 0.15);
+  --vcl-icon-color: #38bdf8;
+  --vcl-icon-border: rgba(56, 189, 248, 0.15);
+
+  --vcl-btn-bg: #2563eb;
+  --vcl-btn-text: #ffffff;
+  --vcl-btn-hover-bg: #3b82f6;
+
+  --vcl-sec-btn-bg: #1e293b;
+  --vcl-sec-btn-text: #e2e8f0;
+  --vcl-sec-btn-hover: #334155;
+}
+
+/* --- メインカード --- */
+.vocab-list-card {
+  max-width: 960px;
+  margin: 0 auto;
+  background: var(--vcl-bg-card);
+  border: 1px solid var(--vcl-border-card);
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+/* ヘッダー */
+.vocab-list-header {
+  margin-bottom: 28px;
+}
+
+.vocab-list-header h2 {
+  margin: 0 0 12px;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--vcl-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--vcl-icon-bg);
+  border: 1px solid var(--vcl-icon-border);
+  border-radius: 12px;
+  color: var(--vcl-icon-color);
+  flex-shrink: 0;
+}
+
+.header-svg-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.vocab-list-sub {
+  margin: 0;
+  color: var(--vcl-text-secondary);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* コースリスト */
 .vocab-courses {
   list-style: none;
   padding: 0;
@@ -11,37 +120,110 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f8fafc;
-  border-radius: 20px;
-  padding: 16px 18px;
-  border: 1px solid #e5e7eb;
+  background: var(--vcl-item-bg);
+  border-radius: 18px;
+  padding: 20px 24px;
+  border: 1px solid var(--vcl-item-border);
+  gap: 20px;
+  transition: all 0.2s ease;
+}
+
+.vocab-course-item:hover {
+  border-color: var(--vcl-icon-color);
+  transform: translateY(-1px);
+}
+
+.vocab-course-info {
+  flex: 1;
+}
+
+.vocab-course-info strong {
+  font-size: 18px;
+  color: var(--vcl-text-primary);
+  display: block;
 }
 
 .vocab-course-desc {
-  color: #475569;
+  color: var(--vcl-text-secondary);
   font-size: 14px;
   margin-top: 6px;
+  line-height: 1.6;
 }
 
-.vocab-card-button {
-  background: #ffffff;
-  color: #0f172a;
-  border: 2px solid #dbeafe;
-  border-radius: 18px;
-  padding: 10px 16px;
+/* 右側の開始ボタン（サイズ固定・崩れ防止） */
+.vcl-start-button {
+  background: var(--vcl-btn-bg) !important;
+  color: var(--vcl-btn-text) !important;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 28px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  width: auto !important; /* 100%化を強制防止 */
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-@media screen and (max-width: 960px) {
+.vcl-start-button:hover {
+  background: var(--vcl-btn-hover-bg) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+/* アクション（戻るボタン） */
+.vocab-list-actions {
+  margin-top: 28px;
+}
+
+.vcl-secondary-button {
+  border: 1px solid var(--vcl-item-border);
+  border-radius: 12px;
+  padding: 12px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--vcl-sec-btn-bg);
+  color: var(--vcl-sec-btn-text);
+  transition: all 0.2s ease;
+}
+
+.vcl-secondary-button:hover {
+  background: var(--vcl-sec-btn-hover);
+}
+
+/* --- レスポンシブ対応 --- */
+@media screen and (max-width: 768px) {
+  .vocab-list-container {
+    padding: 16px;
+  }
+
   .vocab-list-card {
-    padding: 20px;
+    padding: 24px 20px;
+    border-radius: 18px;
+  }
+
+  .vocab-list-header h2 {
+    font-size: 22px;
+    gap: 10px;
   }
 
   .vocab-course-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .vcl-start-button {
+    width: 100% !important; /* スマホのみ押しやすいよう全幅化 */
+    padding: 12px;
+  }
+
+  .vcl-secondary-button {
+    width: 100%;
+    padding: 14px;
+    text-align: center;
   }
 }

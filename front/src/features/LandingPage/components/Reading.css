@@ -1,3 +1,7 @@
+/* ==========================================
+   Reading.css
+   ========================================== */
+
 /* --- カラー変数と全体設定 --- */
 .reading-container {
   --rd-bg-card: #ffffff;
@@ -38,15 +42,10 @@
   --rd-side-bg: #0f172a;
   --rd-side-border: #334155;
   
-  --rd-btn-bg: #2563eb;
-  --rd-btn-text: #ffffff;
-  --rd-btn-hover-bg: #1d4ed8;
-  --rd-btn-hover-text: #ffffff;
-  
   --rd-shadow: rgba(0, 0, 0, 0.3);
 }
 
-/* ヘッダー */
+/* --- ヘッダー --- */
 .reading-header {
   margin-bottom: 32px;
   text-align: left;
@@ -82,7 +81,7 @@
   height: 40px;
   border-radius: 14px;
   background: #eff6ff;
-color: #7c3aed;
+  color: #7c3aed;
 }
 
 .reading-main-icon svg {
@@ -98,7 +97,7 @@ color: #7c3aed;
   line-height: 1.6;
 }
 
-/* 2カラムレイアウト */
+/* --- 2カラムレイアウト --- */
 .reading-layout {
   display: grid;
   grid-template-columns: 1.5fr 0.9fr;
@@ -113,7 +112,7 @@ color: #7c3aed;
   height: 100%;
 }
 
-/* 4カードグリッド */
+/* --- 4カードグリッド --- */
 .reading-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -123,38 +122,32 @@ color: #7c3aed;
   height: 100%;
 }
 
-/* ★ カード本体（他CSSの上書きを防ぐため !important を付与） ★ */
-.reading-card {
-  background: #ffffff !important;
+/* ★ カード本体 ★ */
+.reading-container .reading-card {
+  background: var(--rd-bg-card);
   border: 1px solid var(--rd-border-card);
   border-radius: 20px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 12px var(--rd-shadow);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  height: 100%;
   box-sizing: border-box;
+  height: 100%;
 }
 
-/* ダークモード時のカード背景指定 */
-.dark .reading-card,
-.dark-mode .reading-card,
-[data-theme="dark"] .reading-card,
-[data-mode="dark"] .reading-card,
-.reading-container.dark .reading-card {
-  background: #1e293b !important;
-}
-
-.reading-card:hover {
+/* ホバー時の青枠強調 */
+.reading-container .reading-card:hover {
   transform: translateY(-4px);
-  border-color: #2563eb;
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+  border-color: #2563eb !important;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.15);
 }
 
-/* アイコン */
-.card-icon-wrapper {
+/* 1. アイコン */
+.reading-card .card-icon-wrapper {
   background-color: var(--rd-icon-bg);
   width: 52px;
   height: 52px;
@@ -162,7 +155,7 @@ color: #7c3aed;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: 16px; /* アイコン ↔ タイトル間の距離 */
   transition: background-color 0.2s ease;
   flex-shrink: 0;
 }
@@ -185,29 +178,32 @@ color: #7c3aed;
   background-color: rgba(37, 99, 235, 0.1);
 }
 
-.card-title {
+/* 2. タイトル（自然な高さ・タイトル直下に説明文を配置） */
+.reading-card .card-title {
   font-size: 18px;
   font-weight: 700;
   color: var(--rd-text-primary);
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0; /* タイトル ↔ 説明文の間隔をキュッと狭めて自然に */
+  line-height: 1.35;
+  min-height: auto; /* 固定高さを解除 */
   flex-shrink: 0;
 }
 
-/* 説明文 */
-.card-description {
+/* 3. 説明文（自然な高さにしつつ、ボタンとの間のみに可変余白を持たせる） */
+.reading-card .card-description {
   font-size: 13.5px;
   color: var(--rd-text-body);
   line-height: 1.6;
-  margin: 0 0 20px 0;
-  flex: 1;
+  margin: 0 0 auto 0; /* ボタンとの間の余白のみを自動調整して押し出す */
+  padding-bottom: 24px; /* ボタンまでの最低距離 */
 }
 
-/* ボタン（青色） */
-.card-btn {
+/* 4. ボタン */
+.reading-card .card-btn {
   width: 100%;
   padding: 12px;
-  background-color: #2563eb !important;
-  color: #ffffff !important;
+  background-color: #2563eb;
+  color: #ffffff;
   border: none;
   border-radius: 12px;
   font-size: 14px;
@@ -216,33 +212,26 @@ color: #7c3aed;
   transition: all 0.2s ease;
   text-align: center;
   box-sizing: border-box;
-  margin-top: auto;
+  margin-top: auto; /* 確実に最下部に配置 */
+  flex-shrink: 0;
 }
 
-/* Ensure fulltest card content spacing matches other cards */
-.fulltest-card .card-title { margin: 0 0 10px 0; }
-.fulltest-card .card-description { margin: 0 0 20px 0; }
-.fulltest-card .card-btn { margin-top: auto; }
-
-/* If the fulltest card icon wrapper uses a different size, normalize it */
-.fulltest-card .card-icon-wrapper { margin-bottom: 18px; }
-
-.card-btn:hover {
-  background-color: #1d4ed8 !important;
-  color: #ffffff !important;
+.reading-card .card-btn:hover {
+  background-color: #1d4ed8;
+  color: #ffffff;
 }
 
 /* 総合テスト用グラデーションボタン */
-.card-btn.primary-btn {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
-  color: #ffffff !important;
+.reading-card .card-btn.primary-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
 }
 
-.card-btn.primary-btn:hover {
-  background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+.reading-card .card-btn.primary-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
 }
 
-/* サイドパネル */
+/* --- サイドパネル --- */
 .reading-side-panel {
   display: flex;
   flex-direction: column;
@@ -251,7 +240,7 @@ color: #7c3aed;
 }
 
 .reading-side-card {
-  background: #ffffff !important;
+  background: var(--rd-bg-card);
   border: 1px solid var(--rd-border-card);
   border-radius: 20px;
   padding: 24px;
@@ -261,14 +250,6 @@ color: #7c3aed;
   gap: 24px;
   height: 100%;
   box-sizing: border-box;
-}
-
-.dark .reading-side-card,
-.dark-mode .reading-side-card,
-[data-theme="dark"] .reading-side-card,
-[data-mode="dark"] .reading-side-card,
-.reading-container.dark .reading-side-card {
-  background: #1e293b !important;
 }
 
 .side-card-header,
@@ -389,7 +370,7 @@ color: #7c3aed;
   background: #ecfccb;
 }
 
-/* レスポンシブ対応 */
+/* --- レスポンシブ対応 --- */
 @media screen and (max-width: 1100px) {
   .reading-layout {
     grid-template-columns: 1fr;
@@ -404,12 +385,3 @@ color: #7c3aed;
     grid-template-columns: 1fr;
   }
 }
-
-/* --- 強制統一: すべてのカードでタイトル/説明/ボタンの余白を揃える --- */
-.reading-card, .reading-card * {
-  box-sizing: border-box;
-}
-.reading-card .card-icon-wrapper { margin-bottom: 18px; }
-.reading-card .card-title { margin: 0 0 12px 0; }
-.reading-card .card-description { margin: 0 0 20px 0; }
-.reading-card .card-btn { margin-top: auto; }
